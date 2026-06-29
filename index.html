@@ -493,6 +493,33 @@
     .icon-btn:active { opacity: 0.55; }
     .edit-btn:hover { color: var(--accent);  background: var(--accent-lt); }
     .del-btn:hover  { color: var(--expense); background: var(--expense-lt); }
+    /* Check de exportado a Excel */
+    .check-btn {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      color: transparent;
+      padding: 0;
+    }
+    .check-btn:active { opacity: 0.65; }
+    .check-btn.checked {
+      background: var(--income);
+      border-color: var(--income);
+      color: #07150F;
+    }
+    .rec-card.exportado {
+      opacity: 0.42;
+    }
+    .rec-card.exportado .rec-desc {
+      text-decoration: line-through;
+      text-decoration-color: var(--t3);
+    }
     .empty-state {
       text-align: center;
       padding: 22px 16px;
@@ -864,7 +891,8 @@ function initApp() {
               tipo:   d.tipo   || '',
               metodo: d.metodo || '',
               /* ts puede ser null en escrituras pendientes (offline) */
-              ts: d.ts?.toMillis?.() ?? d.ts ?? 0
+              ts:        d.ts?.toMillis?.() ?? d.ts ?? 0,
+              exportado: d.exportado ?? false
             };
           });
           if (activeView === 'historial') renderHistorial();
@@ -1013,7 +1041,14 @@ function initApp() {
       return;
     }
     el.innerHTML = list.map(r => `
-      <div class="rec-card">
+      <div class="rec-card${r.exportado ? ' exportado' : ''}">
+        <button class="check-btn${r.exportado ? ' checked' : ''}"
+                onclick="toggleCheck('${esc(r.id)}', ${r.exportado})"
+                title="${r.exportado ? 'Quitar marca' : 'Marcar como exportado a Excel'}">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
         <div class="rec-dot ${tipo}"></div>
         <div class="rec-info">
           <div class="rec-desc">${esc(r.desc)}</div>
@@ -1111,6 +1146,17 @@ function initApp() {
 
 
   /* ═══ Exponer funciones al scope global (necesario para los onclick inline) ═══ */
+  /* ═══ MARCAR COMO EXPORTADO A EXCEL ═══ */
+  async function toggleCheck(id, isChecked) {
+    try {
+      await db.collection('users').doc(currentUser.uid)
+        .collection('registros').doc(id)
+        .update({ exportado: !isChecked });
+    } catch (err) {
+      console.error('toggleCheck:', err);
+    }
+  }
+
   window.selectTipo    = selectTipo;
   window.selectMetodo  = selectMetodo;
   window.guardar       = guardar;
@@ -1118,6 +1164,7 @@ function initApp() {
   window.editRec       = editRec;
   window.delRec        = delRec;
   window.switchView    = switchView;
+  window.toggleCheck   = toggleCheck;
 
 
   /* ═══ SERVICE WORKER ═══ */
