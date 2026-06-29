@@ -1,10 +1,13 @@
 /* ─── Finanzas PWA – Service Worker v2 ─── */
 /* Versión 2: incluye el SDK de Firebase para uso offline */
-const CACHE  = 'finanzas-v2';
+const CACHE  = 'finanzas-v4';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './favicon.ico',
+  './icon.svg',
+  './icon-32.png',
   './icon-192.png',
   './icon-512.png',
   /* SDK de Firebase (versión fija = cacheable de forma segura) */
