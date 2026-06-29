@@ -1,13 +1,13 @@
 {
   "name": "Finanzas Personal",
   "short_name": "Finanzas",
-  "description": "Registro rápido de gastos e ingresos personales",
+  "description": "Registro r\u00e1pido de gastos e ingresos personales",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#5754D9",
-  "theme_color": "#ffffff",
+  "background_color": "#010101",
+  "theme_color": "#010101",
   "lang": "es",
   "icons": [
     {

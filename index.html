@@ -182,7 +182,7 @@
       display: none;
       min-height: 100dvh;
       min-height: 100vh;
-      padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
     }
     .view.active { display: block; }
 
@@ -301,6 +301,10 @@
       border-color: var(--accent);
       color: var(--accent);
     }
+    /* Colores de TC en el formulario */
+    .pill-btn[data-metodo="tc-bancolombia"].active { color:#F5C518; border-color:#F5C518; background:#1C1400; }
+    .pill-btn[data-metodo="tc-nu"].active          { color:#9B6DFF; border-color:#9B6DFF; background:#13092A; }
+    .pill-btn[data-metodo="tc-lulo"].active        { color:#5AB887; border-color:#5AB887; background:#071510; }
 
     /* ===== CTA BUTTONS ===== */
     .btn-primary {
@@ -408,6 +412,67 @@
       letter-spacing: -0.3px;
     }
 
+    /* ===== SEARCH & FILTER ===== */
+    .search-filter {
+      padding: 14px 16px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .search-box { position: relative; }
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--t3);
+      pointer-events: none;
+    }
+    #search-input {
+      width: 100%;
+      padding: 11px 16px 11px 38px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 14px;
+      color: var(--t1);
+      font-family: 'Open Sans', sans-serif;
+      outline: none;
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: border-color 0.15s;
+    }
+    #search-input:focus { border-color: var(--accent); }
+    #search-input::placeholder { color: var(--t3); }
+    #search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      padding: 7px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--t2);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .filter-btn:active { opacity: 0.7; }
+    .filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+    .filter-btn[data-filter="tc-bancolombia"].active { color:#F5C518; border-color:#F5C518; background:#1C1400; }
+    .filter-btn[data-filter="tc-nu"].active          { color:#9B6DFF; border-color:#9B6DFF; background:#13092A; }
+    .filter-btn[data-filter="tc-lulo"].active        { color:#5AB887; border-color:#5AB887; background:#071510; }
+
     /* ===== SECTION DIVIDERS ===== */
     .section-head {
       display: flex;
@@ -471,8 +536,14 @@
       background: var(--surface-2);
       padding: 2px 7px;
       border-radius: 4px;
-      font-weight: 500;
+      font-weight: 600;
     }
+    /* Colores por método en badges */
+    .method-efectivo    { color: #888896; background: #111118; }
+    .method-debito      { color: #6B9EFF; background: #080D1A; }
+    .method-bancolombia { color: #F5C518; background: #1C1400; }
+    .method-nu          { color: #9B6DFF; background: #13092A; }
+    .method-lulo        { color: #5AB887; background: #071510; }
     .rec-right {
       display: flex;
       flex-direction: column;
@@ -532,40 +603,44 @@
       color: var(--t3);
     }
 
-    /* ===== BOTTOM NAV ===== */
+    /* ===== FLOATING PILL TOGGLE NAV ===== */
     .bottom-nav {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
-      padding-bottom: env(safe-area-inset-bottom, 0px);
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0d0d0d;
+      border: 1px solid #202020;
+      border-radius: 100px;
+      display: flex;
+      padding: 5px;
+      gap: 3px;
       z-index: 100;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.6);
     }
     .nav-btn {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 3px;
+      gap: 7px;
+      padding: 11px 24px;
+      border-radius: 100px;
       border: none;
-      background: none;
+      background: transparent;
       color: var(--t3);
-      font-size: 11px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.1px;
-      transition: color 0.15s;
-      padding: 8px 0;
+      transition: all 0.2s ease;
+      white-space: nowrap;
     }
-    .nav-btn.active { color: var(--accent); }
-    .nav-btn svg { width: 22px; height: 22px; }
+    .nav-btn:active { opacity: 0.7; }
+    .nav-btn.active { background: #1a1a22; color: var(--accent); }
+    .nav-btn svg    { width: 15px; height: 15px; }
 
     /* ===== TOAST ===== */
     .toast {
       position: fixed;
-      bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 14px);
+      bottom: calc(100px + env(safe-area-inset-bottom, 0px));
       left: 50%;
       transform: translateX(-50%) translateY(12px);
       background: var(--surface-2);
@@ -725,6 +800,24 @@
       </div>
     </div>
 
+    <!-- Buscador y filtros -->
+    <div class="search-filter">
+      <div class="search-box">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="search" id="search-input" placeholder="Buscar en registros…" oninput="setSearch(this.value)" autocomplete="off">
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn active" data-filter="all"            onclick="setFilter('all')">Todos</button>
+        <button class="filter-btn"        data-filter="efectivo"       onclick="setFilter('efectivo')">Efectivo</button>
+        <button class="filter-btn"        data-filter="debito"         onclick="setFilter('debito')">Débito</button>
+        <button class="filter-btn"        data-filter="tc-bancolombia" onclick="setFilter('tc-bancolombia')">TC Bancolombia</button>
+        <button class="filter-btn"        data-filter="tc-nu"          onclick="setFilter('tc-nu')">TC Nu</button>
+        <button class="filter-btn"        data-filter="tc-lulo"        onclick="setFilter('tc-lulo')">TC Lulo</button>
+      </div>
+    </div>
+
     <div>
       <div class="section-head">
         <span class="section-lbl">Ingresos</span>
@@ -829,7 +922,9 @@ function initApp() {
   let selTipo     = null;
   let selMetod    = null;
   let editId      = null;
-  let activeView  = 'form';
+  let activeView   = 'form';
+  let searchQuery  = '';
+  let filterMetodo = 'all';
 
 
   /* ═══ AUTH ═══ */
@@ -1018,10 +1113,15 @@ function initApp() {
 
   /* ═══ HISTORIAL ═══ */
   function renderHistorial() {
-    const ingresos = records
+    /* Aplicar filtros activos */
+    let pool = records;
+    if (filterMetodo !== 'all') pool = pool.filter(r => r.metodo === filterMetodo);
+    if (searchQuery)            pool = pool.filter(r => r.desc.toLowerCase().includes(searchQuery));
+
+    const ingresos = pool
       .filter(r => r.tipo === 'ingreso')
       .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.ts - a.ts);
-    const gastos = records
+    const gastos = pool
       .filter(r => r.tipo === 'gasto')
       .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.ts - a.ts);
 
@@ -1059,7 +1159,7 @@ function initApp() {
           <div class="rec-desc">${esc(r.desc)}</div>
           <div class="rec-meta">
             <span class="rec-fecha">${fmtDate(r.fecha)}</span>
-            <span class="rec-method">${esc(M_LABELS[r.metodo] || r.metodo)}</span>
+            <span class="rec-method ${M_CLASSES[r.metodo] || ''}">${esc(M_LABELS[r.metodo] || r.metodo)}</span>
           </div>
         </div>
         <div class="rec-right">
@@ -1125,6 +1225,13 @@ function initApp() {
     'efectivo': 'Efectivo', 'debito': 'Débito',
     'tc-bancolombia': 'TC Bancolombia', 'tc-nu': 'TC Nu', 'tc-lulo': 'TC Lulo'
   };
+  const M_CLASSES = {
+    'efectivo':       'method-efectivo',
+    'debito':         'method-debito',
+    'tc-bancolombia': 'method-bancolombia',
+    'tc-nu':          'method-nu',
+    'tc-lulo':        'method-lulo'
+  };
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g,
@@ -1151,6 +1258,19 @@ function initApp() {
 
 
   /* ═══ Exponer funciones al scope global (necesario para los onclick inline) ═══ */
+  /* ═══ BÚSQUEDA Y FILTROS ═══ */
+  function setSearch(val) {
+    searchQuery = val.toLowerCase().trim();
+    renderHistorial();
+  }
+
+  function setFilter(metodo) {
+    filterMetodo = metodo;
+    document.querySelectorAll('.filter-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.filter === metodo));
+    renderHistorial();
+  }
+
   /* ═══ MARCAR COMO EXPORTADO A EXCEL ═══ */
   async function toggleCheck(id, isChecked) {
     try {
@@ -1170,6 +1290,8 @@ function initApp() {
   window.delRec        = delRec;
   window.switchView    = switchView;
   window.toggleCheck   = toggleCheck;
+  window.setSearch     = setSearch;
+  window.setFilter     = setFilter;
 
 
   /* ═══ SERVICE WORKER ═══ */
