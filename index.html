@@ -352,36 +352,115 @@
       font-weight: 500;
     }
 
-    /* ===== HISTORIAL BALANCE HEADER ===== */
-    .balance-header {
-      background: var(--bg);
-      padding: 52px 20px 24px;
+    /* ===== HISTORIAL HEADER: búsqueda + filtros ===== */
+    .hist-header {
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
+      padding: 52px 16px 14px;
     }
-    .balance-header-row {
+    .search-row {
       display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 12px;
+      align-items: center;
+      gap: 8px;
     }
-    .balance-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--t2);
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
+    .search-box { flex: 1; position: relative; }
+    .search-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--t3);
+      pointer-events: none;
     }
-    /* Signature: número enorme en blanco sobre negro */
-    .balance-num {
-      font-size: 44px;
-      font-weight: 800;
-      letter-spacing: -2px;
-      margin-top: 6px;
-      line-height: 1;
+    #search-input {
+      width: 100%;
+      padding: 11px 14px 11px 36px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 14px;
       color: var(--t1);
-      transition: color 0.3s;
+      font-family: 'Open Sans', sans-serif;
+      outline: none;
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: border-color 0.15s;
     }
-    .balance-num.neg { color: var(--expense); }
+    #search-input:focus { border-color: var(--accent); }
+    #search-input::placeholder { color: var(--t3); }
+    #search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+    /* Botón de filtros */
+    .filter-btn-wrap { position: relative; flex-shrink: 0; }
+    .filter-toggle-btn {
+      width: 42px; height: 42px;
+      border-radius: var(--r-sm);
+      border: 1.5px solid var(--border);
+      background: var(--surface-2);
+      color: var(--t2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .filter-toggle-btn:active { opacity: 0.7; }
+    .filter-toggle-btn.has-filter {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-lt);
+    }
+    /* Dropdown */
+    .filter-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      background: #13131C;
+      border: 1px solid #252535;
+      border-radius: 12px;
+      padding: 6px;
+      min-width: 190px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .filter-dropdown.open { display: flex; }
+    .filter-opt {
+      padding: 10px 12px;
+      border: none;
+      background: transparent;
+      color: var(--t2);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.12s;
+      cursor: pointer;
+    }
+    .filter-opt:hover  { background: var(--surface-2); color: var(--t1); }
+    .filter-opt.active { font-weight: 700; }
+    .filter-opt[data-filter="all"].active            { color: var(--accent); }
+    .filter-opt[data-filter="efectivo"].active       { color: #888896; }
+    .filter-opt[data-filter="debito"].active         { color: #6B9EFF; }
+    .filter-opt[data-filter="tc-bancolombia"].active { color: #F5C518; }
+    .filter-opt[data-filter="tc-nu"].active          { color: #9B6DFF; }
+    .filter-opt[data-filter="tc-lulo"].active        { color: #5AB887; }
+    /* Puntos de color en el dropdown */
+    .method-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .method-dot.all         { background: var(--accent); }
+    .method-dot.efectivo    { background: #888896; }
+    .method-dot.debito      { background: #6B9EFF; }
+    .method-dot.bancolombia { background: #F5C518; }
+    .method-dot.nu          { background: #9B6DFF; }
+    .method-dot.lulo        { background: #5AB887; }
 
     /* Mini summary cards */
     .summary-row {
@@ -411,67 +490,6 @@
       margin-top: 4px;
       letter-spacing: -0.3px;
     }
-
-    /* ===== SEARCH & FILTER ===== */
-    .search-filter {
-      padding: 14px 16px 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .search-box { position: relative; }
-    .search-icon {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--t3);
-      pointer-events: none;
-    }
-    #search-input {
-      width: 100%;
-      padding: 11px 16px 11px 38px;
-      background: var(--surface-2);
-      border: 1.5px solid var(--border);
-      border-radius: var(--r-sm);
-      font-size: 14px;
-      color: var(--t1);
-      font-family: 'Open Sans', sans-serif;
-      outline: none;
-      color-scheme: dark;
-      -webkit-appearance: none;
-      appearance: none;
-      transition: border-color 0.15s;
-    }
-    #search-input:focus { border-color: var(--accent); }
-    #search-input::placeholder { color: var(--t3); }
-    #search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
-    .filter-row {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-      scrollbar-width: none;
-    }
-    .filter-row::-webkit-scrollbar { display: none; }
-    .filter-btn {
-      padding: 7px 14px;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--t2);
-      font-family: 'Open Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-      transition: all 0.15s;
-      flex-shrink: 0;
-    }
-    .filter-btn:active { opacity: 0.7; }
-    .filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
-    .filter-btn[data-filter="tc-bancolombia"].active { color:#F5C518; border-color:#F5C518; background:#1C1400; }
-    .filter-btn[data-filter="tc-nu"].active          { color:#9B6DFF; border-color:#9B6DFF; background:#13092A; }
-    .filter-btn[data-filter="tc-lulo"].active        { color:#5AB887; border-color:#5AB887; background:#071510; }
 
     /* ===== SECTION DIVIDERS ===== */
     .section-head {
@@ -777,13 +795,31 @@
   <!-- ── VISTA: HISTORIAL ── -->
   <section id="view-historial" class="view">
 
-    <div class="balance-header">
-      <div class="balance-header-row">
-        <div>
-          <div class="balance-label">Balance total</div>
-          <div class="balance-num" id="balance">$ 0</div>
+    <!-- Header: buscar + filtrar -->
+    <div class="hist-header">
+      <div class="search-row">
+        <div class="search-box">
+          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="search" id="search-input" placeholder="Buscar registros…" oninput="setSearch(this.value)" autocomplete="off">
         </div>
-        <button class="user-avatar user-avatar--inv" onclick="signOut()" title="Cerrar sesión">
+        <div class="filter-btn-wrap">
+          <button class="filter-toggle-btn" id="filter-toggle" onclick="toggleFilterMenu()" title="Filtrar por método">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+            </svg>
+          </button>
+          <div class="filter-dropdown" id="filter-dropdown">
+            <button class="filter-opt active" data-filter="all"            onclick="setFilter('all')"><span class="method-dot all"></span>Todos</button>
+            <button class="filter-opt"        data-filter="efectivo"       onclick="setFilter('efectivo')"><span class="method-dot efectivo"></span>Efectivo</button>
+            <button class="filter-opt"        data-filter="debito"         onclick="setFilter('debito')"><span class="method-dot debito"></span>Débito</button>
+            <button class="filter-opt"        data-filter="tc-bancolombia" onclick="setFilter('tc-bancolombia')"><span class="method-dot bancolombia"></span>TC Bancolombia</button>
+            <button class="filter-opt"        data-filter="tc-nu"          onclick="setFilter('tc-nu')"><span class="method-dot nu"></span>TC Nu</button>
+            <button class="filter-opt"        data-filter="tc-lulo"        onclick="setFilter('tc-lulo')"><span class="method-dot lulo"></span>TC Lulo</button>
+          </div>
+        </div>
+        <button class="user-avatar" onclick="signOut()" title="Cerrar sesión">
           <span class="user-initial"></span>
         </button>
       </div>
@@ -797,24 +833,6 @@
       <div class="s-card">
         <div class="s-card-label exp">Gastos</div>
         <div class="s-card-amount" id="total-gastos">$ 0</div>
-      </div>
-    </div>
-
-    <!-- Buscador y filtros -->
-    <div class="search-filter">
-      <div class="search-box">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input type="search" id="search-input" placeholder="Buscar en registros…" oninput="setSearch(this.value)" autocomplete="off">
-      </div>
-      <div class="filter-row">
-        <button class="filter-btn active" data-filter="all"            onclick="setFilter('all')">Todos</button>
-        <button class="filter-btn"        data-filter="efectivo"       onclick="setFilter('efectivo')">Efectivo</button>
-        <button class="filter-btn"        data-filter="debito"         onclick="setFilter('debito')">Débito</button>
-        <button class="filter-btn"        data-filter="tc-bancolombia" onclick="setFilter('tc-bancolombia')">TC Bancolombia</button>
-        <button class="filter-btn"        data-filter="tc-nu"          onclick="setFilter('tc-nu')">TC Nu</button>
-        <button class="filter-btn"        data-filter="tc-lulo"        onclick="setFilter('tc-lulo')">TC Lulo</button>
       </div>
     </div>
 
@@ -1129,9 +1147,6 @@ function initApp() {
     const totG = gastos.reduce((s, r)   => s + r.monto, 0);
     const bal  = totI - totG;
 
-    const balEl = document.getElementById('balance');
-    balEl.textContent = fmtCOP(bal);
-    balEl.className   = 'balance-num' + (bal < 0 ? ' neg' : '');
     document.getElementById('total-ingresos').textContent = fmtCOP(totI);
     document.getElementById('total-gastos').textContent   = fmtCOP(totG);
 
@@ -1259,6 +1274,23 @@ function initApp() {
 
   /* ═══ Exponer funciones al scope global (necesario para los onclick inline) ═══ */
   /* ═══ BÚSQUEDA Y FILTROS ═══ */
+  function toggleFilterMenu() {
+    const dd  = document.getElementById('filter-dropdown');
+    const btn = document.getElementById('filter-toggle');
+    dd.classList.toggle('open');
+    btn.classList.toggle('has-filter', filterMetodo !== 'all');
+  }
+
+  /* Cerrar dropdown al tocar fuera */
+  document.addEventListener('click', function(e) {
+    const dd  = document.getElementById('filter-dropdown');
+    const btn = document.getElementById('filter-toggle');
+    if (dd && dd.classList.contains('open') &&
+        !dd.contains(e.target) && !btn.contains(e.target)) {
+      dd.classList.remove('open');
+    }
+  });
+
   function setSearch(val) {
     searchQuery = val.toLowerCase().trim();
     renderHistorial();
@@ -1266,8 +1298,13 @@ function initApp() {
 
   function setFilter(metodo) {
     filterMetodo = metodo;
-    document.querySelectorAll('.filter-btn').forEach(b =>
+    /* Cerrar dropdown y actualizar opciones */
+    document.getElementById('filter-dropdown').classList.remove('open');
+    document.querySelectorAll('.filter-opt').forEach(b =>
       b.classList.toggle('active', b.dataset.filter === metodo));
+    /* Indicador en el botón: lit si hay filtro activo */
+    document.getElementById('filter-toggle')
+      .classList.toggle('has-filter', metodo !== 'all');
     renderHistorial();
   }
 
@@ -1290,7 +1327,8 @@ function initApp() {
   window.delRec        = delRec;
   window.switchView    = switchView;
   window.toggleCheck   = toggleCheck;
-  window.setSearch     = setSearch;
+  window.setSearch          = setSearch;
+  window.toggleFilterMenu   = toggleFilterMenu;
   window.setFilter     = setFilter;
 
 
