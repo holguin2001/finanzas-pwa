@@ -16,6 +16,9 @@
   <link rel="apple-touch-icon" href="./icon-192.png">
   <title>Finanzas</title>
 
+  <!-- Chart.js para gráficas del Dashboard -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
   <!-- Google Fonts: Open Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,6 +46,8 @@
       --income-lt:   #0B201A;
       --expense:     #E8414B;
       --expense-lt:  #26100F;
+      --savings:      #60A5FA;
+      --savings-lt:   #080F1F;
       --r:           14px;
       --r-sm:        10px;
       --sh:          0 2px 12px rgba(0,0,0,0.45);
@@ -249,7 +254,7 @@
     /* ===== SEGMENT (Ingreso / Gasto) ===== */
     .segment {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       background: var(--surface-2);
       border-radius: var(--r-sm);
       padding: 4px;
@@ -279,6 +284,10 @@
     .segment-btn.active.gasto {
       background: var(--expense-lt);
       color: var(--expense);
+    }
+    .segment-btn.active.ahorro {
+      background: var(--savings-lt);
+      color: var(--savings);
     }
 
     /* ===== PILL GROUP (métodos de pago) ===== */
@@ -449,6 +458,7 @@
     .filter-opt[data-filter="tc-bancolombia"].active { color: #F5C518; }
     .filter-opt[data-filter="tc-nu"].active          { color: #9B6DFF; }
     .filter-opt[data-filter="tc-lulo"].active        { color: #5AB887; }
+    .filter-opt[data-filter="ahorro"].active           { color: #60A5FA; }
     /* Puntos de color en el dropdown */
     .method-dot {
       width: 8px; height: 8px;
@@ -461,6 +471,7 @@
     .method-dot.bancolombia { background: #F5C518; }
     .method-dot.nu          { background: #9B6DFF; }
     .method-dot.lulo        { background: #5AB887; }
+    .method-dot.ahorro      { background: #60A5FA; }
 
     /* Mini summary cards */
     .summary-row {
@@ -489,6 +500,82 @@
       color: var(--t1);
       margin-top: 4px;
       letter-spacing: -0.3px;
+    }
+
+    /* ===== DASHBOARD ===== */
+    .dash-totals {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      padding: 14px 16px 4px;
+    }
+    .dash-total {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .dt-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .dash-total.inc .dt-label { color: var(--income); }
+    .dash-total.exp .dt-label { color: var(--expense); }
+    .dash-total.sav .dt-label { color: var(--savings); }
+    .dt-amount {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--t1);
+      letter-spacing: -0.3px;
+      margin-top: 2px;
+    }
+    .dash-card {
+      margin: 12px 16px 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 16px;
+    }
+    .dash-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--t2);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 14px;
+    }
+    .chart-wrap { position: relative; height: 200px; }
+    .chart-donut-wrap { height: 220px; max-width: 250px; margin: 0 auto; }
+    .dash-drive { padding: 14px 16px 8px; }
+    .drive-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      color: var(--t2);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .drive-link:hover  { border-color: var(--accent); color: var(--accent); }
+    .drive-link:active { opacity: 0.7; }
+    .dash-empty {
+      text-align: center;
+      padding: 32px 0;
+      font-size: 13px;
+      color: var(--t3);
     }
 
     /* ===== SECTION DIVIDERS ===== */
@@ -532,6 +619,7 @@
     }
     .rec-dot.ingreso { background: var(--income); }
     .rec-dot.gasto   { background: var(--expense); }
+    .rec-dot.ahorro  { background: var(--savings); }
     .rec-info { flex: 1; min-width: 0; }
     .rec-desc {
       font-size: 14px;
@@ -562,6 +650,7 @@
     .method-bancolombia { color: #F5C518; background: #1C1400; }
     .method-nu          { color: #9B6DFF; background: #13092A; }
     .method-lulo        { color: #5AB887; background: #071510; }
+    .method-ahorro { color: #60A5FA; background: #080F1F; }
     .rec-right {
       display: flex;
       flex-direction: column;
@@ -572,6 +661,7 @@
     .rec-monto { font-size: 14px; font-weight: 700; letter-spacing: -0.3px; }
     .rec-monto.ingreso { color: var(--income); }
     .rec-monto.gasto   { color: var(--expense); }
+    .rec-monto.ahorro  { color: var(--savings); }
     .rec-actions { display: flex; gap: 4px; }
     .icon-btn {
       width: 30px; height: 30px;
@@ -640,7 +730,7 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      padding: 11px 24px;
+      padding: 10px 16px;
       border-radius: 100px;
       border: none;
       background: transparent;
@@ -726,7 +816,57 @@
 <div id="app-wrapper" style="display:none">
 
   <!-- ── VISTA: FORMULARIO ── -->
-  <section id="view-form" class="view active">
+  <!-- ══════════════════════════════════
+     VIEW: DASHBOARD
+     ══════════════════════════════════ -->
+<section id="view-dashboard" class="view">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub">Resumen de tus finanzas</div>
+    </div>
+    <button class="user-avatar" onclick="signOut()" title="Cerrar sesión">
+      <span class="user-initial"></span>
+    </button>
+  </div>
+
+  <!-- Totales -->
+  <div class="dash-totals">
+    <div class="dash-total inc"><span class="dt-label">Ingresos</span><span class="dt-amount" id="dt-ingresos">$ 0</span></div>
+    <div class="dash-total exp"><span class="dt-label">Gastos</span><span class="dt-amount" id="dt-gastos">$ 0</span></div>
+    <div class="dash-total sav"><span class="dt-label">Ahorros</span><span class="dt-amount" id="dt-ahorros">$ 0</span></div>
+  </div>
+
+  <!-- Gráfica mensual -->
+  <div class="dash-card">
+    <div class="dash-card-title">Últimos 6 meses</div>
+    <div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>
+  </div>
+
+  <!-- Distribución general -->
+  <div class="dash-card">
+    <div class="dash-card-title">Distribución general</div>
+    <div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas></div>
+  </div>
+
+  <!-- Acceso directo al Excel -->
+  <div class="dash-drive">
+    <a id="drive-btn" href="#" target="_blank" rel="noopener noreferrer" class="drive-link">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Abrir Excel en Google Drive
+    </a>
+  </div>
+
+</section>
+
+
+<section id="view-form" class="view active">
     <div class="page-header">
       <div>
         <div class="page-title" id="form-title">Nuevo registro</div>
@@ -764,6 +904,14 @@
               <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
             </svg>
             Ingreso
+          </button>
+          <button class="segment-btn ahorro" data-tipo="ahorro" onclick="selectTipo('ahorro')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="22" x2="21" y2="22"/>
+              <rect x="5" y="11" width="2" height="8"/><rect x="11" y="9" width="2" height="10"/><rect x="17" y="13" width="2" height="6"/>
+              <polygon points="12 2 2 7 22 7"/>
+            </svg>
+            Ahorro
           </button>
           <button class="segment-btn gasto" data-tipo="gasto" onclick="selectTipo('gasto')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -817,6 +965,7 @@
             <button class="filter-opt"        data-filter="tc-bancolombia" onclick="setFilter('tc-bancolombia')"><span class="method-dot bancolombia"></span>TC Bancolombia</button>
             <button class="filter-opt"        data-filter="tc-nu"          onclick="setFilter('tc-nu')"><span class="method-dot nu"></span>TC Nu</button>
             <button class="filter-opt"        data-filter="tc-lulo"        onclick="setFilter('tc-lulo')"><span class="method-dot lulo"></span>TC Lulo</button>
+            <button class="filter-opt"        data-filter="ahorro"         onclick="setFilter('ahorro')"><span class="method-dot ahorro"></span>Ahorros</button>
           </div>
         </div>
         <button class="user-avatar" onclick="signOut()" title="Cerrar sesión">
@@ -833,6 +982,10 @@
       <div class="s-card">
         <div class="s-card-label exp">Gastos</div>
         <div class="s-card-amount" id="total-gastos">$ 0</div>
+      </div>
+      <div class="s-card" style="grid-column:1/-1">
+        <div class="s-card-label" style="color:var(--savings)">Ahorros</div>
+        <div class="s-card-amount" id="total-ahorros">$ 0</div>
       </div>
     </div>
 
@@ -852,11 +1005,26 @@
       <div class="rec-list" id="lista-gastos"></div>
     </div>
 
+    <div>
+      <div class="section-head">
+        <span class="section-lbl" style="color:var(--savings)">Ahorros</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="rec-list" id="lista-ahorros"></div>
+    </div>
+
   </section>
 
 
   <!-- ── BOTTOM NAV ── -->
   <nav class="bottom-nav">
+    <button class="nav-btn" id="nav-dashboard" onclick="switchView('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+      </svg>
+      Stats
+    </button>
     <button class="nav-btn active" id="nav-form" onclick="switchView('form')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
@@ -929,12 +1097,17 @@ function initApp() {
 
   /* Persistencia offline: Firestore cachea datos localmente en IndexedDB.
      La app funciona sin conexión después de la primera carga con sesión.  */
+  
+  const DRIVE_URL = 'https://docs.google.com/spreadsheets/d/17-lQU5a9xuETy28M-8DcLMQP7jCMQKPG/edit?usp=sharing&ouid=116979895216287701839&rtpof=true&sd=true'; /* 🔗 Reemplaza con tu link */
+
   db.enablePersistence({ synchronizeTabs: true })
     .catch(err => console.warn('Persistencia offline:', err.code));
 
 
   /* ═══ ESTADO ═══ */
   let records    = [];
+  let chartMonthly = null;
+  let chartDist    = null;
   let currentUser = null;
   let unsub       = null;   // cleanup del listener de Firestore
   let selTipo     = null;
@@ -1014,6 +1187,7 @@ function initApp() {
             };
           });
           if (activeView === 'historial') renderHistorial();
+          if (activeView === 'dashboard') renderDashboard();
         },
         err => console.error('Firestore listener:', err)
       );
@@ -1147,11 +1321,18 @@ function initApp() {
     const totG = gastos.reduce((s, r)   => s + r.monto, 0);
     const bal  = totI - totG;
 
+    const ahorros = pool
+      .filter(r => r.tipo === 'ahorro')
+      .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.ts - a.ts);
+    const totA = ahorros.reduce((s,r) => s + r.monto, 0);
+
     document.getElementById('total-ingresos').textContent = fmtCOP(totI);
     document.getElementById('total-gastos').textContent   = fmtCOP(totG);
+    document.getElementById('total-ahorros').textContent  = fmtCOP(totA);
 
     renderList('lista-ingresos', ingresos, 'ingreso');
     renderList('lista-gastos',   gastos,   'gasto');
+    renderList('lista-ahorros',  ahorros,  'ahorro');
   }
 
   function renderList(cId, list, tipo) {
@@ -1209,6 +1390,7 @@ function initApp() {
     document.getElementById('view-' + v).classList.add('active');
     document.getElementById('nav-'  + v).classList.add('active');
     if (v === 'historial') renderHistorial();
+    if (v === 'dashboard') renderDashboard();
   }
 
 
@@ -1238,14 +1420,16 @@ function initApp() {
 
   const M_LABELS = {
     'efectivo': 'Efectivo', 'debito': 'Débito',
-    'tc-bancolombia': 'TC Bancolombia', 'tc-nu': 'TC Nu', 'tc-lulo': 'TC Lulo'
+    'tc-bancolombia': 'TC Bancolombia', 'tc-nu': 'TC Nu', 'tc-lulo': 'TC Lulo',
+    'ahorro': 'Ahorro'
   };
   const M_CLASSES = {
     'efectivo':       'method-efectivo',
     'debito':         'method-debito',
     'tc-bancolombia': 'method-bancolombia',
     'tc-nu':          'method-nu',
-    'tc-lulo':        'method-lulo'
+    'tc-lulo':        'method-lulo',
+    'ahorro':         'method-ahorro'
   };
 
   function esc(s) {
@@ -1273,6 +1457,88 @@ function initApp() {
 
 
   /* ═══ Exponer funciones al scope global (necesario para los onclick inline) ═══ */
+  /* ═══ DASHBOARD ═══ */
+  function renderDashboard() {
+    if (typeof Chart === 'undefined') return;
+
+    /* Configuración global de Chart.js */
+    Chart.defaults.color          = '#7A7C8E';
+    Chart.defaults.borderColor    = '#1A1A24';
+    Chart.defaults.font.family    = "'Open Sans', sans-serif";
+
+    /* Totales generales */
+    const totI = records.filter(r=>r.tipo==='ingreso').reduce((s,r)=>s+r.monto,0);
+    const totG = records.filter(r=>r.tipo==='gasto')  .reduce((s,r)=>s+r.monto,0);
+    const totA = records.filter(r=>r.tipo==='ahorro') .reduce((s,r)=>s+r.monto,0);
+
+    document.getElementById('dt-ingresos').textContent = fmtCOP(totI);
+    document.getElementById('dt-gastos').textContent   = fmtCOP(totG);
+    document.getElementById('dt-ahorros').textContent  = fmtCOP(totA);
+
+    /* Link de Drive */
+    document.getElementById('drive-btn').href = DRIVE_URL;
+
+    /* Últimos 6 meses */
+    const months = [];
+    const now = new Date();
+    for (let i=5; i>=0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+      months.push({
+        key:   `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,
+        label:  d.toLocaleDateString('es-CO',{month:'short',year:'2-digit'})
+      });
+    }
+    const mI = months.map(m=>records.filter(r=>r.tipo==='ingreso'&&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
+    const mG = months.map(m=>records.filter(r=>r.tipo==='gasto'  &&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
+    const mA = months.map(m=>records.filter(r=>r.tipo==='ahorro' &&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
+
+    const ctxM = document.getElementById('chart-monthly').getContext('2d');
+    if (chartMonthly) chartMonthly.destroy();
+    chartMonthly = new Chart(ctxM, {
+      type: 'bar',
+      data: {
+        labels: months.map(m=>m.label),
+        datasets: [
+          { label:'Ingresos', data:mI, backgroundColor:'#3ECF8E30', borderColor:'#3ECF8E', borderWidth:1.5, borderRadius:4 },
+          { label:'Gastos',   data:mG, backgroundColor:'#E8414B30', borderColor:'#E8414B', borderWidth:1.5, borderRadius:4 },
+          { label:'Ahorros',  data:mA, backgroundColor:'#60A5FA30', borderColor:'#60A5FA', borderWidth:1.5, borderRadius:4 }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ labels:{ color:'#7A7C8E', font:{size:11}, boxWidth:12, padding:12 } } },
+        scales:{
+          x:{ ticks:{color:'#7A7C8E',font:{size:10}}, grid:{color:'#16161E'} },
+          y:{ ticks:{color:'#7A7C8E',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'#16161E'} }
+        }
+      }
+    });
+
+    /* Dona distribución */
+    const ctxD = document.getElementById('chart-dist').getContext('2d');
+    if (chartDist) chartDist.destroy();
+    if (totI+totG+totA === 0) {
+      ctxD.clearRect(0,0,ctxD.canvas.width,ctxD.canvas.height);
+      return;
+    }
+    chartDist = new Chart(ctxD, {
+      type: 'doughnut',
+      data: {
+        labels: ['Ingresos','Gastos','Ahorros'],
+        datasets:[{
+          data:[totI,totG,totA],
+          backgroundColor:['#3ECF8E25','#E8414B25','#60A5FA25'],
+          borderColor:['#3ECF8E','#E8414B','#60A5FA'],
+          borderWidth:2, hoverOffset:6
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false, cutout:'68%',
+        plugins:{ legend:{ position:'bottom', labels:{ color:'#7A7C8E', font:{size:11}, padding:14, boxWidth:12 } } }
+      }
+    });
+  }
+
   /* ═══ BÚSQUEDA Y FILTROS ═══ */
   function toggleFilterMenu() {
     const dd  = document.getElementById('filter-dropdown');
@@ -1328,6 +1594,7 @@ function initApp() {
   window.switchView    = switchView;
   window.toggleCheck   = toggleCheck;
   window.setSearch          = setSearch;
+  window.renderDashboard    = renderDashboard;
   window.toggleFilterMenu   = toggleFilterMenu;
   window.setFilter     = setFilter;
 

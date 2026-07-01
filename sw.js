@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker v2 ─── */
 /* Versión 2: incluye el SDK de Firebase para uso offline */
-const CACHE  = 'finanzas-v7';
+const CACHE  = 'finanzas-v8';
 const ASSETS = [
   './',
   './index.html',
@@ -13,7 +13,8 @@ const ASSETS = [
   /* SDK de Firebase (versión fija = cacheable de forma segura) */
   'https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js',
-  'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js'
+  'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'
 ];
 
 /* Caché todo al instalar */
