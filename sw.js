@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker v2 ─── */
 /* Versión 2: incluye el SDK de Firebase para uso offline */
-const CACHE  = 'finanzas-v8';
+const CACHE  = 'finanzas-v9';
 const ASSETS = [
   './',
   './index.html',
