@@ -936,6 +936,160 @@
     .filter-btn[data-filter="tc-nu"].active          { background:rgba(167,139,250,0.07); border-color:rgba(167,139,250,0.35); }
     .filter-btn[data-filter="tc-lulo"].active        { background:rgba(90,184,135,0.07); border-color:rgba(90,184,135,0.35); }
     .rec-card.exportado { opacity: 0.35; }
+  
+    /* ── Avatar menu ── */
+    .avatar-menu {
+      position: fixed;
+      background: rgba(8,4,0,0.98);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(251,146,60,0.15);
+      border-radius: 12px;
+      padding: 6px;
+      min-width: 180px;
+      z-index: 1500;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+    }
+    .avatar-menu.open { display: flex; }
+    .avatar-menu button {
+      padding: 11px 14px;
+      border: none;
+      background: transparent;
+      color: var(--t1);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .avatar-menu button:hover { background: rgba(251,146,60,0.08); }
+
+    /* ── Modal bottom sheet ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 800;
+      display: none;
+      align-items: flex-end;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet {
+      width: 100%;
+      max-height: 88vh;
+      background: #0A0500;
+      border: 1px solid rgba(251,146,60,0.12);
+      border-radius: 20px 20px 0 0;
+      padding: 0 0 env(safe-area-inset-bottom,0);
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(251,146,60,0.08);
+      position: sticky;
+      top: 0;
+      background: #0A0500;
+      z-index: 1;
+    }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--t1);
+      letter-spacing: -0.2px;
+    }
+    .modal-close {
+      width: 32px; height: 32px;
+      border: none;
+      background: rgba(251,146,60,0.08);
+      color: var(--t2);
+      border-radius: 50%;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .modal-body { padding: 16px 20px 24px; }
+
+    /* ── Method list ── */
+    .method-list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(251,146,60,0.06);
+    }
+    .method-list-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .method-list-info { flex: 1; min-width: 0; }
+    .method-list-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--t1);
+      display: block;
+    }
+    .method-list-tipo {
+      font-size: 12px;
+      color: var(--t2);
+    }
+    .method-list-actions { display: flex; gap: 4px; }
+
+    /* ── Tipo buttons ── */
+    .tipo-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .tipo-btn {
+      padding: 10px 8px;
+      border: 1.5px solid var(--border);
+      background: rgba(14,7,1,0.80);
+      border-radius: var(--r-sm);
+      color: var(--t2);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .tipo-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-lt);
+    }
+
+    /* ── Color palette ── */
+    .color-palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .color-swatch {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s;
+    }
+    .color-swatch.selected {
+      border-color: white;
+      transform: scale(1.15);
+    }
+    .color-swatch:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -1013,7 +1167,7 @@
             <line x1="1" y1="1" x2="23" y2="23"/>
           </svg>
         </button>
-        <button class="user-avatar" onclick="signOut()" title="Cerrar sesión">
+        <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
           <span class="user-initial"></span>
         </button>
   </div>
@@ -1059,7 +1213,7 @@
         <div class="page-title" id="form-title">Nuevo registro</div>
         <div class="page-sub"   id="form-sub">Anota rápido antes de olvidar</div>
       </div>
-      <button class="user-avatar" onclick="signOut()" title="Cerrar sesión">
+      <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
         <span class="user-initial"></span>
       </button>
     </div>
@@ -1111,13 +1265,9 @@
 
       <div class="field">
         <label>Método de pago</label>
-        <div class="pill-group">
-          <button class="pill-btn" data-metodo="efectivo"       onclick="selectMetodo('efectivo')">Efectivo</button>
-          <button class="pill-btn" data-metodo="debito"         onclick="selectMetodo('debito')">Débito</button>
-          <button class="pill-btn" data-metodo="tc-bancolombia" onclick="selectMetodo('tc-bancolombia')">TC Bancolombia</button>
-          <button class="pill-btn" data-metodo="tc-nu"          onclick="selectMetodo('tc-nu')">TC Nu</button>
-          <button class="pill-btn" data-metodo="tc-lulo"        onclick="selectMetodo('tc-lulo')">TC Lulo</button>
-        </div>
+        <div class="pill-group" id="metodo-pills">
+        <!-- generado dinámicamente -->
+      </div>
       </div>
 
       <button class="btn-primary" id="guardar-btn" onclick="guardar()">Guardar registro</button>
@@ -1146,16 +1296,10 @@
             </svg>
           </button>
           <div class="filter-dropdown" id="filter-dropdown">
-            <button class="filter-opt active" data-filter="all"            onclick="setFilter('all')"><span class="method-dot all"></span>Todos</button>
-            <button class="filter-opt"        data-filter="efectivo"       onclick="setFilter('efectivo')"><span class="method-dot efectivo"></span>Efectivo</button>
-            <button class="filter-opt"        data-filter="debito"         onclick="setFilter('debito')"><span class="method-dot debito"></span>Débito</button>
-            <button class="filter-opt"        data-filter="tc-bancolombia" onclick="setFilter('tc-bancolombia')"><span class="method-dot bancolombia"></span>TC Bancolombia</button>
-            <button class="filter-opt"        data-filter="tc-nu"          onclick="setFilter('tc-nu')"><span class="method-dot nu"></span>TC Nu</button>
-            <button class="filter-opt"        data-filter="tc-lulo"        onclick="setFilter('tc-lulo')"><span class="method-dot lulo"></span>TC Lulo</button>
-            <button class="filter-opt"        data-filter="ahorro"         onclick="setFilter('ahorro')"><span class="method-dot ahorro"></span>Ahorros</button>
+            <div id="filter-opts-container"></div>
           </div>
         </div>
-        <button class="user-avatar" onclick="signOut()" title="Cerrar sesión">
+        <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
           <span class="user-initial"></span>
         </button>
       </div>
@@ -1241,6 +1385,56 @@
   </nav>
 
 </div><!-- /app-wrapper -->
+
+<!-- Avatar dropdown (global) -->
+<div id="avatar-menu" class="avatar-menu">
+  <button onclick="openMetodosModal()">💳 Métodos de pago</button>
+  <button onclick="doSignOut()">→ Cerrar sesión</button>
+</div>
+
+<!-- Modal: Métodos de pago -->
+<div id="metodos-modal" class="modal-overlay" onclick="closeMetodosIfOutside(event)">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <span class="modal-title" id="metodos-modal-title">Métodos de pago</span>
+      <button class="modal-close" onclick="closeMetodosModal()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Lista de métodos -->
+      <div id="metodos-list-view">
+        <div id="metodos-list"></div>
+        <button class="btn-primary" onclick="openAddMetodo()" style="margin-top:16px">
+          + Agregar método
+        </button>
+      </div>
+
+      <!-- Formulario agregar/editar -->
+      <div id="metodo-form-view" style="display:none">
+        <div class="field" style="margin-bottom:14px">
+          <label>Nombre</label>
+          <input type="text" id="metodo-nombre" placeholder="Ej: TC Davivienda">
+        </div>
+        <div class="field" style="margin-bottom:14px">
+          <label>Tipo</label>
+          <div class="tipo-btns">
+            <button class="tipo-btn" data-tipo="credito"  onclick="selectMTipo('credito')">💳 Crédito</button>
+            <button class="tipo-btn" data-tipo="debito"   onclick="selectMTipo('debito')">🏧 Débito</button>
+            <button class="tipo-btn" data-tipo="efectivo" onclick="selectMTipo('efectivo')">💵 Efectivo</button>
+            <button class="tipo-btn" data-tipo="otro"     onclick="selectMTipo('otro')">📌 Otro</button>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:20px">
+          <label>Color</label>
+          <div class="color-palette" id="color-palette"></div>
+        </div>
+        <button class="btn-primary" id="metodo-save-btn" onclick="saveMetodoForm()">Agregar</button>
+        <button class="btn-ghost"   onclick="showMetodosList()" style="margin-top:8px">Cancelar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- TOAST (fuera del wrapper para que siempre sea visible) -->
 <div class="toast" id="toast"></div>
@@ -1331,10 +1525,7 @@ function initApp() {
       });
   }
 
-  function signOut() {
-    if (!confirm('¿Cerrar sesión en este dispositivo?')) return;
-    auth.signOut();
-  }
+  /* signOut → ver doSignOut en métodos de pago */
 
   /* Exponer al scope global para los onclick del HTML */
   window.signIn  = signIn;
@@ -1376,6 +1567,8 @@ function initApp() {
       resetForm();
       switchView('form');
       setupListener(user.uid);
+      setupMetodosListener(user.uid);
+      seedDefaultMetodos(user.uid);
 
     } else {
       currentUser = null;
@@ -1519,8 +1712,7 @@ function initApp() {
   function syncBtns() {
     document.querySelectorAll('.segment-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.tipo === selTipo));
-    document.querySelectorAll('.pill-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.metodo === selMetod));
+    renderMetodoPills(); /* pills dinámicos */
   }
 
   function selectTipo(v)   { selTipo  = v; syncBtns(); }
@@ -1580,7 +1772,7 @@ function initApp() {
           <div class="rec-desc">${esc(r.desc)}</div>
           <div class="rec-meta">
             <span class="rec-fecha">${fmtDate(r.fecha)}</span>
-            <span class="rec-method ${M_CLASSES[r.metodo] || ''}">${esc(M_LABELS[r.metodo] || r.metodo)}</span>
+            <span class="rec-method" style="color:${getMetodoColor(r.metodo)};background:${hexRgba(getMetodoColor(r.metodo),0.08)}">${esc(getMetodoNombre(r.metodo))}</span>
           </div>
         </div>
         <div class="rec-right">
@@ -1845,7 +2037,98 @@ function initApp() {
     document.getElementById('drive-btn').href = DRIVE_URL;
   }
 
-    /* ═══ BÚSQUEDA Y FILTROS ═══ */
+  
+  function renderDashboard() {
+    if (typeof Chart === 'undefined') return;
+    if (dashMode === 'sheets') { renderDashboardSheets(); return; }
+
+    /* Restaurar DOM y destruir charts anteriores */
+    if (chartMonthly) { chartMonthly.destroy(); chartMonthly = null; }
+    if (chartDist)    { chartDist.destroy();    chartDist    = null; }
+    restoreDashboardCards();
+
+    /* Chart.js defaults */
+    Chart.defaults.color       = '#A08068';
+    Chart.defaults.borderColor = 'rgba(251,146,60,0.06)';
+    Chart.defaults.font.family = "'Open Sans', sans-serif";
+
+    /* Totales generales */
+    const totI = records.filter(r=>r.tipo==='ingreso').reduce((s,r)=>s+r.monto,0);
+    const totG = records.filter(r=>r.tipo==='gasto')  .reduce((s,r)=>s+r.monto,0);
+    const totA = records.filter(r=>r.tipo==='ahorro') .reduce((s,r)=>s+r.monto,0);
+
+    document.getElementById('dt-ingresos').textContent = fmtCOP(totI);
+    document.getElementById('dt-gastos').textContent   = fmtCOP(totG);
+    document.getElementById('dt-ahorros').textContent  = fmtCOP(totA);
+    document.getElementById('drive-btn').href          = DRIVE_URL;
+
+    /* Últimos 6 meses */
+    const months = [];
+    const now = new Date();
+    for (let i=5; i>=0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+      months.push({
+        key:   `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,
+        label:  d.toLocaleDateString('es-CO',{month:'short',year:'2-digit'})
+      });
+    }
+    const mI = months.map(m=>records.filter(r=>r.tipo==='ingreso'&&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
+    const mG = months.map(m=>records.filter(r=>r.tipo==='gasto'  &&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
+    const mA = months.map(m=>records.filter(r=>r.tipo==='ahorro' &&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
+
+    /* Gradiente de área */
+    function mkGrad(c,hex,a1,a2){
+      const h=hex.replace('#','');
+      const [r,g,b]=[h.slice(0,2),h.slice(2,4),h.slice(4,6)].map(x=>parseInt(x,16));
+      const gd=c.createLinearGradient(0,0,0,190);
+      gd.addColorStop(0,`rgba(${r},${g},${b},${a1})`);
+      gd.addColorStop(1,`rgba(${r},${g},${b},${a2})`);
+      return gd;
+    }
+
+    const ctxM = document.getElementById('chart-monthly').getContext('2d');
+    chartMonthly = new Chart(ctxM, {
+      type: 'line',
+      data: {
+        labels: months.map(m=>m.label),
+        datasets: [
+          { label:'Ingresos', data:mI, borderColor:'#4ADE80', backgroundColor:mkGrad(ctxM,'#4ADE80',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#4ADE80', pointBorderColor:'transparent' },
+          { label:'Gastos',   data:mG, borderColor:'#F87171', backgroundColor:mkGrad(ctxM,'#F87171',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#F87171', pointBorderColor:'transparent' },
+          { label:'Ahorros',  data:mA, borderColor:'#60A5FA', backgroundColor:mkGrad(ctxM,'#60A5FA',0.18,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#60A5FA', pointBorderColor:'transparent' }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ labels:{ color:'#A08068', font:{size:11}, boxWidth:12, padding:12 } } },
+        scales:{
+          x:{ ticks:{color:'#A08068',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
+          y:{ ticks:{color:'#A08068',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
+        }
+      }
+    });
+
+    /* Dona distribución */
+    const ctxD = document.getElementById('chart-dist').getContext('2d');
+    if (totI+totG+totA === 0) { ctxD.clearRect(0,0,ctxD.canvas.width,ctxD.canvas.height); return; }
+    chartDist = new Chart(ctxD, {
+      type: 'doughnut',
+      data: {
+        labels: ['Ingresos','Gastos','Ahorros'],
+        datasets:[{
+          data:[totI,totG,totA],
+          backgroundColor:['rgba(74,222,128,0.18)','rgba(248,113,113,0.18)','rgba(96,165,250,0.18)'],
+          borderColor:['#4ADE80','#F87171','#60A5FA'],
+          borderWidth:2, hoverOffset:6
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false, cutout:'68%',
+        plugins:{ legend:{ position:'bottom', labels:{ color:'#A08068', font:{size:11}, padding:14, boxWidth:12 } } }
+      }
+    });
+  }
+
+  /* ═══ BÚSQUEDA Y FILTROS ═══ */
   function toggleFilterMenu() {
     const dd  = document.getElementById('filter-dropdown');
     const btn = document.getElementById('filter-toggle');
@@ -1868,6 +2151,247 @@ function initApp() {
       dd.classList.remove('open');
     }
   });
+
+
+  /* ═══════════════════════════════════════════════════════
+     MÉTODOS DE PAGO DINÁMICOS
+     ═══════════════════════════════════════════════════════ */
+  let metodos      = [];
+  let unsubMetodos = null;
+  let metodoEditId = null;
+  let selMTipo     = 'efectivo';
+  let selMColor    = '#FB923C';
+
+  const PRESET_COLORS = [
+    '#FB923C','#F5C518','#4ADE80','#60A5FA',
+    '#A78BFA','#F87171','#F472B6','#34D399',
+    '#38BDF8','#FBBF24','#5AB887','#E879F9'
+  ];
+
+  /* Listener de métodos en Firestore */
+  function setupMetodosListener(uid) {
+    if (unsubMetodos) unsubMetodos();
+    unsubMetodos = db.collection('users').doc(uid).collection('metodos')
+      .onSnapshot(snap => {
+        metodos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderMetodoPills();
+        renderFilterOpts();
+        if (document.getElementById('metodos-list-view')?.style.display !== 'none') {
+          renderMetodosList();
+        }
+        if (activeView === 'historial') renderHistorial();
+      }, err => console.error('metodos listener:', err));
+  }
+
+  /* Seed métodos por defecto si la colección está vacía */
+  async function seedDefaultMetodos(uid) {
+    try {
+      const snap = await db.collection('users').doc(uid).collection('metodos').limit(1).get();
+      if (!snap.empty) return;
+      const defaults = [
+        { id:'efectivo',       nombre:'Efectivo',       tipo:'efectivo', color:'#8899A0' },
+        { id:'debito',         nombre:'Débito',         tipo:'debito',   color:'#6B9EFF' },
+        { id:'tc-bancolombia', nombre:'TC Bancolombia', tipo:'credito',  color:'#F5C518' },
+        { id:'tc-nu',          nombre:'TC Nu',          tipo:'credito',  color:'#A78BFA' },
+        { id:'tc-lulo',        nombre:'TC Lulo',        tipo:'credito',  color:'#5AB887' },
+      ];
+      const batch = db.batch();
+      defaults.forEach(({ id, ...data }) =>
+        batch.set(db.collection('users').doc(uid).collection('metodos').doc(id), data));
+      await batch.commit();
+    } catch(e) { console.warn('seedDefaultMetodos:', e); }
+  }
+
+  /* Helpers */
+  function getMetodoNombre(id) {
+    return metodos.find(m => m.id === id)?.nombre || id;
+  }
+  function getMetodoColor(id) {
+    const m = metodos.find(m => m.id === id);
+    if (m) return m.color;
+    const fb = {efectivo:'#8899A0',debito:'#6B9EFF','tc-bancolombia':'#F5C518','tc-nu':'#A78BFA','tc-lulo':'#5AB887'};
+    return fb[id] || '#8899A0';
+  }
+  function hexRgba(hex, a) {
+    const h = hex.replace('#','');
+    const [r,g,b] = [h.slice(0,2),h.slice(2,4),h.slice(4,6)].map(x=>parseInt(x,16));
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  function tipoLabel(t) {
+    return {'credito':'💳 Crédito','debito':'🏧 Débito','efectivo':'💵 Efectivo','otro':'📌 Otro'}[t] || t;
+  }
+
+  /* Render pills en formulario */
+  function renderMetodoPills() {
+    const c = document.getElementById('metodo-pills');
+    if (!c) return;
+    c.innerHTML = metodos.map(m => {
+      const active = selMetod === m.id;
+      const style  = active
+        ? `color:${m.color};border-color:${m.color};background:${hexRgba(m.color,0.10)};`
+        : '';
+      return `<button class="pill-btn${active?' active':''}" data-metodo="${esc(m.id)}"
+                onclick="selectMetodo('${esc(m.id)}')" style="${style}">${esc(m.nombre)}</button>`;
+    }).join('');
+  }
+
+  /* Render opciones de filtro en historial */
+  function renderFilterOpts() {
+    const c = document.getElementById('filter-opts-container');
+    if (!c) return;
+    c.innerHTML =
+      `<button class="filter-opt${filterMetodo==='all'?' active':''}" data-filter="all" onclick="setFilter('all')">
+        <span class="method-dot" style="background:var(--accent)"></span>Todos
+       </button>` +
+      metodos.map(m =>
+        `<button class="filter-opt${filterMetodo===m.id?' active':''}" data-filter="${esc(m.id)}"
+          onclick="setFilter('${esc(m.id)}')" style="${filterMetodo===m.id?`color:${m.color};`:''}">
+          <span class="method-dot" style="background:${m.color}"></span>${esc(m.nombre)}
+         </button>`
+      ).join('') +
+      `<button class="filter-opt${filterMetodo==='ahorro'?' active':''}" data-filter="ahorro" onclick="setFilter('ahorro')">
+        <span class="method-dot ahorro"></span>Ahorros
+       </button>`;
+  }
+
+  /* Avatar dropdown */
+  function toggleAvatarMenu(event) {
+    const menu = document.getElementById('avatar-menu');
+    if (menu.classList.contains('open')) { menu.classList.remove('open'); return; }
+    const rect = event.currentTarget.getBoundingClientRect();
+    menu.style.top   = (rect.bottom + 8) + 'px';
+    menu.style.right = (window.innerWidth - rect.right) + 'px';
+    menu.classList.add('open');
+  }
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('avatar-menu');
+    if (menu?.classList.contains('open') &&
+        !e.target.closest('.user-avatar') &&
+        !e.target.closest('#avatar-menu')) {
+      menu.classList.remove('open');
+    }
+  });
+
+  function doSignOut() {
+    document.getElementById('avatar-menu').classList.remove('open');
+    if (!confirm('¿Cerrar sesión en este dispositivo?')) return;
+    auth.signOut();
+  }
+
+  /* Modal de métodos */
+  function openMetodosModal() {
+    document.getElementById('avatar-menu').classList.remove('open');
+    showMetodosList();
+    document.getElementById('metodos-modal').classList.add('open');
+  }
+  function closeMetodosModal() {
+    document.getElementById('metodos-modal').classList.remove('open');
+  }
+  function closeMetodosIfOutside(e) {
+    if (e.target.id === 'metodos-modal') closeMetodosModal();
+  }
+
+  function showMetodosList() {
+    document.getElementById('metodos-list-view').style.display = 'block';
+    document.getElementById('metodo-form-view').style.display  = 'none';
+    document.getElementById('metodos-modal-title').textContent = 'Métodos de pago';
+    renderMetodosList();
+  }
+
+  function renderMetodosList() {
+    const el = document.getElementById('metodos-list');
+    if (!el) return;
+    if (!metodos.length) {
+      el.innerHTML = '<p style="color:var(--t2);font-size:13px;padding:8px 0">Sin métodos. Agrega el primero.</p>';
+      return;
+    }
+    el.innerHTML = metodos.map(m => `
+      <div class="method-list-item">
+        <div class="method-list-dot" style="background:${m.color}"></div>
+        <div class="method-list-info">
+          <span class="method-list-name">${esc(m.nombre)}</span>
+          <span class="method-list-tipo">${tipoLabel(m.tipo)}</span>
+        </div>
+        <div class="method-list-actions">
+          <button class="icon-btn edit-btn" onclick="openEditMetodo('${esc(m.id)}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+          <button class="icon-btn del-btn" onclick="confirmDelMetodo('${esc(m.id)}','${esc(m.nombre)}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+              <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+            </svg>
+          </button>
+        </div>
+      </div>`).join('');
+  }
+
+  function openAddMetodo() {
+    metodoEditId = null; selMTipo = 'efectivo'; selMColor = '#FB923C';
+    document.getElementById('metodo-nombre').value = '';
+    document.getElementById('metodos-modal-title').textContent = 'Nuevo método';
+    document.getElementById('metodo-save-btn').textContent = 'Agregar';
+    syncMTipoBtns(); renderColorPalette();
+    document.getElementById('metodos-list-view').style.display = 'none';
+    document.getElementById('metodo-form-view').style.display  = 'block';
+  }
+
+  function openEditMetodo(id) {
+    const m = metodos.find(m => m.id === id);
+    if (!m) return;
+    metodoEditId = id; selMTipo = m.tipo || 'efectivo'; selMColor = m.color || '#FB923C';
+    document.getElementById('metodo-nombre').value = m.nombre;
+    document.getElementById('metodos-modal-title').textContent = 'Editar método';
+    document.getElementById('metodo-save-btn').textContent = 'Actualizar';
+    syncMTipoBtns(); renderColorPalette();
+    document.getElementById('metodos-list-view').style.display = 'none';
+    document.getElementById('metodo-form-view').style.display  = 'block';
+  }
+
+  function selectMTipo(t) { selMTipo = t; syncMTipoBtns(); }
+  function syncMTipoBtns() {
+    document.querySelectorAll('.tipo-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.tipo === selMTipo));
+  }
+
+  function renderColorPalette() {
+    const el = document.getElementById('color-palette');
+    if (!el) return;
+    el.innerHTML = PRESET_COLORS.map(c =>
+      `<button class="color-swatch${selMColor===c?' selected':''}" style="background:${c}"
+              onclick="selectMColor('${c}')">
+        ${selMColor===c?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}
+       </button>`
+    ).join('');
+  }
+
+  function selectMColor(c) { selMColor = c; renderColorPalette(); }
+
+  async function saveMetodoForm() {
+    const nombre = document.getElementById('metodo-nombre').value.trim();
+    if (!nombre) { showErr('Escribe el nombre del método.'); return; }
+    const data = { nombre, tipo: selMTipo, color: selMColor };
+    try {
+      if (metodoEditId) {
+        await db.collection('users').doc(currentUser.uid).collection('metodos').doc(metodoEditId).update(data);
+      } else {
+        await db.collection('users').doc(currentUser.uid).collection('metodos').add(data);
+      }
+      showMetodosList();
+    } catch(e) { console.error(e); showErr('Error al guardar el método.'); }
+  }
+
+  async function confirmDelMetodo(id, nombre) {
+    if (!confirm(`¿Eliminar "${nombre}"?\nLos registros que lo usaban seguirán mostrando el ID.`)) return;
+    try {
+      await db.collection('users').doc(currentUser.uid).collection('metodos').doc(id).delete();
+    } catch(e) { showErr('Error al eliminar.'); }
+  }
 
   /* ═══ SECCIONES COLAPSABLES ═══ */
   function toggleSection(name) {
@@ -1925,6 +2449,18 @@ function initApp() {
   window.toggleHideExported     = toggleHideExported;
   window.renderDashboard    = renderDashboard;
   window.toggleSection      = toggleSection;
+  window.toggleAvatarMenu   = toggleAvatarMenu;
+  window.doSignOut          = doSignOut;
+  window.openMetodosModal   = openMetodosModal;
+  window.closeMetodosModal  = closeMetodosModal;
+  window.closeMetodosIfOutside = closeMetodosIfOutside;
+  window.showMetodosList    = showMetodosList;
+  window.openAddMetodo      = openAddMetodo;
+  window.openEditMetodo     = openEditMetodo;
+  window.selectMTipo        = selectMTipo;
+  window.selectMColor       = selectMColor;
+  window.saveMetodoForm     = saveMetodoForm;
+  window.confirmDelMetodo   = confirmDelMetodo;
   window.setDashMode        = setDashMode;
   window.toggleFilterMenu   = toggleFilterMenu;
   window.setFilter     = setFilter;
