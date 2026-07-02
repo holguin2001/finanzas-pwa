@@ -33,15 +33,15 @@
     /* ===== TOKENS ===== */
     :root {
       color-scheme: dark;
-      --bg:          #050A07;
-      --surface:     rgba(6,14,10,0.75);
-      --surface-2:   rgba(10,20,14,0.82);
-      --border:      rgba(74,222,128,0.10);
-      --t1:          #EDFFF3;
-      --t2:          #82A890;
-      --t3:          #3A4E40;
-      --accent:      #4ADE80;
-      --accent-lt:   rgba(74,222,128,0.10);
+      --bg:          #070400;
+      --surface:     rgba(14,7,1,0.78);
+      --surface-2:   rgba(20,10,2,0.84);
+      --border:      rgba(251,146,60,0.10);
+      --t1:          #FFF7F0;
+      --t2:          #A08068;
+      --t3:          #4A3020;
+      --accent:      #FB923C;
+      --accent-lt:   rgba(251,146,60,0.10);
       --income:      #4ADE80;
       --income-lt:   rgba(74,222,128,0.10);
       --expense:     #F87171;
@@ -63,11 +63,11 @@
     html { height: 100%; }
     body {
       font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #050A07;
+      background-color: #070400;
       background-image:
-        radial-gradient(ellipse 65% 55% at 14% 42%, rgba(34,197,94,0.18) 0%, transparent 62%),
-        radial-gradient(ellipse 50% 65% at 85% 22%, rgba(16,120,55,0.11) 0%, transparent 62%),
-        radial-gradient(ellipse 40% 45% at 58% 92%, rgba(22,163,74,0.09) 0%, transparent 55%);
+        radial-gradient(ellipse 65% 55% at 14% 42%, rgba(251,146,60,0.20) 0%, transparent 62%),
+        radial-gradient(ellipse 50% 65% at 85% 22%, rgba(194,65,12,0.13) 0%, transparent 62%),
+        radial-gradient(ellipse 40% 45% at 58% 92%, rgba(234,88,12,0.10) 0%, transparent 55%);
       background-attachment: fixed;
       color: var(--t1);
       min-height: 100dvh;
@@ -170,7 +170,7 @@
       width: 34px; height: 34px;
       border-radius: 50%;
       background: var(--accent-lt);
-      border: 1.5px solid rgba(78,203,160,0.3);
+      border: 1.5px solid rgba(251,146,60,0.30);
       color: var(--accent);
       font-size: 14px;
       font-weight: 700;
@@ -183,7 +183,7 @@
     .user-avatar:active { opacity: 0.65; }
     .user-avatar--inv {
       background: var(--accent-lt);
-      border-color: rgba(78,203,160,0.3);
+      border-color: rgba(251,146,60,0.30);
       color: var(--accent);
     }
 
@@ -325,7 +325,7 @@
       width: 100%;
       padding: 16px;
       background: var(--accent);
-      color: #021A08;
+      color: #1A0800;
       border: none;
       border-radius: var(--r);
       font-size: 16px;
@@ -804,7 +804,7 @@
       white-space: nowrap;
     }
     .nav-btn:active { opacity: 0.7; }
-    .nav-btn.active { background: rgba(74,222,128,0.12); color: var(--accent); }
+    .nav-btn.active { background: rgba(251,146,60,0.12); color: var(--accent); }
     .nav-btn svg    { width: 15px; height: 15px; }
 
     /* ===== TOAST ===== */
@@ -829,99 +829,90 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* ═══════════════════════════════════════
-       GLASSMORPHISM + GREEN ATMOSPHERE
+       GLASSMORPHISM + ORANGE ATMOSPHERE
        ═══════════════════════════════════════ */
-    #loading-screen { background: rgba(5,10,7,0.97); }
-    #login-screen   { background: rgba(5,10,7,0.96); }
-
+    #loading-screen { background: rgba(7,4,0,0.97); }
+    #login-screen   { background: rgba(7,4,0,0.96); }
     .page-header, .hist-header {
-      background: rgba(5,11,8,0.84);
+      background: rgba(12,6,1,0.85);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
     .rec-card {
-      background: rgba(5,12,8,0.70);
+      background: rgba(14,7,1,0.70);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(74,222,128,0.06);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.07);
     }
     .s-card, .dash-total {
-      background: rgba(5,12,8,0.70);
+      background: rgba(14,7,1,0.70);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.35);
     }
     .dash-card {
-      background: rgba(4,11,7,0.74);
+      background: rgba(12,6,1,0.74);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 4px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(74,222,128,0.07);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.08);
     }
     .segment {
-      background: rgba(4,11,7,0.88);
+      background: rgba(12,6,1,0.90);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    .pill-btn {
-      background: rgba(5,12,8,0.82);
-    }
+    .pill-btn { background: rgba(14,7,1,0.84); }
     input[type="date"],
     input[type="text"],
     input[type="number"],
-    #search-input {
-      background: rgba(6,16,10,0.88);
-    }
+    #search-input { background: rgba(16,8,1,0.90); }
     .filter-dropdown {
-      background: rgba(3,10,6,0.97);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(74,222,128,0.12);
+      position: fixed;
+      right: 16px;
+      top: auto;
+      z-index: 2000;
+      background: rgba(8,4,0,0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(251,146,60,0.14);
     }
     .login-card {
-      background: rgba(3,9,6,0.93);
+      background: rgba(6,3,0,0.94);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      box-shadow: 0 8px 48px rgba(0,0,0,0.65), inset 0 1px 0 rgba(74,222,128,0.09);
+      box-shadow: 0 8px 48px rgba(0,0,0,0.70), inset 0 1px 0 rgba(251,146,60,0.10);
     }
     .toast {
-      background: rgba(4,12,7,0.96);
+      background: rgba(10,5,0,0.97);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-color: rgba(74,222,128,0.15);
+      border-color: rgba(251,146,60,0.18);
     }
     .drive-link {
-      background: rgba(5,12,8,0.76);
+      background: rgba(14,7,1,0.78);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
     .bottom-nav {
-      background: rgba(3,9,6,0.92) !important;
+      background: rgba(6,3,0,0.93) !important;
       backdrop-filter: blur(28px) !important;
       -webkit-backdrop-filter: blur(28px) !important;
-      border: 1px solid rgba(74,222,128,0.12) !important;
+      border: 1px solid rgba(251,146,60,0.14) !important;
     }
-    /* Glow sutil en botón principal */
-    .btn-primary {
-      box-shadow: 0 0 28px rgba(74,222,128,0.20), 0 4px 12px rgba(0,0,0,0.35);
-    }
-    /* Spinner teal */
-    .spinner { border-top-color: #4ADE80; }
-    /* Badges glass */
+    .btn-primary { box-shadow: 0 0 28px rgba(251,146,60,0.28), 0 4px 12px rgba(0,0,0,0.35); }
+    .spinner { border-top-color: #FB923C; }
     .method-efectivo    { color: #8899A0; background: rgba(136,153,160,0.08); }
     .method-debito      { color: #6B9EFF; background: rgba(107,158,255,0.08); }
     .method-bancolombia { color: #F5C518; background: rgba(245,197,24,0.08); }
     .method-nu          { color: #A78BFA; background: rgba(167,139,250,0.08); }
     .method-lulo        { color: #5AB887; background: rgba(90,184,135,0.08); }
     .method-ahorro      { color: #60A5FA; background: rgba(96,165,250,0.08); }
-    /* Pills glass active */
     .pill-btn[data-metodo="tc-bancolombia"].active { background:rgba(245,197,24,0.07); border-color:rgba(245,197,24,0.35); }
     .pill-btn[data-metodo="tc-nu"].active          { background:rgba(167,139,250,0.07); border-color:rgba(167,139,250,0.35); }
     .pill-btn[data-metodo="tc-lulo"].active        { background:rgba(90,184,135,0.07); border-color:rgba(90,184,135,0.35); }
-    /* Filters glass active */
     .filter-btn[data-filter="tc-bancolombia"].active { background:rgba(245,197,24,0.07); border-color:rgba(245,197,24,0.35); }
     .filter-btn[data-filter="tc-nu"].active          { background:rgba(167,139,250,0.07); border-color:rgba(167,139,250,0.35); }
     .filter-btn[data-filter="tc-lulo"].active        { background:rgba(90,184,135,0.07); border-color:rgba(90,184,135,0.35); }
-    /* Ajustes de rec-card */
     .rec-card.exportado { opacity: 0.35; }
     </style>
 </head>
@@ -1743,8 +1734,8 @@ function initApp() {
         responsive:true, maintainAspectRatio:false,
         plugins:{ legend:{ labels:{ color:'#82A890', font:{size:11}, boxWidth:12 } } },
         scales:{
-          x:{ ticks:{color:'#82A890',font:{size:10}}, grid:{color:'rgba(74,222,128,0.05)'}, border:{color:'rgba(74,222,128,0.08)'} },
-          y:{ ticks:{color:'#82A890',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(74,222,128,0.05)'}, border:{color:'rgba(74,222,128,0.08)'} }
+          x:{ ticks:{color:'#82A890',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
+          y:{ ticks:{color:'#82A890',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
         }
       }
     });
@@ -1760,8 +1751,8 @@ function initApp() {
     if (dashMode === 'sheets') { renderDashboardSheets(); return; }
 
     /* Configuración global de Chart.js */
-    Chart.defaults.color          = '#82A890';
-    Chart.defaults.borderColor    = 'rgba(74,222,128,0.06)';
+    Chart.defaults.color          = '#A08068';
+    Chart.defaults.borderColor    = 'rgba(251,146,60,0.06)';
     Chart.defaults.font.family    = "'Open Sans', sans-serif";
 
     /* Totales generales */
@@ -1815,8 +1806,8 @@ function initApp() {
         responsive:true, maintainAspectRatio:false,
         plugins:{ legend:{ labels:{ color:'#82A890', font:{size:11}, boxWidth:12, padding:12 } } },
         scales:{
-          x:{ ticks:{color:'#82A890',font:{size:10}}, grid:{color:'rgba(74,222,128,0.05)'}, border:{color:'rgba(74,222,128,0.08)'} },
-          y:{ ticks:{color:'#82A890',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(74,222,128,0.05)'}, border:{color:'rgba(74,222,128,0.08)'} }
+          x:{ ticks:{color:'#82A890',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
+          y:{ ticks:{color:'#82A890',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
         }
       }
     });
@@ -1850,7 +1841,13 @@ function initApp() {
   function toggleFilterMenu() {
     const dd  = document.getElementById('filter-dropdown');
     const btn = document.getElementById('filter-toggle');
-    dd.classList.toggle('open');
+    if (dd.classList.contains('open')) {
+      dd.classList.remove('open');
+      return;
+    }
+    const rect = btn.getBoundingClientRect();
+    dd.style.top = (rect.bottom + 8) + 'px';
+    dd.classList.add('open');
     btn.classList.toggle('has-filter', filterMetodo !== 'all');
   }
 
