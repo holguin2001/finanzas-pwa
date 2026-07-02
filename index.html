@@ -828,6 +828,28 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+    /* ── Botón ocultar exportados ── */
+    .hide-exp-btn {
+      width: 42px; height: 42px;
+      border-radius: var(--r-sm);
+      border: 1.5px solid var(--border);
+      background: rgba(16,8,1,0.90);
+      color: var(--t2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.18s;
+      position: relative;
+    }
+    .hide-exp-btn:active { opacity: 0.7; }
+    .hide-exp-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-lt);
+      box-shadow: 0 0 12px rgba(251,146,60,0.20);
+    }
+
     /* ═══════════════════════════════════════
        GLASSMORPHISM + ORANGE ATMOSPHERE
        ═══════════════════════════════════════ */
@@ -980,9 +1002,20 @@
         <button class="dmb"        data-mode="sheets" onclick="setDashMode('sheets')">📊 Excel</button>
       </div>
     </div>
-    <button class="user-avatar" onclick="signOut()" title="Cerrar sesión" style="margin-top:8px">
-      <span class="user-initial"></span>
-    </button>
+        <button class="hide-exp-btn" id="hide-exp-btn" onclick="toggleHideExported()" title="Ocultar exportados a Excel">
+          <svg id="eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
+        <button class="user-avatar" onclick="signOut()" title="Cerrar sesión">
+          <span class="user-initial"></span>
+        </button>
   </div>
 
   <!-- Totales -->
@@ -1261,7 +1294,7 @@ function initApp() {
   /* Persistencia offline: Firestore cachea datos localmente en IndexedDB.
      La app funciona sin conexión después de la primera carga con sesión.  */
   
-  const DRIVE_URL       = 'https://drive.google.com/tu-link-aqui'; /* 🔗 Reemplaza con tu link */
+  const DRIVE_URL       = 'https://docs.google.com/spreadsheets/d/17-lQU5a9xuETy28M-8DcLMQP7jCMQKPG/edit?usp=sharing';
 
   /* ════════════════════════════════════════════
      📊 ID de tu Google Sheets (ya configurado)
@@ -1274,17 +1307,19 @@ function initApp() {
 
   /* ═══ ESTADO ═══ */
   let records    = [];
-  let chartMonthly = null;
-  let chartDist    = null;
-  let dashMode     = 'app';   /* 'app' | 'sheets' */
+  let chartMonthly      = null;
+  let chartDist         = null;
+  let dashMode          = 'app';   /* 'app' | 'sheets' */
+  let googleSheetsToken = null;   /* token OAuth de Google para Sheets */
   let currentUser = null;
   let unsub       = null;   // cleanup del listener de Firestore
   let selTipo     = null;
   let selMetod    = null;
   let editId      = null;
   let activeView   = 'form';
-  let searchQuery  = '';
-  let filterMetodo = 'all';
+  let searchQuery   = '';
+  let filterMetodo  = 'all';
+  let hideExported  = false;
 
 
   /* ═══ AUTH ═══ */
@@ -1304,6 +1339,26 @@ function initApp() {
   /* Exponer al scope global para los onclick del HTML */
   window.signIn  = signIn;
   window.signOut = signOut;
+
+  /* Conectar Google Sheets (pide permiso de lectura de Sheets, solo una vez por sesión) */
+  async function connectGoogleSheets() {
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/spreadsheets.readonly');
+      const result = await auth.currentUser.reauthenticateWithPopup(provider);
+      const cred   = firebase.auth.GoogleAuthProvider.credentialFromResult(result);
+      if (cred?.accessToken) {
+        googleSheetsToken = cred.accessToken;
+        renderDashboardSheets();
+      }
+    } catch(e) {
+      if (e.code !== 'auth/popup-closed-by-user') {
+        console.error('connectGoogleSheets:', e);
+        alert('No se pudo conectar. Intenta de nuevo.');
+      }
+    }
+  }
+  window.connectGoogleSheets = connectGoogleSheets;
 
   auth.onAuthStateChanged(user => {
     document.getElementById('loading-screen').style.display = 'none';
@@ -1478,6 +1533,7 @@ function initApp() {
     let pool = records;
     if (filterMetodo !== 'all') pool = pool.filter(r => r.metodo === filterMetodo);
     if (searchQuery)            pool = pool.filter(r => r.desc.toLowerCase().includes(searchQuery));
+    if (hideExported)           pool = pool.filter(r => !r.exportado);
 
     const ingresos = pool
       .filter(r => r.tipo === 'ingreso')
@@ -1558,7 +1614,12 @@ function initApp() {
     document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
     document.getElementById('view-' + v).classList.add('active');
     document.getElementById('nav-'  + v).classList.add('active');
-    if (v === 'historial') renderHistorial();
+    if (v === 'historial') {
+      ['ingresos','gastos','ahorros'].forEach(n => {
+        document.getElementById('sw-' + n)?.classList.add('collapsed');
+      });
+      renderHistorial();
+    }
     if (v === 'dashboard') renderDashboard();
   }
 
@@ -1628,6 +1689,18 @@ function initApp() {
   /* ═══ Exponer funciones al scope global (necesario para los onclick inline) ═══ */
   /* ═══ DASHBOARD ═══ */
 
+  /* Restaura los contenedores de charts del Dashboard al estado original */
+  function restoreDashboardCards() {
+    const section = document.getElementById('view-dashboard');
+    const drive   = section.querySelector('.dash-drive');
+    section.querySelectorAll('.dash-card').forEach(c => c.remove());
+    const m = document.createElement('div'); m.className = 'dash-card';
+    m.innerHTML = '<div class="dash-card-title">Últimos 6 meses</div><div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>';
+    const d = document.createElement('div'); d.className = 'dash-card';
+    d.innerHTML = '<div class="dash-card-title">Distribución general</div><div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas></div>';
+    drive.before(m); drive.before(d);
+  }
+
   function setDashMode(mode) {
     dashMode = mode;
     document.querySelectorAll('.dmb').forEach(b =>
@@ -1635,15 +1708,16 @@ function initApp() {
     renderDashboard();
   }
 
-  /* Lee los totales anuales desde Google Sheets (requiere API habilitada + sheet público) */
+  /* Lee los totales anuales desde Google Sheets usando el token OAuth del usuario */
   async function fetchExcelData() {
-    const key  = firebaseConfig.apiKey;
+    if (!googleSheetsToken) throw new Error('sin token');
     const sid  = SPREADSHEET_ID;
     const base = `https://sheets.googleapis.com/v4/spreadsheets/${sid}/values`;
 
     async function getRange(range) {
-      const r = await fetch(`${base}/${encodeURIComponent(range)}?key=${key}`);
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const r = await fetch(`${base}/${encodeURIComponent(range)}`,
+        { headers: { Authorization: `Bearer ${googleSheetsToken}` } });
+      if (!r.ok) { googleSheetsToken = null; throw new Error(`HTTP ${r.status}`); }
       const d = await r.json();
       return d.values ? d.values[0] : [];
     }
@@ -1676,41 +1750,66 @@ function initApp() {
   }
 
   async function renderDashboardSheets() {
-    const wrap = document.querySelector('#view-dashboard .dash-card:first-of-type .chart-wrap');
-    const wrap2= document.querySelectorAll('#view-dashboard .dash-card')[1]?.querySelector('.chart-wrap');
-
-    /* Loading state */
+    /* Siempre restaurar DOM primero */
     if (chartMonthly) { chartMonthly.destroy(); chartMonthly = null; }
     if (chartDist)    { chartDist.destroy();    chartDist    = null; }
-    document.getElementById('chart-monthly').closest('.dash-card').innerHTML =
-      '<div class="dash-loading"><div class="spinner"></div> Cargando desde Excel…</div>';
-    document.getElementById('chart-dist')?.closest('.dash-card')?.remove?.();
+    restoreDashboardCards();
+
+    /* Sin token → mostrar botón de conexión */
+    if (!googleSheetsToken) {
+      const cards = document.querySelectorAll('#view-dashboard .dash-card');
+      if (cards[0]) cards[0].innerHTML = `
+        <div class="dash-card-title">Conectar Excel</div>
+        <div style="padding:4px 0 8px">
+          <p style="color:var(--t2);font-size:13px;line-height:1.65;margin-bottom:16px">
+            Toca el botón para autorizar la lectura de tu Google Sheets.<br>
+            Solo necesitas hacerlo <strong style="color:var(--t1)">una vez por sesión.</strong>
+          </p>
+          <button onclick="connectGoogleSheets()"
+            style="width:100%;padding:14px;background:var(--accent);color:#1A0800;border:none;
+                   border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">
+            Conectar con Google Sheets
+          </button>
+        </div>`;
+      if (cards[1]) cards[1].style.display = 'none';
+      return;
+    }
+
+    /* Con token → mostrar loading y cargar datos */
+    const cards = document.querySelectorAll('#view-dashboard .dash-card');
+    if (cards[0]) cards[0].innerHTML = '<div class="dash-loading"><div class="spinner"></div> Cargando desde Excel…</div>';
+    if (cards[1]) cards[1].style.display = 'none';
 
     let data;
     try {
       data = await fetchExcelData();
     } catch(e) {
-      document.querySelector('#view-dashboard .dash-loading').closest('.dash-card').innerHTML = `
-        <div class="dash-sheets-msg">
-          <strong>Para activar el modo Excel:</strong><br><br>
-          1. Ve a <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" style="color:var(--accent)">Google Cloud Console</a> y habilita la <strong>Google Sheets API</strong> en tu proyecto.<br><br>
-          2. Abre tu Google Sheets → Compartir → cambia a <strong>"Cualquier persona con el enlace"</strong> puede ver.<br><br>
-          3. Vuelve aquí y toca 📊 Excel.
+      console.error('Excel fetch error:', e);
+      googleSheetsToken = null; /* limpiar token expirado */
+      if (cards[0]) cards[0].innerHTML = `
+        <div class="dash-card-title">Error de conexión</div>
+        <div style="padding:4px 0 8px">
+          <p style="color:var(--t2);font-size:13px;line-height:1.65;margin-bottom:16px">
+            No se pudo cargar el Excel. El acceso puede haber expirado.
+          </p>
+          <button onclick="connectGoogleSheets()"
+            style="width:100%;padding:14px;background:var(--accent);color:#1A0800;border:none;
+                   border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">
+            Reconectar
+          </button>
         </div>`;
       return;
     }
 
+    /* Restaurar DOM con canvas frescos para los charts */
+    restoreDashboardCards();
+    const freshCards = document.querySelectorAll('#view-dashboard .dash-card');
+    if (freshCards[1]) freshCards[1].style.display = '';
+
     const years  = ['2022','2023','2024','2025','2026'];
-    const labels = years;
     const dataI  = years.map(y => data[y]?.ingresos || 0);
     const dataG  = years.map(y => data[y]?.gastos   || 0);
 
-    /* Reconstruir canvas (fue eliminado) */
-    const section = document.querySelector('#view-dashboard');
-    const existingCard = section.querySelector('.dash-card');
-    if (!existingCard) return;
-
-    existingCard.innerHTML = '<div class="dash-card-title">Tendencia anual (2022–2026)</div><div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>';
     function mkGrad2(c,hex,a1,a2){
       const h=hex.replace('#','');
       const [r,g,b]=[h.slice(0,2),h.slice(2,4),h.slice(4,6)].map(x=>parseInt(x,16));
@@ -1719,12 +1818,11 @@ function initApp() {
       g2.addColorStop(1,`rgba(${r},${g},${b},${a2})`);
       return g2;
     }
-
     const ctxM = document.getElementById('chart-monthly').getContext('2d');
     chartMonthly = new Chart(ctxM, {
       type: 'line',
       data: {
-        labels,
+        labels: years,
         datasets: [
           { label:'Ingresos', data:dataI, borderColor:'#4ADE80', backgroundColor:mkGrad2(ctxM,'#4ADE80',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#4ADE80', pointBorderColor:'transparent' },
           { label:'Gastos',   data:dataG, borderColor:'#F87171', backgroundColor:mkGrad2(ctxM,'#F87171',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#F87171', pointBorderColor:'transparent' }
@@ -1732,112 +1830,22 @@ function initApp() {
       },
       options: {
         responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ labels:{ color:'#82A890', font:{size:11}, boxWidth:12 } } },
+        plugins:{ legend:{ labels:{ color:'#A08068', font:{size:11}, boxWidth:12 } } },
         scales:{
-          x:{ ticks:{color:'#82A890',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
-          y:{ ticks:{color:'#82A890',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
+          x:{ ticks:{color:'#A08068',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
+          y:{ ticks:{color:'#A08068',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
         }
       }
     });
 
-    /* Actualizar totales con datos del año actual */
-    const cur = data['2026'];
-    document.getElementById('dt-ingresos').textContent = fmtCOP(cur.ingresos);
-    document.getElementById('dt-gastos').textContent   = fmtCOP(cur.gastos);
+    /* Actualizar totales con datos del año actual (2026) */
+    document.getElementById('dt-ingresos').textContent = fmtCOP(data['2026']?.ingresos || 0);
+    document.getElementById('dt-gastos').textContent   = fmtCOP(data['2026']?.gastos   || 0);
     document.getElementById('dt-ahorros').textContent  = '—';
-  }
-  function renderDashboard() {
-    if (typeof Chart === 'undefined') return;
-    if (dashMode === 'sheets') { renderDashboardSheets(); return; }
-
-    /* Configuración global de Chart.js */
-    Chart.defaults.color          = '#A08068';
-    Chart.defaults.borderColor    = 'rgba(251,146,60,0.06)';
-    Chart.defaults.font.family    = "'Open Sans', sans-serif";
-
-    /* Totales generales */
-    const totI = records.filter(r=>r.tipo==='ingreso').reduce((s,r)=>s+r.monto,0);
-    const totG = records.filter(r=>r.tipo==='gasto')  .reduce((s,r)=>s+r.monto,0);
-    const totA = records.filter(r=>r.tipo==='ahorro') .reduce((s,r)=>s+r.monto,0);
-
-    document.getElementById('dt-ingresos').textContent = fmtCOP(totI);
-    document.getElementById('dt-gastos').textContent   = fmtCOP(totG);
-    document.getElementById('dt-ahorros').textContent  = fmtCOP(totA);
-
-    /* Link de Drive */
     document.getElementById('drive-btn').href = DRIVE_URL;
-
-    /* Últimos 6 meses */
-    const months = [];
-    const now = new Date();
-    for (let i=5; i>=0; i--) {
-      const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
-      months.push({
-        key:   `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,
-        label:  d.toLocaleDateString('es-CO',{month:'short',year:'2-digit'})
-      });
-    }
-    const mI = months.map(m=>records.filter(r=>r.tipo==='ingreso'&&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
-    const mG = months.map(m=>records.filter(r=>r.tipo==='gasto'  &&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
-    const mA = months.map(m=>records.filter(r=>r.tipo==='ahorro' &&r.fecha.startsWith(m.key)).reduce((s,r)=>s+r.monto,0));
-
-    const ctxM = document.getElementById('chart-monthly').getContext('2d');
-    /* Gradiente de relleno para gráfica de área */
-    function mkGrad(c,hex,a1,a2){
-      const h=hex.replace('#','');
-      const [r,g,b]=[h.slice(0,2),h.slice(2,4),h.slice(4,6)].map(x=>parseInt(x,16));
-      const g2=c.createLinearGradient(0,0,0,190);
-      g2.addColorStop(0,`rgba(${r},${g},${b},${a1})`);
-      g2.addColorStop(1,`rgba(${r},${g},${b},${a2})`);
-      return g2;
-    }
-    if (chartMonthly) chartMonthly.destroy();
-    chartMonthly = new Chart(ctxM, {
-      type: 'line',
-      data: {
-        labels: months.map(m=>m.label),
-        datasets: [
-          { label:'Ingresos', data:mI, borderColor:'#4ADE80', backgroundColor:mkGrad(ctxM,'#4ADE80',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#4ADE80', pointBorderColor:'transparent' },
-          { label:'Gastos',   data:mG, borderColor:'#F87171', backgroundColor:mkGrad(ctxM,'#F87171',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#F87171', pointBorderColor:'transparent' },
-          { label:'Ahorros',  data:mA, borderColor:'#60A5FA', backgroundColor:mkGrad(ctxM,'#60A5FA',0.18,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#60A5FA', pointBorderColor:'transparent' }
-        ]
-      },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ labels:{ color:'#82A890', font:{size:11}, boxWidth:12, padding:12 } } },
-        scales:{
-          x:{ ticks:{color:'#82A890',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
-          y:{ ticks:{color:'#82A890',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
-        }
-      }
-    });
-
-    /* Dona distribución */
-    const ctxD = document.getElementById('chart-dist').getContext('2d');
-    if (chartDist) chartDist.destroy();
-    if (totI+totG+totA === 0) {
-      ctxD.clearRect(0,0,ctxD.canvas.width,ctxD.canvas.height);
-      return;
-    }
-    chartDist = new Chart(ctxD, {
-      type: 'doughnut',
-      data: {
-        labels: ['Ingresos','Gastos','Ahorros'],
-        datasets:[{
-          data:[totI,totG,totA],
-          backgroundColor:['rgba(74,222,128,0.18)','rgba(248,113,113,0.18)','rgba(96,165,250,0.18)'],
-          borderColor:['#4ADE80','#F87171','#60A5FA'],
-          borderWidth:2, hoverOffset:6
-        }]
-      },
-      options:{
-        responsive:true, maintainAspectRatio:false, cutout:'68%',
-        plugins:{ legend:{ position:'bottom', labels:{ color:'#7A7C8E', font:{size:11}, padding:14, boxWidth:12 } } }
-      }
-    });
   }
 
-  /* ═══ BÚSQUEDA Y FILTROS ═══ */
+    /* ═══ BÚSQUEDA Y FILTROS ═══ */
   function toggleFilterMenu() {
     const dd  = document.getElementById('filter-dropdown');
     const btn = document.getElementById('filter-toggle');
@@ -1864,6 +1872,17 @@ function initApp() {
   /* ═══ SECCIONES COLAPSABLES ═══ */
   function toggleSection(name) {
     document.getElementById('sw-' + name).classList.toggle('collapsed');
+  }
+
+  function toggleHideExported() {
+    hideExported = !hideExported;
+    const btn    = document.getElementById('hide-exp-btn');
+    const eyeOn  = document.getElementById('eye-on');
+    const eyeOff = document.getElementById('eye-off');
+    btn.classList.toggle('active', hideExported);
+    if (eyeOn)  eyeOn.style.display  = hideExported ? 'none' : '';
+    if (eyeOff) eyeOff.style.display = hideExported ? ''     : 'none';
+    renderHistorial();
   }
 
   function setSearch(val) {
@@ -1902,7 +1921,8 @@ function initApp() {
   window.delRec        = delRec;
   window.switchView    = switchView;
   window.toggleCheck   = toggleCheck;
-  window.setSearch          = setSearch;
+  window.setSearch              = setSearch;
+  window.toggleHideExported     = toggleHideExported;
   window.renderDashboard    = renderDashboard;
   window.toggleSection      = toggleSection;
   window.setDashMode        = setDashMode;
