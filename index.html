@@ -783,6 +783,22 @@
       gap: 8px;
       margin-bottom: 4px;
     }
+    /* ── Separador por mes dentro de la lista ── */
+    .month-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 2px 0;
+    }
+    .month-divider span {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--t2);
+      white-space: nowrap;
+    }
+    .md-rule { flex: 1; height: 1px; background: rgba(251,146,60,0.08); }
     .rec-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1913,7 +1929,16 @@ function initApp() {
       el.innerHTML = '<div class="empty-state">Sin registros todavía</div>';
       return;
     }
-    el.innerHTML = list.map(r => `
+    const multiMes = new Set(list.map(r => r.fecha.slice(0, 7))).size > 1;
+    let prevMes = null;
+    el.innerHTML = list.map(r => {
+      const mesKey = r.fecha.slice(0, 7);
+      let divider = '';
+      if (mesKey !== prevMes) {
+        if (multiMes) divider = `<div class="month-divider"><span>${mesLabel(mesKey)}</span><div class="md-rule"></div></div>`;
+        prevMes = mesKey;
+      }
+      return divider + `
       <div class="rec-card${r.exportado ? ' exportado' : ''}">
         <button class="check-btn${r.exportado ? ' checked' : ''}"
                 onclick="toggleCheck('${esc(r.id)}', ${r.exportado})"
@@ -1950,7 +1975,8 @@ function initApp() {
           </div>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   }
 
 
@@ -2000,6 +2026,12 @@ function initApp() {
       style: 'currency', currency: 'COP',
       minimumFractionDigits: 0, maximumFractionDigits: 0
     }).format(n);
+  }
+
+  function mesLabel(key) {
+    const [y, m] = key.split('-').map(Number);
+    const str = new Date(y, m - 1, 1).toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   function fmtDate(s) {

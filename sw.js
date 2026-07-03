@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v24: insights del mes, gastos por método y top 5 en Stats */
-const CACHE  = 'finanzas-v24';
+/* v25: separadores por mes en el historial */
+const CACHE  = 'finanzas-v25';
 const ASSETS = [
   './',
   './index.html',
