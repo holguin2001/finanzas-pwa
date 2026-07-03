@@ -892,7 +892,7 @@
       position: fixed;
       right: 16px;
       top: auto;
-      z-index: 2000;
+      z-index: 3000;
       background: rgba(8,4,0,0.98);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
@@ -1295,9 +1295,6 @@
               <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
             </svg>
           </button>
-          <div class="filter-dropdown" id="filter-dropdown">
-            <div id="filter-opts-container"></div>
-          </div>
         </div>
         <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
           <span class="user-initial"></span>
@@ -1385,6 +1382,11 @@
   </nav>
 
 </div><!-- /app-wrapper -->
+
+<!-- Filter dropdown (global — fuera de cualquier backdrop-filter) -->
+<div class="filter-dropdown" id="filter-dropdown" style="z-index:3000">
+  <div id="filter-opts-container"></div>
+</div>
 
 <!-- Avatar dropdown (global) -->
 <div id="avatar-menu" class="avatar-menu">
