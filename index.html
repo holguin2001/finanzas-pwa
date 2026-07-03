@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#070400">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Finanzas">
   <meta name="description" content="Registro financiero personal rápido">
   <link rel="manifest" href="./manifest.json">
@@ -39,15 +39,15 @@
       --border:      rgba(251,146,60,0.10);
       --t1:          #FFF7F0;
       --t2:          #A08068;
-      --t3:          #4A3020;
+      --t3:          #8A6A4A;
       --accent:      #FB923C;
       --accent-lt:   rgba(251,146,60,0.10);
-      --income:      #4ADE80;
-      --income-lt:   rgba(74,222,128,0.10);
-      --expense:     #F87171;
-      --expense-lt:  rgba(248,113,113,0.10);
-      --savings:     #60A5FA;
-      --savings-lt:  rgba(96,165,250,0.10);
+      --income:      #57B259;
+      --income-lt:   rgba(87,178,89,0.10);
+      --expense:     #FA1E00;
+      --expense-lt:  rgba(250,30,0,0.10);
+      --savings:     #FCCA45;
+      --savings-lt:  rgba(252,202,69,0.10);
       --r:           14px;
       --r-sm:        10px;
       --sh:          0 2px 12px rgba(0,0,0,0.45);
@@ -121,7 +121,7 @@
     .login-logo {
       width: 72px; height: 72px;
       background: var(--accent-lt);
-      border: 1px solid rgba(78,203,160,0.2);
+      border: 1px solid rgba(251,146,60,0.25);
       border-radius: 22px;
       margin: 0 auto 24px;
       display: flex;
@@ -130,7 +130,7 @@
     }
     .login-title {
       font-size: 26px;
-      font-weight: 760;
+      font-weight: 700;
       letter-spacing: -0.5px;
       color: var(--t1);
       margin-bottom: 10px;
@@ -208,7 +208,7 @@
     }
     .page-title {
       font-size: 22px;
-      font-weight: 760;
+      font-weight: 700;
       letter-spacing: -0.4px;
       color: var(--t1);
     }
@@ -252,6 +252,13 @@
     }
     input:focus { border-color: var(--accent); }
     input::placeholder { color: var(--t3); }
+    .monto-preview {
+      font-size: 13px;
+      color: var(--t2);
+      font-variant-numeric: tabular-nums;
+      min-height: 18px;
+    }
+    .monto-preview strong { color: var(--t1); font-weight: 700; }
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     input[type="number"] { -moz-appearance: textfield; }
@@ -391,7 +398,7 @@
       background: var(--surface-2);
       border: 1.5px solid var(--border);
       border-radius: var(--r-sm);
-      font-size: 14px;
+      font-size: 16px;
       color: var(--t1);
       font-family: 'Open Sans', sans-serif;
       outline: none;
@@ -427,8 +434,8 @@
       position: absolute;
       right: 0;
       top: calc(100% + 8px);
-      background: #13131C;
-      border: 1px solid #252535;
+      background: rgba(8,4,0,0.98);
+      border: 1px solid rgba(251,146,60,0.14);
       border-radius: 12px;
       padding: 6px;
       min-width: 190px;
@@ -458,12 +465,12 @@
     .filter-opt:hover  { background: var(--surface-2); color: var(--t1); }
     .filter-opt.active { font-weight: 700; }
     .filter-opt[data-filter="all"].active            { color: var(--accent); }
-    .filter-opt[data-filter="efectivo"].active       { color: #888896; }
+    .filter-opt[data-filter="efectivo"].active       { color: #B0A090; }
     .filter-opt[data-filter="debito"].active         { color: #6B9EFF; }
     .filter-opt[data-filter="tc-bancolombia"].active { color: #F5C518; }
     .filter-opt[data-filter="tc-nu"].active          { color: #9B6DFF; }
     .filter-opt[data-filter="tc-lulo"].active        { color: #5AB887; }
-    .filter-opt[data-filter="ahorro"].active           { color: #60A5FA; }
+    .filter-opt[data-filter="ahorro"].active           { color: #FCCA45; }
     /* Puntos de color en el dropdown */
     .method-dot {
       width: 8px; height: 8px;
@@ -471,17 +478,17 @@
       flex-shrink: 0;
     }
     .method-dot.all         { background: var(--accent); }
-    .method-dot.efectivo    { background: #888896; }
+    .method-dot.efectivo    { background: #B0A090; }
     .method-dot.debito      { background: #6B9EFF; }
     .method-dot.bancolombia { background: #F5C518; }
     .method-dot.nu          { background: #9B6DFF; }
     .method-dot.lulo        { background: #5AB887; }
-    .method-dot.ahorro      { background: #60A5FA; }
+    .method-dot.ahorro      { background: #FCCA45; }
 
     /* Mini summary cards */
     .summary-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
       padding: 14px 16px 4px;
     }
@@ -499,9 +506,12 @@
     }
     .s-card-label.inc { color: var(--income); }
     .s-card-label.exp { color: var(--expense); }
+    .s-card-label.sav { color: var(--savings); }
     .s-card-amount {
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
       color: var(--t1);
       margin-top: 4px;
       letter-spacing: -0.3px;
@@ -523,11 +533,14 @@
       gap: 2px;
     }
     .dmb {
-      padding: 5px 14px;
+      padding: 5px 12px;
       border-radius: 100px;
       border: none;
       background: transparent;
-      color: var(--t3);
+      color: var(--t2);
+      display: flex;
+      align-items: center;
+      gap: 5px;
       font-family: 'Open Sans', sans-serif;
       font-size: 12px;
       font-weight: 600;
@@ -535,6 +548,7 @@
       white-space: nowrap;
     }
     .dmb.active { background: var(--surface); color: var(--accent); }
+    .dmb svg { width: 12px; height: 12px; }
     .dmb:active { opacity: 0.7; }
     .dash-sheets-msg {
       margin: 14px 16px 0;
@@ -581,12 +595,69 @@
     .dash-total.exp .dt-label { color: var(--expense); }
     .dash-total.sav .dt-label { color: var(--savings); }
     .dt-amount {
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 17px;
+      font-weight: 800;
       color: var(--t1);
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
       margin-top: 2px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }
+    @media (max-width: 389px) { .dt-amount { font-size: 15px; } }
+    /* ── Hero: balance disponible ── */
+    .hero-card {
+      margin: 14px 16px 0;
+      background: rgba(12,6,1,0.74);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.08);
+      padding: 18px 18px 16px;
+    }
+    .hero-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--t2);
+    }
+    .hero-amount {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-amount.pos { color: var(--income); }
+    .hero-amount.neg { color: var(--expense); }
+    .hero-sub { font-size: 12px; color: var(--t3); margin-top: 4px; }
+    /* ── Centro de la dona ── */
+    .donut-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      gap: 2px;
+    }
+    .dc-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--t2);
+    }
+    .dc-val {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      font-variant-numeric: tabular-nums;
+    }
+    .dc-val.pos { color: var(--income); }
+    .dc-val.neg { color: var(--expense); }
     .dash-card {
       margin: 12px 16px 0;
       background: var(--surface);
@@ -609,18 +680,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 14px;
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--r);
+      gap: 8px;
+      width: fit-content;
+      margin: 0 auto;
+      padding: 10px 14px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
       color: var(--t2);
       font-family: 'Open Sans', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.15s;
+      transition: color 0.15s;
     }
     .drive-link:hover  { border-color: var(--accent); color: var(--accent); }
     .drive-link:active { opacity: 0.7; }
@@ -628,7 +700,7 @@
       text-align: center;
       padding: 32px 0;
       font-size: 13px;
-      color: var(--t3);
+      color: var(--t2);
     }
 
     /* ===== SECTION DIVIDERS ===== */
@@ -636,7 +708,9 @@
     .section-head { cursor: pointer; user-select: none; -webkit-user-select: none; }
     .section-chevron {
       flex-shrink: 0;
-      color: var(--t3);
+      color: var(--t2);
+      width: 16px;
+      height: 16px;
       transition: transform 0.22s ease;
     }
     .section-wrap.collapsed .section-chevron { transform: rotate(-90deg); }
@@ -652,9 +726,22 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.9px;
-      color: var(--t3);
       white-space: nowrap;
     }
+    .section-lbl.inc { color: var(--income); }
+    .section-lbl.exp { color: var(--expense); }
+    .section-lbl.sav { color: var(--savings); }
+    .section-count { font-size: 11px; font-weight: 600; color: var(--t3); }
+    .section-total {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .section-total.inc { color: var(--income); }
+    .section-total.exp { color: var(--expense); }
+    .section-total.sav { color: var(--savings); }
     .section-rule { flex: 1; height: 1px; background: var(--border); }
 
     /* ===== RECORD LIST ===== */
@@ -707,12 +794,12 @@
       font-weight: 600;
     }
     /* Colores por método en badges */
-    .method-efectivo    { color: #888896; background: #111118; }
+    .method-efectivo    { color: #B0A090; background: #111118; }
     .method-debito      { color: #6B9EFF; background: #080D1A; }
     .method-bancolombia { color: #F5C518; background: #1C1400; }
     .method-nu          { color: #9B6DFF; background: #13092A; }
     .method-lulo        { color: #5AB887; background: #071510; }
-    .method-ahorro { color: #60A5FA; background: #080F1F; }
+    .method-ahorro { color: #FCCA45; background: #1A1502; }
     .rec-right {
       display: flex;
       flex-direction: column;
@@ -735,13 +822,16 @@
       justify-content: center;
       color: var(--t3);
       transition: all 0.15s;
+      position: relative;
     }
+    .icon-btn::before { content: ''; position: absolute; inset: -7px; }
     .icon-btn:active { opacity: 0.55; }
     .edit-btn:hover { color: var(--accent);  background: var(--accent-lt); }
     .del-btn:hover  { color: var(--expense); background: var(--expense-lt); }
     /* Check de exportado a Excel */
     .check-btn {
-      width: 22px; height: 22px;
+      width: 26px; height: 26px;
+      position: relative;
       border-radius: 50%;
       border: 1.5px solid var(--border);
       background: transparent;
@@ -753,6 +843,7 @@
       color: transparent;
       padding: 0;
     }
+    .check-btn::before { content: ''; position: absolute; inset: -9px; }
     .check-btn:active { opacity: 0.65; }
     .check-btn.checked {
       background: var(--income);
@@ -770,13 +861,13 @@
       text-align: center;
       padding: 22px 16px;
       font-size: 13px;
-      color: var(--t3);
+      color: var(--t2);
     }
 
     /* ===== FLOATING PILL TOGGLE NAV ===== */
     .bottom-nav {
       position: fixed;
-      bottom: 28px;
+      bottom: calc(20px + env(safe-area-inset-bottom, 8px));
       left: 50%;
       transform: translateX(-50%);
       background: #0d0d0d;
@@ -796,7 +887,7 @@
       border-radius: 100px;
       border: none;
       background: transparent;
-      color: var(--t3);
+      color: var(--t2);
       font-family: 'Open Sans', sans-serif;
       font-size: 13px;
       font-weight: 600;
@@ -826,7 +917,18 @@
       white-space: nowrap;
       z-index: 200;
     }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+    .toast.error { border-color: rgba(250,30,0,0.35); color: var(--expense); }
+    .toast-undo {
+      border: none;
+      background: transparent;
+      color: var(--accent);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 0;
+      margin-left: 4px;
+    }
 
     /* ── Botón ocultar exportados ── */
     .hide-exp-btn {
@@ -910,11 +1012,7 @@
       -webkit-backdrop-filter: blur(16px);
       border-color: rgba(251,146,60,0.18);
     }
-    .drive-link {
-      background: rgba(14,7,1,0.78);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
+
     .bottom-nav {
       background: rgba(6,3,0,0.93) !important;
       backdrop-filter: blur(28px) !important;
@@ -923,12 +1021,12 @@
     }
     .btn-primary { box-shadow: 0 0 28px rgba(251,146,60,0.28), 0 4px 12px rgba(0,0,0,0.35); }
     .spinner { border-top-color: #FB923C; }
-    .method-efectivo    { color: #8899A0; background: rgba(136,153,160,0.08); }
+    .method-efectivo    { color: #B0A090; background: rgba(176,160,144,0.08); }
     .method-debito      { color: #6B9EFF; background: rgba(107,158,255,0.08); }
     .method-bancolombia { color: #F5C518; background: rgba(245,197,24,0.08); }
     .method-nu          { color: #A78BFA; background: rgba(167,139,250,0.08); }
     .method-lulo        { color: #5AB887; background: rgba(90,184,135,0.08); }
-    .method-ahorro      { color: #60A5FA; background: rgba(96,165,250,0.08); }
+    .method-ahorro      { color: #FCCA45; background: rgba(252,202,69,0.08); }
     .pill-btn[data-metodo="tc-bancolombia"].active { background:rgba(245,197,24,0.07); border-color:rgba(245,197,24,0.35); }
     .pill-btn[data-metodo="tc-nu"].active          { background:rgba(167,139,250,0.07); border-color:rgba(167,139,250,0.35); }
     .pill-btn[data-metodo="tc-lulo"].active        { background:rgba(90,184,135,0.07); border-color:rgba(90,184,135,0.35); }
@@ -1152,24 +1250,26 @@
         <div class="page-title">Dashboard</div>
       </div>
       <div class="dash-mode-toggle">
-        <button class="dmb active" data-mode="app"    onclick="setDashMode('app')">📱 App</button>
-        <button class="dmb"        data-mode="sheets" onclick="setDashMode('sheets')">📊 Excel</button>
+        <button class="dmb active" data-mode="app" onclick="setDashMode('app')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+          App
+        </button>
+        <button class="dmb" data-mode="sheets" onclick="setDashMode('sheets')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+          Excel
+        </button>
       </div>
     </div>
-        <button class="hide-exp-btn" id="hide-exp-btn" onclick="toggleHideExported()" title="Ocultar exportados a Excel">
-          <svg id="eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-          <svg id="eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
-            <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
-            <line x1="1" y1="1" x2="23" y2="23"/>
-          </svg>
-        </button>
         <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
           <span class="user-initial"></span>
         </button>
+  </div>
+
+  <!-- Balance disponible -->
+  <div class="hero-card">
+    <div class="hero-lbl">Disponible</div>
+    <div class="hero-amount pos" id="hero-amount">$ 0</div>
+    <div class="hero-sub" id="hero-sub">Ingresos − gastos − ahorros</div>
   </div>
 
   <!-- Totales -->
@@ -1220,8 +1320,6 @@
 
     <div class="form-body">
 
-      <div id="error-msg" class="error-msg"></div>
-
       <div class="field">
         <label for="fecha">Fecha</label>
         <input type="date" id="fecha">
@@ -1234,12 +1332,19 @@
 
       <div class="field">
         <label for="monto">Monto</label>
-        <input type="number" id="monto" placeholder="0" inputmode="decimal" min="0" step="any">
+        <input type="text" id="monto" placeholder="0" inputmode="numeric" autocomplete="off" oninput="fmtMontoLive(this)">
+        <div class="monto-preview" id="monto-preview"></div>
       </div>
 
       <div class="field">
         <label>Tipo</label>
         <div class="segment">
+          <button class="segment-btn gasto" data-tipo="gasto" onclick="selectTipo('gasto')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+            </svg>
+            Gasto
+          </button>
           <button class="segment-btn ingreso" data-tipo="ingreso" onclick="selectTipo('ingreso')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
@@ -1254,12 +1359,6 @@
             </svg>
             Ahorro
           </button>
-          <button class="segment-btn gasto" data-tipo="gasto" onclick="selectTipo('gasto')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
-            </svg>
-            Gasto
-          </button>
         </div>
       </div>
 
@@ -1269,6 +1368,8 @@
         <!-- generado dinámicamente -->
       </div>
       </div>
+
+      <div id="error-msg" class="error-msg"></div>
 
       <button class="btn-primary" id="guardar-btn" onclick="guardar()">Guardar registro</button>
       <button class="btn-ghost"   id="cancel-btn"  onclick="cancelEdit()" style="display:none">Cancelar edición</button>
@@ -1289,6 +1390,17 @@
           </svg>
           <input type="search" id="search-input" placeholder="Buscar registros…" oninput="setSearch(this.value)" autocomplete="off">
         </div>
+        <button class="hide-exp-btn" id="hide-exp-btn" onclick="toggleHideExported()" title="Ocultar exportados a Excel">
+          <svg id="eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
         <div class="filter-btn-wrap">
           <button class="filter-toggle-btn" id="filter-toggle" onclick="toggleFilterMenu()" title="Filtrar por método">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1311,39 +1423,45 @@
         <div class="s-card-label exp">Gastos</div>
         <div class="s-card-amount" id="total-gastos">$ 0</div>
       </div>
-      <div class="s-card" style="grid-column:1/-1">
-        <div class="s-card-label" style="color:var(--savings)">Ahorros</div>
+      <div class="s-card">
+        <div class="s-card-label sav">Ahorros</div>
         <div class="s-card-amount" id="total-ahorros">$ 0</div>
       </div>
     </div>
 
-    <div class="section-wrap" id="sw-ingresos">
-      <div class="section-head" onclick="toggleSection('ingresos')">
-        <span class="section-lbl">Ingresos</span>
-        <div class="section-rule"></div>
-        <svg class="section-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </div>
-      <div class="rec-list" id="lista-ingresos"></div>
-    </div>
-
     <div class="section-wrap" id="sw-gastos">
       <div class="section-head" onclick="toggleSection('gastos')">
-        <span class="section-lbl">Gastos</span>
+        <span class="section-lbl exp">Gastos</span>
+        <span class="section-count"></span>
         <div class="section-rule"></div>
-        <svg class="section-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <span class="section-total exp"></span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9"/>
         </svg>
       </div>
       <div class="rec-list" id="lista-gastos"></div>
     </div>
 
+    <div class="section-wrap" id="sw-ingresos">
+      <div class="section-head" onclick="toggleSection('ingresos')">
+        <span class="section-lbl inc">Ingresos</span>
+        <span class="section-count"></span>
+        <div class="section-rule"></div>
+        <span class="section-total inc"></span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="rec-list" id="lista-ingresos"></div>
+    </div>
+
     <div class="section-wrap" id="sw-ahorros">
       <div class="section-head" onclick="toggleSection('ahorros')">
-        <span class="section-lbl" style="color:var(--savings)">Ahorros</span>
+        <span class="section-lbl sav">Ahorros</span>
+        <span class="section-count"></span>
         <div class="section-rule"></div>
-        <svg class="section-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <span class="section-total sav"></span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9"/>
         </svg>
       </div>
@@ -1509,7 +1627,7 @@ function initApp() {
   let googleSheetsToken = null;   /* token OAuth de Google para Sheets */
   let currentUser = null;
   let unsub       = null;   // cleanup del listener de Firestore
-  let selTipo     = null;
+  let selTipo     = 'gasto';
   let selMetod    = null;
   let editId      = null;
   let activeView   = 'form';
@@ -1618,13 +1736,13 @@ function initApp() {
   async function guardar() {
     const fecha = document.getElementById('fecha').value;
     const desc  = document.getElementById('desc').value.trim();
-    const raw   = document.getElementById('monto').value;
-    const monto = parseFloat(raw);
+    const raw   = document.getElementById('monto').value.replace(/\D/g, '');
+    const monto = parseInt(raw, 10);
 
     if (!fecha)                             return showErr('Selecciona la fecha.');
     if (!desc)                              return showErr('Escribe una descripción.');
     if (!raw || isNaN(monto) || monto <= 0) return showErr('Ingresa un monto válido (mayor que 0).');
-    if (!selTipo)                           return showErr('Selecciona Ingreso o Gasto.');
+    if (!selTipo)                           return showErr('Selecciona el tipo de registro.');
     if (!selMetod)                          return showErr('Selecciona el método de pago.');
     if (!currentUser)                       return showErr('Sesión expirada. Recarga la app.');
 
@@ -1659,16 +1777,34 @@ function initApp() {
   }
 
 
-  /* ═══ ELIMINAR ═══ */
+  /* ═══ ELIMINAR (con Deshacer) ═══ */
+  let lastDeleted = null;
+
   async function delRec(id) {
     const r = records.find(r => r.id === id);
-    if (!r || !confirm(`¿Eliminar "${r.desc}"?`)) return;
+    if (!r) return;
+    const { id: _omit, ...data } = r;
     try {
       await db.collection('users').doc(currentUser.uid).collection('registros').doc(id).delete();
+      lastDeleted = { id, data };
+      showUndoToast('Registro eliminado');
       /* onSnapshot actualiza records automáticamente */
     } catch (err) {
       console.error('Delete error:', err);
-      showErr('Error al eliminar. Intenta de nuevo.');
+      showToast('Error al eliminar. Intenta de nuevo.');
+    }
+  }
+
+  async function undoDelete() {
+    if (!lastDeleted || !currentUser) return;
+    const { id, data } = lastDeleted;
+    lastDeleted = null;
+    try {
+      await db.collection('users').doc(currentUser.uid).collection('registros').doc(id).set(data);
+      showToast('✓ Registro restaurado');
+    } catch (err) {
+      console.error('Undo error:', err);
+      showToast('No se pudo restaurar. Intenta de nuevo.');
     }
   }
 
@@ -1682,7 +1818,9 @@ function initApp() {
     selMetod = r.metodo;
     document.getElementById('fecha').value  = r.fecha;
     document.getElementById('desc').value   = r.desc;
-    document.getElementById('monto').value  = r.monto;
+    const mEl = document.getElementById('monto');
+    mEl.value = String(Math.round(r.monto));
+    fmtMontoLive(mEl);
     syncBtns();
     document.getElementById('form-title').textContent   = 'Editar registro';
     document.getElementById('form-sub').textContent     = 'Modifica y guarda los cambios';
@@ -1700,8 +1838,10 @@ function initApp() {
     document.getElementById('fecha').value  = todayStr();
     document.getElementById('desc').value   = '';
     document.getElementById('monto').value  = '';
-    selTipo  = null;
-    selMetod = null;
+    const mp = document.getElementById('monto-preview');
+    if (mp) mp.textContent = '';
+    selTipo  = 'gasto';   /* default: el tipo más frecuente */
+    /* selMetod se conserva: recuerda el último método usado */
     editId   = null;
     syncBtns();
     hideErr();
@@ -1753,6 +1893,19 @@ function initApp() {
     renderList('lista-ingresos', ingresos, 'ingreso');
     renderList('lista-gastos',   gastos,   'gasto');
     renderList('lista-ahorros',  ahorros,  'ahorro');
+
+    setSectionMeta('ingresos', ingresos.length, totI);
+    setSectionMeta('gastos',   gastos.length,   totG);
+    setSectionMeta('ahorros',  ahorros.length,  totA);
+  }
+
+  function setSectionMeta(name, n, total) {
+    const w = document.getElementById('sw-' + name);
+    if (!w) return;
+    const c = w.querySelector('.section-count');
+    const t = w.querySelector('.section-total');
+    if (c) c.textContent = '(' + n + ')';
+    if (t) t.textContent = fmtCOP(total);
   }
 
   function renderList(cId, list, tipo) {
@@ -1810,7 +1963,8 @@ function initApp() {
     document.getElementById('view-' + v).classList.add('active');
     document.getElementById('nav-'  + v).classList.add('active');
     if (v === 'historial') {
-      ['ingresos','gastos','ahorros'].forEach(n => {
+      document.getElementById('sw-gastos')?.classList.remove('collapsed');
+      ['ingresos','ahorros'].forEach(n => {
         document.getElementById('sw-' + n)?.classList.add('collapsed');
       });
       renderHistorial();
@@ -1827,6 +1981,19 @@ function initApp() {
       String(d.getMonth() + 1).padStart(2, '0'),
       String(d.getDate()).padStart(2, '0')
     ].join('-');
+  }
+
+  function fmtMontoLive(input) {
+    const digits = input.value.replace(/\D/g, '');
+    const prev = document.getElementById('monto-preview');
+    if (!digits) {
+      input.value = '';
+      if (prev) prev.textContent = '';
+      return;
+    }
+    const n = parseInt(digits, 10);
+    input.value = new Intl.NumberFormat('es-CO').format(n);
+    if (prev) prev.innerHTML = 'Vas a registrar <strong>' + fmtCOP(n) + '</strong>';
   }
 
   function fmtCOP(n) {
@@ -1871,6 +2038,18 @@ function initApp() {
     toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
   }
 
+  function showUndoToast(msg) {
+    const t = document.getElementById('toast');
+    clearTimeout(toastTimer);
+    t.classList.remove('error');
+    t.innerHTML = esc(msg) + ' <button class="toast-undo" onclick="undoDelete()">Deshacer</button>';
+    t.classList.add('show');
+    toastTimer = setTimeout(() => {
+      t.classList.remove('show');
+      lastDeleted = null;
+    }, 5000);
+  }
+
   function showErr(msg) {
     const e = document.getElementById('error-msg');
     e.textContent = msg;
@@ -1892,7 +2071,7 @@ function initApp() {
     const m = document.createElement('div'); m.className = 'dash-card';
     m.innerHTML = '<div class="dash-card-title">Últimos 6 meses</div><div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>';
     const d = document.createElement('div'); d.className = 'dash-card';
-    d.innerHTML = '<div class="dash-card-title">Distribución general</div><div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas></div>';
+    d.innerHTML = '<div class="dash-card-title">Distribución general</div><div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas><div class="donut-center"><span class="dc-lbl">Balance</span><span class="dc-val"></span></div></div>';
     drive.before(m); drive.before(d);
   }
 
@@ -2019,8 +2198,8 @@ function initApp() {
       data: {
         labels: years,
         datasets: [
-          { label:'Ingresos', data:dataI, borderColor:'#4ADE80', backgroundColor:mkGrad2(ctxM,'#4ADE80',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#4ADE80', pointBorderColor:'transparent' },
-          { label:'Gastos',   data:dataG, borderColor:'#F87171', backgroundColor:mkGrad2(ctxM,'#F87171',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#F87171', pointBorderColor:'transparent' }
+          { label:'Ingresos', data:dataI, borderColor:'#57B259', backgroundColor:mkGrad2(ctxM,'#57B259',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#57B259', pointBorderColor:'transparent' },
+          { label:'Gastos',   data:dataG, borderColor:'#FA1E00', backgroundColor:mkGrad2(ctxM,'#FA1E00',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#FA1E00', pointBorderColor:'transparent' }
         ]
       },
       options: {
@@ -2037,6 +2216,17 @@ function initApp() {
     document.getElementById('dt-ingresos').textContent = fmtCOP(data['2026']?.ingresos || 0);
     document.getElementById('dt-gastos').textContent   = fmtCOP(data['2026']?.gastos   || 0);
     document.getElementById('dt-ahorros').textContent  = '—';
+
+    /* Hero desde Excel: ingresos − gastos 2026 */
+    const dispS = (data['2026']?.ingresos || 0) - (data['2026']?.gastos || 0);
+    const heroS = document.getElementById('hero-amount');
+    if (heroS) {
+      heroS.textContent = fmtCOP(dispS);
+      heroS.classList.toggle('neg', dispS < 0);
+      heroS.classList.toggle('pos', dispS >= 0);
+    }
+    const heroSubS = document.getElementById('hero-sub');
+    if (heroSubS) heroSubS.textContent = 'Ingresos − gastos · Excel 2026';
     document.getElementById('drive-btn').href = DRIVE_URL;
   }
 
@@ -2064,6 +2254,17 @@ function initApp() {
     document.getElementById('dt-gastos').textContent   = fmtCOP(totG);
     document.getElementById('dt-ahorros').textContent  = fmtCOP(totA);
     document.getElementById('drive-btn').href          = DRIVE_URL;
+
+    /* Hero: balance disponible */
+    const disp = totI - totG - totA;
+    const hero = document.getElementById('hero-amount');
+    if (hero) {
+      hero.textContent = fmtCOP(disp);
+      hero.classList.toggle('neg', disp < 0);
+      hero.classList.toggle('pos', disp >= 0);
+    }
+    const heroSub = document.getElementById('hero-sub');
+    if (heroSub) heroSub.textContent = 'Ingresos − gastos − ahorros';
 
     /* Últimos 6 meses */
     const months = [];
@@ -2095,9 +2296,9 @@ function initApp() {
       data: {
         labels: months.map(m=>m.label),
         datasets: [
-          { label:'Ingresos', data:mI, borderColor:'#4ADE80', backgroundColor:mkGrad(ctxM,'#4ADE80',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#4ADE80', pointBorderColor:'transparent' },
-          { label:'Gastos',   data:mG, borderColor:'#F87171', backgroundColor:mkGrad(ctxM,'#F87171',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#F87171', pointBorderColor:'transparent' },
-          { label:'Ahorros',  data:mA, borderColor:'#60A5FA', backgroundColor:mkGrad(ctxM,'#60A5FA',0.18,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#60A5FA', pointBorderColor:'transparent' }
+          { label:'Ingresos', data:mI, borderColor:'#57B259', backgroundColor:mkGrad(ctxM,'#57B259',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#57B259', pointBorderColor:'transparent' },
+          { label:'Gastos',   data:mG, borderColor:'#FA1E00', backgroundColor:mkGrad(ctxM,'#FA1E00',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#FA1E00', pointBorderColor:'transparent' },
+          { label:'Ahorros',  data:mA, borderColor:'#FCCA45', backgroundColor:mkGrad(ctxM,'#FCCA45',0.18,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#FCCA45', pointBorderColor:'transparent' }
         ]
       },
       options: {
@@ -2112,21 +2313,43 @@ function initApp() {
 
     /* Dona distribución */
     const ctxD = document.getElementById('chart-dist').getContext('2d');
-    if (totI+totG+totA === 0) { ctxD.clearRect(0,0,ctxD.canvas.width,ctxD.canvas.height); return; }
+    const donutCenter = document.querySelector('#view-dashboard .donut-center');
+    if (totI+totG+totA === 0) {
+      ctxD.clearRect(0,0,ctxD.canvas.width,ctxD.canvas.height);
+      if (donutCenter) donutCenter.style.display = 'none';
+      return;
+    }
+    if (donutCenter) {
+      donutCenter.style.display = 'flex';
+      const dv = donutCenter.querySelector('.dc-val');
+      if (dv) {
+        const bal = totI - totG - totA;
+        dv.textContent = fmtCOP(bal);
+        dv.classList.toggle('neg', bal < 0);
+        dv.classList.toggle('pos', bal >= 0);
+      }
+    }
     chartDist = new Chart(ctxD, {
       type: 'doughnut',
       data: {
         labels: ['Ingresos','Gastos','Ahorros'],
         datasets:[{
           data:[totI,totG,totA],
-          backgroundColor:['rgba(74,222,128,0.18)','rgba(248,113,113,0.18)','rgba(96,165,250,0.18)'],
-          borderColor:['#4ADE80','#F87171','#60A5FA'],
+          backgroundColor:['rgba(87,178,89,0.18)','rgba(250,30,0,0.18)','rgba(252,202,69,0.18)'],
+          borderColor:['#57B259','#FA1E00','#FCCA45'],
           borderWidth:2, hoverOffset:6
         }]
       },
       options:{
         responsive:true, maintainAspectRatio:false, cutout:'68%',
-        plugins:{ legend:{ position:'bottom', labels:{ color:'#A08068', font:{size:11}, padding:14, boxWidth:12 } } }
+        plugins:{
+          legend:{ position:'bottom', labels:{ color:'#A08068', font:{size:11}, padding:14, boxWidth:12 } },
+          tooltip:{ callbacks:{ label: ctx => {
+            const tot = totI + totG + totA;
+            const pct = tot ? Math.round(ctx.raw / tot * 100) : 0;
+            return ` ${ctx.label}: ${fmtCOP(ctx.raw)} (${pct}%)`;
+          } } }
+        }
       }
     });
   }
@@ -2166,8 +2389,8 @@ function initApp() {
   let selMColor    = '#FB923C';
 
   const PRESET_COLORS = [
-    '#FB923C','#F5C518','#4ADE80','#60A5FA',
-    '#A78BFA','#F87171','#F472B6','#34D399',
+    '#FB923C','#F5C518','#57B259','#FCCA45',
+    '#A78BFA','#FA1E00','#F472B6','#34D399',
     '#38BDF8','#FBBF24','#5AB887','#E879F9'
   ];
 
@@ -2192,7 +2415,7 @@ function initApp() {
       const snap = await db.collection('users').doc(uid).collection('metodos').limit(1).get();
       if (!snap.empty) return;
       const defaults = [
-        { id:'efectivo',       nombre:'Efectivo',       tipo:'efectivo', color:'#8899A0' },
+        { id:'efectivo',       nombre:'Efectivo',       tipo:'efectivo', color:'#B0A090' },
         { id:'debito',         nombre:'Débito',         tipo:'debito',   color:'#6B9EFF' },
         { id:'tc-bancolombia', nombre:'TC Bancolombia', tipo:'credito',  color:'#F5C518' },
         { id:'tc-nu',          nombre:'TC Nu',          tipo:'credito',  color:'#A78BFA' },
@@ -2212,8 +2435,8 @@ function initApp() {
   function getMetodoColor(id) {
     const m = metodos.find(m => m.id === id);
     if (m) return m.color;
-    const fb = {efectivo:'#8899A0',debito:'#6B9EFF','tc-bancolombia':'#F5C518','tc-nu':'#A78BFA','tc-lulo':'#5AB887'};
-    return fb[id] || '#8899A0';
+    const fb = {efectivo:'#B0A090',debito:'#6B9EFF','tc-bancolombia':'#F5C518','tc-nu':'#A78BFA','tc-lulo':'#5AB887',ahorro:'#FCCA45'};
+    return fb[id] || '#B0A090';
   }
   function hexRgba(hex, a) {
     const h = hex.replace('#','');
@@ -2467,6 +2690,8 @@ function initApp() {
   window.setDashMode        = setDashMode;
   window.toggleFilterMenu   = toggleFilterMenu;
   window.setFilter     = setFilter;
+  window.undoDelete    = undoDelete;
+  window.fmtMontoLive  = fmtMontoLive;
 
 
   /* ═══ SERVICE WORKER ═══ */

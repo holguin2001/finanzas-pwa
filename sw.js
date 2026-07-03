@@ -1,6 +1,6 @@
-/* ─── Finanzas PWA – Service Worker v2 ─── */
-/* Versión 2: incluye el SDK de Firebase para uso offline */
-const CACHE  = 'finanzas-v19';
+/* ─── Finanzas PWA – Service Worker ─── */
+/* v20: paleta v2 (verde/rojo/dorado) + rediseño UX del dashboard e historial */
+const CACHE  = 'finanzas-v20';
 const ASSETS = [
   './',
   './index.html',
