@@ -528,58 +528,6 @@
     }
 
     /* ===== DASHBOARD ===== */
-    .dash-mode-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 4px;
-    }
-    .dash-mode-toggle {
-      display: flex;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 3px;
-      gap: 2px;
-    }
-    .dmb {
-      padding: 5px 12px;
-      border-radius: 100px;
-      border: none;
-      background: transparent;
-      color: var(--t2);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-family: 'Open Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      transition: all 0.18s;
-      white-space: nowrap;
-    }
-    .dmb.active { background: var(--surface); color: var(--accent); }
-    .dmb svg { width: 12px; height: 12px; }
-    .dmb:active { opacity: 0.7; }
-    .dash-sheets-msg {
-      margin: 14px 16px 0;
-      padding: 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      font-size: 13px;
-      color: var(--t2);
-      line-height: 1.6;
-    }
-    .dash-sheets-msg strong { color: var(--t1); }
-    .dash-loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 120px;
-      color: var(--t3);
-      font-size: 13px;
-      gap: 10px;
-    }
     .dash-totals {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -668,6 +616,100 @@
     }
     .dc-val.pos { color: var(--income); }
     .dc-val.neg { color: var(--expense); }
+    /* ── Insights del mes ── */
+    .insight-row {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 10px;
+      padding: 12px 16px 0;
+    }
+    .insight-card {
+      background: rgba(14,7,1,0.70);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+      padding: 13px 14px;
+    }
+    .insight-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .insight-col .insight-card { flex: 1; padding: 11px 14px; }
+    .in-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--t2);
+    }
+    .in-val {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--t1);
+      letter-spacing: -0.4px;
+      margin-top: 3px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .in-val.sm { font-size: 15px; }
+    .in-delta {
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .in-delta.up   { color: var(--expense); }  /* gasto sube = alerta */
+    .in-delta.down { color: var(--income);  }  /* gasto baja = bien   */
+    .in-delta.na   { color: var(--t3); font-weight: 500; }
+    .in-note {
+      font-size: 11px;
+      color: var(--t3);
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+    .in-val.gold { color: var(--savings); }
+    /* ── Top gastos del mes ── */
+    .top-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(251,146,60,0.06);
+    }
+    .top-row:last-child { border-bottom: none; padding-bottom: 2px; }
+    .top-rank {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--expense-lt);
+      color: var(--expense);
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .top-info { flex: 1; min-width: 0; }
+    .top-desc {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--t1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .top-meta { font-size: 11px; color: var(--t3); margin-top: 1px; }
+    .top-monto {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--expense);
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
     .dash-card {
       margin: 12px 16px 0;
       background: var(--surface);
@@ -685,27 +727,6 @@
     }
     .chart-wrap { position: relative; height: 200px; }
     .chart-donut-wrap { height: 220px; max-width: 250px; margin: 0 auto; }
-    .dash-drive { padding: 14px 16px 8px; }
-    .drive-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: fit-content;
-      margin: 0 auto;
-      padding: 10px 14px;
-      background: transparent;
-      border: none;
-      border-radius: 8px;
-      color: var(--t2);
-      font-family: 'Open Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .drive-link:hover  { border-color: var(--accent); color: var(--accent); }
-    .drive-link:active { opacity: 0.7; }
     .dash-empty {
       text-align: center;
       padding: 32px 0;
@@ -1255,24 +1276,13 @@
 <section id="view-dashboard" class="view">
 
   <div class="page-header">
-    <div class="dash-mode-row">
-      <div>
-        <div class="page-title">Dashboard</div>
-      </div>
-      <div class="dash-mode-toggle">
-        <button class="dmb active" data-mode="app" onclick="setDashMode('app')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-          App
-        </button>
-        <button class="dmb" data-mode="sheets" onclick="setDashMode('sheets')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
-          Excel
-        </button>
-      </div>
+    <div>
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub">Tu panorama financiero</div>
     </div>
-        <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
-          <span class="user-initial"></span>
-        </button>
+    <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
+      <span class="user-initial"></span>
+    </button>
   </div>
 
   <!-- Balance disponible -->
@@ -1280,6 +1290,26 @@
     <div class="hero-lbl">Disponible</div>
     <div class="hero-amount pos" id="hero-amount">$ 0</div>
     <div class="hero-sub" id="hero-sub">Ingresos − gastos − ahorros</div>
+  </div>
+
+  <!-- Insights del mes actual -->
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="in-lbl" id="in-mes-lbl">Gastos del mes</div>
+      <div class="in-val" id="in-gasto-mes">$ 0</div>
+      <div class="in-delta na" id="in-gasto-delta"></div>
+      <div class="in-note" id="in-proyeccion"></div>
+    </div>
+    <div class="insight-col">
+      <div class="insight-card">
+        <div class="in-lbl">Promedio diario</div>
+        <div class="in-val sm" id="in-prom-dia">$ 0</div>
+      </div>
+      <div class="insight-card">
+        <div class="in-lbl">Tasa de ahorro</div>
+        <div class="in-val sm gold" id="in-tasa-ahorro">—</div>
+      </div>
+    </div>
   </div>
 
   <!-- Totales -->
@@ -1299,19 +1329,6 @@
   <div class="dash-card">
     <div class="dash-card-title">Distribución general</div>
     <div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas></div>
-  </div>
-
-  <!-- Acceso directo al Excel -->
-  <div class="dash-drive">
-    <a id="drive-btn" href="#" target="_blank" rel="noopener noreferrer" class="drive-link">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-      Abrir Excel en Google Drive
-    </a>
   </div>
 
 </section>
@@ -1618,13 +1635,6 @@ function initApp() {
   /* Persistencia offline: Firestore cachea datos localmente en IndexedDB.
      La app funciona sin conexión después de la primera carga con sesión.  */
   
-  const DRIVE_URL       = 'https://docs.google.com/spreadsheets/d/17-lQU5a9xuETy28M-8DcLMQP7jCMQKPG/edit?usp=sharing';
-
-  /* ════════════════════════════════════════════
-     📊 ID de tu Google Sheets (ya configurado)
-     ════════════════════════════════════════════ */
-  const SPREADSHEET_ID  = '17-lQU5a9xuETy28M-8DcLMQP7jCMQKPG';
-
   db.enablePersistence({ synchronizeTabs: true })
     .catch(err => console.warn('Persistencia offline:', err.code));
 
@@ -1633,8 +1643,7 @@ function initApp() {
   let records    = [];
   let chartMonthly      = null;
   let chartDist         = null;
-  let dashMode          = 'app';   /* 'app' | 'sheets' */
-  let googleSheetsToken = null;   /* token OAuth de Google para Sheets */
+  let chartMetodos      = null;
   let currentUser = null;
   let unsub       = null;   // cleanup del listener de Firestore
   let selTipo     = 'gasto';
@@ -1660,26 +1669,6 @@ function initApp() {
   /* Exponer al scope global para los onclick del HTML */
   window.signIn  = signIn;
   window.signOut = doSignOut;
-
-  /* Conectar Google Sheets (pide permiso de lectura de Sheets, solo una vez por sesión) */
-  async function connectGoogleSheets() {
-    try {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/spreadsheets.readonly');
-      const result = await auth.currentUser.reauthenticateWithPopup(provider);
-      const cred   = firebase.auth.GoogleAuthProvider.credentialFromResult(result);
-      if (cred?.accessToken) {
-        googleSheetsToken = cred.accessToken;
-        renderDashboardSheets();
-      }
-    } catch(e) {
-      if (e.code !== 'auth/popup-closed-by-user') {
-        console.error('connectGoogleSheets:', e);
-        alert('No se pudo conectar. Intenta de nuevo.');
-      }
-    }
-  }
-  window.connectGoogleSheets = connectGoogleSheets;
 
   auth.onAuthStateChanged(user => {
     document.getElementById('loading-screen').style.display = 'none';
@@ -2076,178 +2065,25 @@ function initApp() {
   /* Restaura los contenedores de charts del Dashboard al estado original */
   function restoreDashboardCards() {
     const section = document.getElementById('view-dashboard');
-    const drive   = section.querySelector('.dash-drive');
     section.querySelectorAll('.dash-card').forEach(c => c.remove());
+    const pm = document.createElement('div'); pm.className = 'dash-card';
+    pm.innerHTML = '<div class="dash-card-title" id="metodos-chart-title">Gastos por método · este mes</div><div class="chart-wrap" id="metodos-wrap" style="height:140px"><canvas id="chart-metodos"></canvas></div>';
     const m = document.createElement('div'); m.className = 'dash-card';
     m.innerHTML = '<div class="dash-card-title">Últimos 6 meses</div><div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>';
     const d = document.createElement('div'); d.className = 'dash-card';
     d.innerHTML = '<div class="dash-card-title">Distribución general</div><div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas><div class="donut-center"><span class="dc-lbl">Balance</span><span class="dc-val"></span></div></div>';
-    drive.before(m); drive.before(d);
+    const t = document.createElement('div'); t.className = 'dash-card';
+    t.innerHTML = '<div class="dash-card-title" id="top-gastos-title">Top gastos · este mes</div><div id="top-gastos"></div>';
+    section.appendChild(pm); section.appendChild(m); section.appendChild(d); section.appendChild(t);
   }
 
-  function setDashMode(mode) {
-    dashMode = mode;
-    document.querySelectorAll('.dmb').forEach(b =>
-      b.classList.toggle('active', b.dataset.mode === mode));
-    renderDashboard();
-  }
-
-  /* Lee los totales anuales desde Google Sheets usando el token OAuth del usuario */
-  async function fetchExcelData() {
-    if (!googleSheetsToken) throw new Error('sin token');
-    const sid  = SPREADSHEET_ID;
-    const base = `https://sheets.googleapis.com/v4/spreadsheets/${sid}/values`;
-
-    async function getRange(range) {
-      const r = await fetch(`${base}/${encodeURIComponent(range)}`,
-        { headers: { Authorization: `Bearer ${googleSheetsToken}` } });
-      if (!r.ok) { googleSheetsToken = null; throw new Error(`HTTP ${r.status}`); }
-      const d = await r.json();
-      return d.values ? d.values[0] : [];
-    }
-
-    /* Años anteriores: totales en fila 5, empezando en col B */
-    const parse2022_23 = row => ({
-      ingresos: +row[1] || 0,
-      gastos:   +row[6] || 0
-    });
-    const parse2024_25 = row => ({
-      ingresos: +row[1]  || 0,
-      gastos:   +row[13] || (+row[6] + +row[11]) || 0
-    });
-
-    const [r22, r23, r24, r25, r26] = await Promise.all([
-      getRange("'2022'!B5:P5"),
-      getRange("'2023'!B5:P5"),
-      getRange("'2024'!B5:P5"),
-      getRange("'2025'!B5:P5"),
-      getRange("'📋 2026'!A3:P3"),
-    ]);
-
-    return {
-      2022: parse2022_23(r22),
-      2023: parse2022_23(r23),
-      2024: parse2024_25(r24),
-      2025: parse2024_25(r25),
-      2026: { ingresos: +r26[1] || 0, gastos: +r26[10] || 0 }
-    };
-  }
-
-  async function renderDashboardSheets() {
-    /* Siempre restaurar DOM primero */
-    if (chartMonthly) { chartMonthly.destroy(); chartMonthly = null; }
-    if (chartDist)    { chartDist.destroy();    chartDist    = null; }
-    restoreDashboardCards();
-
-    /* Sin token → mostrar botón de conexión */
-    if (!googleSheetsToken) {
-      const cards = document.querySelectorAll('#view-dashboard .dash-card');
-      if (cards[0]) cards[0].innerHTML = `
-        <div class="dash-card-title">Conectar Excel</div>
-        <div style="padding:4px 0 8px">
-          <p style="color:var(--t2);font-size:13px;line-height:1.65;margin-bottom:16px">
-            Toca el botón para autorizar la lectura de tu Google Sheets.<br>
-            Solo necesitas hacerlo <strong style="color:var(--t1)">una vez por sesión.</strong>
-          </p>
-          <button onclick="connectGoogleSheets()"
-            style="width:100%;padding:14px;background:var(--accent);color:#1A0800;border:none;
-                   border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">
-            Conectar con Google Sheets
-          </button>
-        </div>`;
-      if (cards[1]) cards[1].style.display = 'none';
-      return;
-    }
-
-    /* Con token → mostrar loading y cargar datos */
-    const cards = document.querySelectorAll('#view-dashboard .dash-card');
-    if (cards[0]) cards[0].innerHTML = '<div class="dash-loading"><div class="spinner"></div> Cargando desde Excel…</div>';
-    if (cards[1]) cards[1].style.display = 'none';
-
-    let data;
-    try {
-      data = await fetchExcelData();
-    } catch(e) {
-      console.error('Excel fetch error:', e);
-      googleSheetsToken = null; /* limpiar token expirado */
-      if (cards[0]) cards[0].innerHTML = `
-        <div class="dash-card-title">Error de conexión</div>
-        <div style="padding:4px 0 8px">
-          <p style="color:var(--t2);font-size:13px;line-height:1.65;margin-bottom:16px">
-            No se pudo cargar el Excel. El acceso puede haber expirado.
-          </p>
-          <button onclick="connectGoogleSheets()"
-            style="width:100%;padding:14px;background:var(--accent);color:#1A0800;border:none;
-                   border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">
-            Reconectar
-          </button>
-        </div>`;
-      return;
-    }
-
-    /* Restaurar DOM con canvas frescos para los charts */
-    restoreDashboardCards();
-    const freshCards = document.querySelectorAll('#view-dashboard .dash-card');
-    if (freshCards[1]) freshCards[1].style.display = '';
-
-    const years  = ['2022','2023','2024','2025','2026'];
-    const dataI  = years.map(y => data[y]?.ingresos || 0);
-    const dataG  = years.map(y => data[y]?.gastos   || 0);
-
-    function mkGrad2(c,hex,a1,a2){
-      const h=hex.replace('#','');
-      const [r,g,b]=[h.slice(0,2),h.slice(2,4),h.slice(4,6)].map(x=>parseInt(x,16));
-      const g2=c.createLinearGradient(0,0,0,190);
-      g2.addColorStop(0,`rgba(${r},${g},${b},${a1})`);
-      g2.addColorStop(1,`rgba(${r},${g},${b},${a2})`);
-      return g2;
-    }
-    const ctxM = document.getElementById('chart-monthly').getContext('2d');
-    chartMonthly = new Chart(ctxM, {
-      type: 'line',
-      data: {
-        labels: years,
-        datasets: [
-          { label:'Ingresos', data:dataI, borderColor:'#57B259', backgroundColor:mkGrad2(ctxM,'#57B259',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#57B259', pointBorderColor:'transparent' },
-          { label:'Gastos',   data:dataG, borderColor:'#FA1E00', backgroundColor:mkGrad2(ctxM,'#FA1E00',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointBackgroundColor:'#FA1E00', pointBorderColor:'transparent' }
-        ]
-      },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ labels:{ color:'#A08068', font:{size:11}, boxWidth:12 } } },
-        scales:{
-          x:{ ticks:{color:'#A08068',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
-          y:{ ticks:{color:'#A08068',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
-        }
-      }
-    });
-
-    /* Actualizar totales con datos del año actual (2026) */
-    document.getElementById('dt-ingresos').textContent = fmtCOP(data['2026']?.ingresos || 0);
-    document.getElementById('dt-gastos').textContent   = fmtCOP(data['2026']?.gastos   || 0);
-    document.getElementById('dt-ahorros').textContent  = '—';
-
-    /* Hero desde Excel: ingresos − gastos 2026 */
-    const dispS = (data['2026']?.ingresos || 0) - (data['2026']?.gastos || 0);
-    const heroS = document.getElementById('hero-amount');
-    if (heroS) {
-      heroS.textContent = fmtCOP(dispS);
-      heroS.classList.toggle('neg', dispS < 0);
-      heroS.classList.toggle('pos', dispS >= 0);
-    }
-    const heroSubS = document.getElementById('hero-sub');
-    if (heroSubS) heroSubS.textContent = 'Ingresos − gastos · Excel 2026';
-    document.getElementById('drive-btn').href = DRIVE_URL;
-  }
-
-  
   function renderDashboard() {
     if (typeof Chart === 'undefined') return;
-    if (dashMode === 'sheets') { renderDashboardSheets(); return; }
 
     /* Restaurar DOM y destruir charts anteriores */
     if (chartMonthly) { chartMonthly.destroy(); chartMonthly = null; }
     if (chartDist)    { chartDist.destroy();    chartDist    = null; }
+    if (chartMetodos) { chartMetodos.destroy(); chartMetodos = null; }
     restoreDashboardCards();
 
     /* Chart.js defaults */
@@ -2263,7 +2099,6 @@ function initApp() {
     document.getElementById('dt-ingresos').textContent = fmtCOP(totI);
     document.getElementById('dt-gastos').textContent   = fmtCOP(totG);
     document.getElementById('dt-ahorros').textContent  = fmtCOP(totA);
-    document.getElementById('drive-btn').href          = DRIVE_URL;
 
     /* Hero: balance disponible */
     const disp = totI - totG - totA;
@@ -2273,8 +2108,54 @@ function initApp() {
       hero.classList.toggle('neg', disp < 0);
       hero.classList.toggle('pos', disp >= 0);
     }
-    const heroSub = document.getElementById('hero-sub');
-    if (heroSub) heroSub.textContent = 'Ingresos − gastos − ahorros';
+
+    /* ── Insights del mes actual ── */
+    const hoy     = new Date();
+    const mkKey   = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    const keyAct  = mkKey(hoy);
+    const keyAnt  = mkKey(new Date(hoy.getFullYear(), hoy.getMonth()-1, 1));
+    const mesAct  = records.filter(r => r.fecha.startsWith(keyAct));
+    const gMes    = mesAct.filter(r => r.tipo === 'gasto').reduce((s,r) => s+r.monto, 0);
+    const gAnt    = records.filter(r => r.tipo === 'gasto' && r.fecha.startsWith(keyAnt)).reduce((s,r) => s+r.monto, 0);
+    const iMes    = mesAct.filter(r => r.tipo === 'ingreso').reduce((s,r) => s+r.monto, 0);
+    const aMes    = mesAct.filter(r => r.tipo === 'ahorro').reduce((s,r) => s+r.monto, 0);
+    const nombreMes    = hoy.toLocaleDateString('es-CO', { month: 'long' });
+    const nombreMesAnt = new Date(hoy.getFullYear(), hoy.getMonth()-1, 1).toLocaleDateString('es-CO', { month: 'long' });
+    const diasMes      = new Date(hoy.getFullYear(), hoy.getMonth()+1, 0).getDate();
+    const diaHoy       = hoy.getDate();
+
+    const inLbl = document.getElementById('in-mes-lbl');
+    if (inLbl) inLbl.textContent = 'Gastos de ' + nombreMes;
+    const inGasto = document.getElementById('in-gasto-mes');
+    if (inGasto) inGasto.textContent = fmtCOP(gMes);
+
+    const inDelta = document.getElementById('in-gasto-delta');
+    if (inDelta) {
+      if (gAnt > 0) {
+        const pct = Math.round((gMes - gAnt) / gAnt * 100);
+        inDelta.textContent = (pct >= 0 ? '↑ ' : '↓ ') + Math.abs(pct) + '% vs ' + nombreMesAnt;
+        inDelta.className = 'in-delta ' + (pct >= 0 ? 'up' : 'down');
+      } else {
+        inDelta.textContent = 'Sin gastos en ' + nombreMesAnt;
+        inDelta.className = 'in-delta na';
+      }
+    }
+
+    const promDia = diaHoy > 0 ? gMes / diaHoy : 0;
+    const inProm = document.getElementById('in-prom-dia');
+    if (inProm) inProm.textContent = fmtCOP(Math.round(promDia));
+
+    const inProy = document.getElementById('in-proyeccion');
+    if (inProy) {
+      if (gMes > 0 && diaHoy >= 5 && diaHoy < diasMes) {
+        inProy.textContent = 'A este ritmo: ~' + fmtCOP(Math.round(promDia * diasMes)) + ' al cierre';
+      } else {
+        inProy.textContent = '';
+      }
+    }
+
+    const inTasa = document.getElementById('in-tasa-ahorro');
+    if (inTasa) inTasa.textContent = iMes > 0 ? Math.round(aMes / iMes * 100) + '%' : '—';
 
     /* Últimos 6 meses */
     const months = [];
@@ -2327,6 +2208,10 @@ function initApp() {
     if (totI+totG+totA === 0) {
       ctxD.clearRect(0,0,ctxD.canvas.width,ctxD.canvas.height);
       if (donutCenter) donutCenter.style.display = 'none';
+      const mwEmpty = document.getElementById('metodos-wrap');
+      if (mwEmpty) { mwEmpty.style.height = 'auto'; mwEmpty.innerHTML = '<div class="dash-empty">Sin gastos este mes todavía</div>'; }
+      const tgEmpty = document.getElementById('top-gastos');
+      if (tgEmpty) tgEmpty.innerHTML = '<div class="dash-empty">Sin gastos este mes todavía</div>';
       return;
     }
     if (donutCenter) {
@@ -2362,6 +2247,74 @@ function initApp() {
         }
       }
     });
+
+    /* ── Gastos por método (mes actual) ── */
+    const tituloMet = document.getElementById('metodos-chart-title');
+    if (tituloMet) tituloMet.textContent = 'Gastos por método · ' + nombreMes;
+    const porMetodo = {};
+    mesAct.filter(r => r.tipo === 'gasto').forEach(r => {
+      porMetodo[r.metodo] = (porMetodo[r.metodo] || 0) + r.monto;
+    });
+    const metEntries = Object.entries(porMetodo).sort((a,b) => b[1] - a[1]);
+    const metWrap = document.getElementById('metodos-wrap');
+    if (metWrap) {
+      if (!metEntries.length) {
+        metWrap.style.height = 'auto';
+        metWrap.innerHTML = '<div class="dash-empty">Sin gastos este mes todavía</div>';
+      } else {
+        metWrap.style.height = Math.max(120, metEntries.length * 40 + 34) + 'px';
+        metWrap.innerHTML = '<canvas id="chart-metodos"></canvas>';
+        const ctxP = document.getElementById('chart-metodos').getContext('2d');
+        chartMetodos = new Chart(ctxP, {
+          type: 'bar',
+          data: {
+            labels: metEntries.map(([id]) => getMetodoNombre(id)),
+            datasets: [{
+              data: metEntries.map(([,v]) => v),
+              backgroundColor: metEntries.map(([id]) => hexRgba(getMetodoColor(id), 0.22)),
+              borderColor:     metEntries.map(([id]) => getMetodoColor(id)),
+              borderWidth: 1.5,
+              borderRadius: 5,
+              barThickness: 20
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: ctx => ' ' + fmtCOP(ctx.raw) } }
+            },
+            scales: {
+              x: { ticks: { color:'#A08068', font:{size:10}, callback: v => v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v }, grid: { color:'rgba(251,146,60,0.05)' }, border: { color:'rgba(251,146,60,0.08)' } },
+              y: { ticks: { color:'#A08068', font:{size:11} }, grid: { display:false }, border: { color:'rgba(251,146,60,0.08)' } }
+            }
+          }
+        });
+      }
+    }
+
+    /* ── Top 5 gastos del mes ── */
+    const tituloTop = document.getElementById('top-gastos-title');
+    if (tituloTop) tituloTop.textContent = 'Top gastos · ' + nombreMes;
+    const topEl = document.getElementById('top-gastos');
+    if (topEl) {
+      const top5 = mesAct
+        .filter(r => r.tipo === 'gasto')
+        .sort((a,b) => b.monto - a.monto)
+        .slice(0, 5);
+      topEl.innerHTML = top5.length
+        ? top5.map((r, i) => `
+            <div class="top-row">
+              <span class="top-rank">${i + 1}</span>
+              <div class="top-info">
+                <div class="top-desc">${esc(r.desc)}</div>
+                <div class="top-meta">${fmtDate(r.fecha)} · ${esc(getMetodoNombre(r.metodo))}</div>
+              </div>
+              <div class="top-monto">${fmtCOP(r.monto)}</div>
+            </div>`).join('')
+        : '<div class="dash-empty">Sin gastos este mes todavía</div>';
+    }
   }
 
   /* ═══ BÚSQUEDA Y FILTROS ═══ */
@@ -2702,7 +2655,6 @@ function initApp() {
   window.selectMColor       = selectMColor;
   window.saveMetodoForm     = saveMetodoForm;
   window.confirmDelMetodo   = confirmDelMetodo;
-  window.setDashMode        = setDashMode;
   window.toggleFilterMenu   = toggleFilterMenu;
   window.setFilter     = setFilter;
   window.undoDelete    = undoDelete;

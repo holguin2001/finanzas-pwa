@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v22: botones + y ✎ para agregar/editar métodos desde el formulario */
-const CACHE  = 'finanzas-v22';
+/* v24: insights del mes, gastos por método y top 5 en Stats */
+const CACHE  = 'finanzas-v24';
 const ASSETS = [
   './',
   './index.html',
