@@ -322,6 +322,16 @@
       border-color: var(--accent);
       color: var(--accent);
     }
+    .pill-btn.pill-add {
+      border-style: dashed;
+      color: var(--t2);
+      padding: 10px 15px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pill-btn.pill-add:active { color: var(--accent); border-color: var(--accent); }
     /* Colores de TC en el formulario */
     .pill-btn[data-metodo="tc-bancolombia"].active { color:#F5C518; border-color:#F5C518; background:#1C1400; }
     .pill-btn[data-metodo="tc-nu"].active          { color:#9B6DFF; border-color:#9B6DFF; background:#13092A; }
@@ -2400,6 +2410,8 @@ function initApp() {
     unsubMetodos = db.collection('users').doc(uid).collection('metodos')
       .onSnapshot(snap => {
         metodos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        /* Si el método seleccionado ya no existe, limpiar la selección */
+        if (selMetod && !metodos.find(m => m.id === selMetod)) selMetod = null;
         renderMetodoPills();
         renderFilterOpts();
         if (document.getElementById('metodos-list-view')?.style.display !== 'none') {
@@ -2414,12 +2426,9 @@ function initApp() {
     try {
       const snap = await db.collection('users').doc(uid).collection('metodos').limit(1).get();
       if (!snap.empty) return;
+      /* Cada persona registra sus propios métodos; solo Efectivo viene por defecto */
       const defaults = [
-        { id:'efectivo',       nombre:'Efectivo',       tipo:'efectivo', color:'#B0A090' },
-        { id:'debito',         nombre:'Débito',         tipo:'debito',   color:'#6B9EFF' },
-        { id:'tc-bancolombia', nombre:'TC Bancolombia', tipo:'credito',  color:'#F5C518' },
-        { id:'tc-nu',          nombre:'TC Nu',          tipo:'credito',  color:'#A78BFA' },
-        { id:'tc-lulo',        nombre:'TC Lulo',        tipo:'credito',  color:'#5AB887' },
+        { id:'efectivo', nombre:'Efectivo', tipo:'efectivo', color:'#B0A090' },
       ];
       const batch = db.batch();
       defaults.forEach(({ id, ...data }) =>
@@ -2458,7 +2467,13 @@ function initApp() {
         : '';
       return `<button class="pill-btn${active?' active':''}" data-metodo="${esc(m.id)}"
                 onclick="selectMetodo('${esc(m.id)}')" style="${style}">${esc(m.nombre)}</button>`;
-    }).join('');
+    }).join('') +
+    `<button class="pill-btn pill-add" onclick="openMetodosModal();openAddMetodo()" title="Agregar método de pago" aria-label="Agregar método de pago">+</button>
+     <button class="pill-btn pill-add" onclick="openMetodosModal()" title="Editar métodos de pago" aria-label="Editar métodos de pago">
+       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5z"/>
+       </svg>
+     </button>`;
   }
 
   /* Render opciones de filtro en historial */

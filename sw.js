@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v20: paleta v2 (verde/rojo/dorado) + rediseño UX del dashboard e historial */
-const CACHE  = 'finanzas-v20';
+/* v22: botones + y ✎ para agregar/editar métodos desde el formulario */
+const CACHE  = 'finanzas-v22';
 const ASSETS = [
   './',
   './index.html',
