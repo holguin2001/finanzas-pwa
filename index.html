@@ -1529,7 +1529,7 @@ function initApp() {
 
   /* Exponer al scope global para los onclick del HTML */
   window.signIn  = signIn;
-  window.signOut = signOut;
+  window.signOut = doSignOut;
 
   /* Conectar Google Sheets (pide permiso de lectura de Sheets, solo una vez por sesión) */
   async function connectGoogleSheets() {
@@ -1572,7 +1572,8 @@ function initApp() {
 
     } else {
       currentUser = null;
-      if (unsub) { unsub(); unsub = null; }
+      if (unsub)        { unsub();        unsub        = null; }
+      if (unsubMetodos) { unsubMetodos(); unsubMetodos = null; }
       records = [];
 
       document.getElementById('login-screen').style.display  = 'flex';
