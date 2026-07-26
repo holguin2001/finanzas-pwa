@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#070400">
+  <meta name="theme-color" content="#070400" id="meta-theme-color">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,6 +15,17 @@
   <link rel="icon" href="./icon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <title>Finanzas</title>
+
+  <!-- Aplica el tema guardado ANTES del primer paint, evita flash -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('finanzas-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
 
   <!-- Chart.js para gráficas del Dashboard -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -52,6 +63,52 @@
       --r-sm:        10px;
       --sh:          0 2px 12px rgba(0,0,0,0.45);
       --nav-h:       64px;
+      /* ── Niveles de superficie (glass) ── */
+      --surf-screen: rgba(7,4,0,0.97);
+      --surf-header: rgba(12,6,1,0.85);
+      --surf-card:   rgba(12,6,1,0.74);
+      --surf-soft:   rgba(14,7,1,0.70);
+      --surf-input:  rgba(16,8,1,0.90);
+      --surf-strong: rgba(12,6,1,0.90);
+      --surf-pill:   rgba(14,7,1,0.84);
+      --surf-solid:  rgba(8,4,0,0.98);
+      --surf-modal:  rgba(6,3,0,0.94);
+      --surf-nav:    rgba(6,3,0,0.93);
+      --surf-tipo:   rgba(14,7,1,0.80);
+      --badge-filter: none;
+    }
+
+    /* ═══ MODO CLARO ═══ */
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg:          #FBF3E7;
+      --surface:     rgba(255,255,255,0.72);
+      --surface-2:   rgba(255,255,255,0.85);
+      --border:      rgba(180,90,20,0.16);
+      --t1:          #2B1B0E;
+      --t2:          #8A6A50;
+      --t3:          #B69679;
+      --accent:      #E8720F;
+      --accent-lt:   rgba(232,114,15,0.12);
+      --income:      #2F8F3F;
+      --income-lt:   rgba(47,143,63,0.12);
+      --expense:     #D91700;
+      --expense-lt:  rgba(217,23,0,0.10);
+      --savings:     #B8860B;
+      --savings-lt:  rgba(184,134,11,0.14);
+      --surf-screen: rgba(253,247,238,0.97);
+      --surf-header: rgba(255,255,255,0.78);
+      --surf-card:   rgba(255,255,255,0.80);
+      --surf-soft:   rgba(255,255,255,0.76);
+      --surf-input:  rgba(255,255,255,0.95);
+      --surf-strong: rgba(255,255,255,0.90);
+      --surf-pill:   rgba(255,255,255,0.82);
+      --surf-solid:  rgba(255,255,255,0.97);
+      --surf-modal:  rgba(255,255,255,0.94);
+      --surf-nav:    rgba(255,255,255,0.90);
+      --surf-tipo:   rgba(255,255,255,0.82);
+      /* Oscurece insignias de color arbitrario (métodos de pago) para legibilidad sobre fondo claro */
+      --badge-filter: brightness(0.72) saturate(1.18);
     }
 
     /* ===== RESET ===== */
@@ -61,13 +118,20 @@
       -webkit-tap-highlight-color: transparent;
     }
     html { height: 100%; }
+    html[data-theme="light"] body {
+      background-image:
+        radial-gradient(ellipse 65% 55% at 14% 42%, rgba(251,146,60,0.13) 0%, transparent 62%),
+        radial-gradient(ellipse 50% 65% at 85% 22%, rgba(194,65,12,0.09) 0%, transparent 62%),
+        radial-gradient(ellipse 40% 45% at 58% 92%, rgba(234,88,12,0.07) 0%, transparent 55%);
+    }
     body {
       font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #070400;
+      background-color: var(--bg);
       background-image:
         radial-gradient(ellipse 65% 55% at 14% 42%, rgba(251,146,60,0.20) 0%, transparent 62%),
         radial-gradient(ellipse 50% 65% at 85% 22%, rgba(194,65,12,0.13) 0%, transparent 62%),
         radial-gradient(ellipse 40% 45% at 58% 92%, rgba(234,88,12,0.10) 0%, transparent 55%);
+      transition: background-color .25s ease;
       background-attachment: fixed;
       color: var(--t1);
       min-height: 100dvh;
@@ -181,6 +245,42 @@
       transition: opacity 0.15s;
     }
     .user-avatar:active { opacity: 0.65; }
+    /* ── Toggle de tema (sol/luna deslizante) ── */
+    .theme-toggle {
+      position: relative;
+      width: 52px; height: 28px;
+      flex-shrink: 0;
+      border: 1.5px solid var(--border);
+      background: var(--surf-strong);
+      border-radius: 100px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      transition: background .2s, border-color .2s;
+    }
+    .theme-toggle:active { opacity: 0.8; }
+    .tt-icon {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 13px; height: 13px;
+      color: var(--t3);
+      transition: color .25s ease;
+      pointer-events: none;
+    }
+    .tt-sun  { left: 7px; }
+    .tt-moon { right: 7px; }
+    .theme-toggle[data-active="sun"]  .tt-sun  { color: #1A0800; }
+    .theme-toggle[data-active="moon"] .tt-moon { color: #1A0800; }
+    .tt-thumb {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    .theme-toggle[data-active="moon"] .tt-thumb { transform: translateX(24px); }
     .user-avatar--inv {
       background: var(--accent-lt);
       border-color: rgba(251,146,60,0.30);
@@ -206,6 +306,7 @@
       justify-content: space-between;
       gap: 12px;
     }
+    .header-right { display: flex; align-items: center; gap: 10px; }
     .page-title {
       font-size: 22px;
       font-weight: 700;
@@ -444,7 +545,7 @@
       position: absolute;
       right: 0;
       top: calc(100% + 8px);
-      background: rgba(8,4,0,0.98);
+      background: var(--surf-solid);
       border: 1px solid rgba(251,146,60,0.14);
       border-radius: 12px;
       padding: 6px;
@@ -565,7 +666,7 @@
     /* ── Hero: balance disponible ── */
     .hero-card {
       margin: 14px 16px 0;
-      background: rgba(12,6,1,0.74);
+      background: var(--surf-card);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border);
@@ -624,7 +725,7 @@
       padding: 12px 16px 0;
     }
     .insight-card {
-      background: rgba(14,7,1,0.70);
+      background: var(--surf-soft);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border);
@@ -982,7 +1083,7 @@
       width: 42px; height: 42px;
       border-radius: var(--r-sm);
       border: 1.5px solid var(--border);
-      background: rgba(16,8,1,0.90);
+      background: var(--surf-input);
       color: var(--t2);
       display: flex;
       align-items: center;
@@ -1002,53 +1103,53 @@
     /* ═══════════════════════════════════════
        GLASSMORPHISM + ORANGE ATMOSPHERE
        ═══════════════════════════════════════ */
-    #loading-screen { background: rgba(7,4,0,0.97); }
-    #login-screen   { background: rgba(7,4,0,0.96); }
+    #loading-screen { background: var(--surf-screen); }
+    #login-screen   { background: var(--surf-screen); }
     .page-header, .hist-header {
-      background: rgba(12,6,1,0.85);
+      background: var(--surf-header);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
     .rec-card {
-      background: rgba(14,7,1,0.70);
+      background: var(--surf-soft);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 2px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.07);
     }
     .s-card, .dash-total {
-      background: rgba(14,7,1,0.70);
+      background: var(--surf-soft);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 2px 16px rgba(0,0,0,0.35);
     }
     .dash-card {
-      background: rgba(12,6,1,0.74);
+      background: var(--surf-card);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 4px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.08);
     }
     .segment {
-      background: rgba(12,6,1,0.90);
+      background: var(--surf-strong);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    .pill-btn { background: rgba(14,7,1,0.84); }
+    .pill-btn { background: var(--surf-pill); }
     input[type="date"],
     input[type="text"],
     input[type="number"],
-    #search-input { background: rgba(16,8,1,0.90); }
+    #search-input { background: var(--surf-input); }
     .filter-dropdown {
       position: fixed;
       right: 16px;
       top: auto;
       z-index: 3000;
-      background: rgba(8,4,0,0.98);
+      background: var(--surf-solid);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(251,146,60,0.14);
     }
     .login-card {
-      background: rgba(6,3,0,0.94);
+      background: var(--surf-modal);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       box-shadow: 0 8px 48px rgba(0,0,0,0.70), inset 0 1px 0 rgba(251,146,60,0.10);
@@ -1061,7 +1162,7 @@
     }
 
     .bottom-nav {
-      background: rgba(6,3,0,0.93) !important;
+      background: var(--surf-nav) !important;
       backdrop-filter: blur(28px) !important;
       -webkit-backdrop-filter: blur(28px) !important;
       border: 1px solid rgba(251,146,60,0.14) !important;
@@ -1081,11 +1182,15 @@
     .filter-btn[data-filter="tc-nu"].active          { background:rgba(167,139,250,0.07); border-color:rgba(167,139,250,0.35); }
     .filter-btn[data-filter="tc-lulo"].active        { background:rgba(90,184,135,0.07); border-color:rgba(90,184,135,0.35); }
     .rec-card.exportado { opacity: 0.35; }
+    /* Oscurece insignias de color libre (métodos de pago) y la barra de "gastos por método" en modo claro */
+    .rec-method, .method-dot, #chart-metodos {
+      filter: var(--badge-filter);
+    }
   
     /* ── Avatar menu ── */
     .avatar-menu {
       position: fixed;
-      background: rgba(8,4,0,0.98);
+      background: var(--surf-solid);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(251,146,60,0.15);
       border-radius: 12px;
@@ -1198,7 +1303,7 @@
     .tipo-btn {
       padding: 10px 8px;
       border: 1.5px solid var(--border);
-      background: rgba(14,7,1,0.80);
+      background: var(--surf-tipo);
       border-radius: var(--r-sm);
       color: var(--t2);
       font-family: 'Open Sans', sans-serif;
@@ -1296,9 +1401,16 @@
       <div class="page-title">Dashboard</div>
       <div class="page-sub">Tu panorama financiero</div>
     </div>
-    <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
-      <span class="user-initial"></span>
-    </button>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
+        <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+        <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
+        <span class="tt-thumb"></span>
+      </button>
+      <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
+        <span class="user-initial"></span>
+      </button>
+    </div>
   </div>
 
   <!-- Balance disponible -->
@@ -1356,9 +1468,16 @@
         <div class="page-title" id="form-title">Nuevo registro</div>
         <div class="page-sub"   id="form-sub">Anota rápido antes de olvidar</div>
       </div>
-      <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
-        <span class="user-initial"></span>
-      </button>
+      <div class="header-right">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
+          <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+          <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
+          <span class="tt-thumb"></span>
+        </button>
+        <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
+          <span class="user-initial"></span>
+        </button>
+      </div>
     </div>
 
     <div class="form-body">
@@ -1451,7 +1570,12 @@
             </svg>
           </button>
         </div>
-        <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
+          <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+          <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
+          <span class="tt-thumb"></span>
+        </button>
+    <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
           <span class="user-initial"></span>
         </button>
       </div>
@@ -2109,6 +2233,16 @@ function initApp() {
     section.appendChild(pm); section.appendChild(m); section.appendChild(d); section.appendChild(t);
   }
 
+  /* Paleta exacta usada por Chart.js; debe reflejar los mismos valores que los tokens CSS del tema activo */
+  function themeColors() {
+    const light = document.documentElement.dataset.theme === 'light';
+    return light
+      ? { t2:'#8A6A50', income:'#2F8F3F', expense:'#D91700', savings:'#B8860B',
+          grid:'rgba(180,90,20,0.08)', gridBorder:'rgba(180,90,20,0.16)' }
+      : { t2:'#A08068', income:'#57B259', expense:'#FA1E00', savings:'#FCCA45',
+          grid:'rgba(251,146,60,0.05)', gridBorder:'rgba(251,146,60,0.08)' };
+  }
+
   function renderDashboard() {
     if (typeof Chart === 'undefined') return;
 
@@ -2118,9 +2252,11 @@ function initApp() {
     if (chartMetodos) { chartMetodos.destroy(); chartMetodos = null; }
     restoreDashboardCards();
 
+    const TC = themeColors();
+
     /* Chart.js defaults */
-    Chart.defaults.color       = '#A08068';
-    Chart.defaults.borderColor = 'rgba(251,146,60,0.06)';
+    Chart.defaults.color       = TC.t2;
+    Chart.defaults.borderColor = TC.grid;
     Chart.defaults.font.family = "'Open Sans', sans-serif";
 
     /* Totales generales */
@@ -2219,17 +2355,17 @@ function initApp() {
       data: {
         labels: months.map(m=>m.label),
         datasets: [
-          { label:'Ingresos', data:mI, borderColor:'#57B259', backgroundColor:mkGrad(ctxM,'#57B259',0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#57B259', pointBorderColor:'transparent' },
-          { label:'Gastos',   data:mG, borderColor:'#FA1E00', backgroundColor:mkGrad(ctxM,'#FA1E00',0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#FA1E00', pointBorderColor:'transparent' },
-          { label:'Ahorros',  data:mA, borderColor:'#FCCA45', backgroundColor:mkGrad(ctxM,'#FCCA45',0.18,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:'#FCCA45', pointBorderColor:'transparent' }
+          { label:'Ingresos', data:mI, borderColor:TC.income, backgroundColor:mkGrad(ctxM,TC.income,0.28,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:TC.income, pointBorderColor:'transparent' },
+          { label:'Gastos',   data:mG, borderColor:TC.expense, backgroundColor:mkGrad(ctxM,TC.expense,0.22,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:TC.expense, pointBorderColor:'transparent' },
+          { label:'Ahorros',  data:mA, borderColor:TC.savings, backgroundColor:mkGrad(ctxM,TC.savings,0.18,0), fill:true, tension:0.42, borderWidth:2, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:TC.savings, pointBorderColor:'transparent' }
         ]
       },
       options: {
         responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ labels:{ color:'#A08068', font:{size:11}, boxWidth:12, padding:12 } } },
+        plugins:{ legend:{ labels:{ color:TC.t2, font:{size:11}, boxWidth:12, padding:12 } } },
         scales:{
-          x:{ ticks:{color:'#A08068',font:{size:10}}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} },
-          y:{ ticks:{color:'#A08068',font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:'rgba(251,146,60,0.05)'}, border:{color:'rgba(251,146,60,0.08)'} }
+          x:{ ticks:{color:TC.t2,font:{size:10}}, grid:{color:TC.grid}, border:{color:TC.gridBorder} },
+          y:{ ticks:{color:TC.t2,font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:TC.grid}, border:{color:TC.gridBorder} }
         }
       }
     });
@@ -2262,15 +2398,15 @@ function initApp() {
         labels: ['Ingresos','Gastos','Ahorros'],
         datasets:[{
           data:[totI,totG,totA],
-          backgroundColor:['rgba(87,178,89,0.18)','rgba(250,30,0,0.18)','rgba(252,202,69,0.18)'],
-          borderColor:['#57B259','#FA1E00','#FCCA45'],
+          backgroundColor:[hexRgba(TC.income,0.18),hexRgba(TC.expense,0.18),hexRgba(TC.savings,0.18)],
+          borderColor:[TC.income,TC.expense,TC.savings],
           borderWidth:2, hoverOffset:6
         }]
       },
       options:{
         responsive:true, maintainAspectRatio:false, cutout:'68%',
         plugins:{
-          legend:{ position:'bottom', labels:{ color:'#A08068', font:{size:11}, padding:14, boxWidth:12 } },
+          legend:{ position:'bottom', labels:{ color:TC.t2, font:{size:11}, padding:14, boxWidth:12 } },
           tooltip:{ callbacks:{ label: ctx => {
             const tot = totI + totG + totA;
             const pct = tot ? Math.round(ctx.raw / tot * 100) : 0;
@@ -2318,8 +2454,8 @@ function initApp() {
               tooltip: { callbacks: { label: ctx => ' ' + fmtCOP(ctx.raw) } }
             },
             scales: {
-              x: { ticks: { color:'#A08068', font:{size:10}, callback: v => v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v }, grid: { color:'rgba(251,146,60,0.05)' }, border: { color:'rgba(251,146,60,0.08)' } },
-              y: { ticks: { color:'#A08068', font:{size:11} }, grid: { display:false }, border: { color:'rgba(251,146,60,0.08)' } }
+              x: { ticks: { color:TC.t2, font:{size:10}, callback: v => v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v }, grid: { color:TC.grid }, border: { color:TC.gridBorder } },
+              y: { ticks: { color:TC.t2, font:{size:11} }, grid: { display:false }, border: { color:TC.gridBorder } }
             }
           }
         });
@@ -2691,7 +2827,36 @@ function initApp() {
   window.setFilter     = setFilter;
   window.undoDelete    = undoDelete;
   window.fmtMontoLive  = fmtMontoLive;
+  window.toggleTheme   = toggleTheme;
 
+  /* ═══ TEMA CLARO / OSCURO ═══ */
+
+  /* El color de la barra del navegador (meta theme-color) debe seguir al tema activo */
+  function syncMetaThemeColor() {
+    const meta  = document.getElementById('meta-theme-color');
+    const light = document.documentElement.dataset.theme === 'light';
+    if (meta) meta.setAttribute('content', light ? '#FBF3E7' : '#070400');
+  }
+
+  /* Todos los toggles (Dashboard, Registrar, Historial) deben reflejar el mismo estado */
+  function syncThemeToggles() {
+    const light = document.documentElement.dataset.theme === 'light';
+    document.querySelectorAll('.theme-toggle').forEach(btn => {
+      btn.dataset.active = light ? 'sun' : 'moon';
+    });
+    syncMetaThemeColor();
+  }
+
+  function toggleTheme() {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('finanzas-theme', next); } catch (e) { /* modo privado: se pierde al cerrar, no es crítico */ }
+    syncThemeToggles();
+    /* Las gráficas de Chart.js pintan colores fijos: hay que re-renderizarlas para que tomen la paleta nueva */
+    if (typeof Chart !== 'undefined') renderDashboard();
+  }
+
+  syncThemeToggles();
 
   /* ═══ SERVICE WORKER ═══ */
   if ('serviceWorker' in navigator) {

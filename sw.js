@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v25: separadores por mes en el historial */
-const CACHE  = 'finanzas-v25';
+/* v26: modo claro/oscuro con toggle deslizante junto al avatar */
+const CACHE  = 'finanzas-v26';
 const ASSETS = [
   './',
   './index.html',
