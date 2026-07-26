@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v26: modo claro/oscuro con toggle deslizante junto al avatar */
-const CACHE  = 'finanzas-v26';
+/* v27: rediseño del modo claro (sombras, superficies sólidas, insignias legibles) */
+const CACHE  = 'finanzas-v27';
 const ASSETS = [
   './',
   './index.html',
