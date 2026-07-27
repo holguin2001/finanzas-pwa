@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v27: rediseño del modo claro (sombras, superficies sólidas, insignias legibles) */
-const CACHE  = 'finanzas-v27';
+/* v29: rediseño completo de UI (paleta índigo/esmeralda/rosa/naranja, tipografía Space Grotesk + JetBrains Mono) */
+const CACHE  = 'finanzas-v29';
 const ASSETS = [
   './',
   './index.html',

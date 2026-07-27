@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#070400" id="meta-theme-color">
+  <meta name="theme-color" content="#14131A" id="meta-theme-color">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -30,10 +30,10 @@
   <!-- Chart.js para gráficas del Dashboard -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 
-  <!-- Google Fonts: Open Sans -->
+  <!-- Google Fonts: Inter (cuerpo), Space Grotesk (titulos), JetBrains Mono (montos) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
   <!-- Firebase SDK (compat mode, sin bundler) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -44,61 +44,66 @@
     /* ===== TOKENS ===== */
     :root {
       color-scheme: dark;
-      --bg:          #070400;
-      --surface:     rgba(14,7,1,0.78);
-      --surface-2:   rgba(20,10,2,0.84);
-      --border:      rgba(251,146,60,0.10);
-      --t1:          #FFF7F0;
-      --t2:          #A08068;
-      --t3:          #8A6A4A;
-      --accent:      #FB923C;
-      --accent-lt:   rgba(251,146,60,0.10);
-      --income:      #57B259;
-      --income-lt:   rgba(87,178,89,0.10);
-      --expense:     #FA1E00;
-      --expense-lt:  rgba(250,30,0,0.10);
-      --savings:     #FCCA45;
-      --savings-lt:  rgba(252,202,69,0.10);
+      --bg:          #14131A;
+      --surface:     rgba(30,29,38,0.78);
+      --surface-2:   rgba(36,35,46,0.86);
+      --border:      rgba(255,255,255,0.08);
+      --t1:          #F5F3F0;
+      --t2:          #9C99A8;
+      --t3:          #706D80;
+      --accent:      #6366F1;
+      --accent-lt:   rgba(99,102,241,0.14);
+      --income:      #22C55E;
+      --income-lt:   rgba(34,197,94,0.12);
+      --expense:     #E1274D;
+      --expense-lt:  rgba(225,39,77,0.12);
+      --savings:     #EF7A1A;
+      --savings-lt:  rgba(239,122,26,0.12);
       --r:           14px;
       --r-sm:        10px;
       --sh:          0 2px 12px rgba(0,0,0,0.45);
       --nav-h:       64px;
       /* ── Niveles de superficie (glass) ── */
-      --surf-screen: rgba(7,4,0,0.97);
-      --surf-header: rgba(12,6,1,0.85);
-      --surf-card:   rgba(12,6,1,0.74);
-      --surf-soft:   rgba(14,7,1,0.70);
-      --surf-input:  rgba(16,8,1,0.90);
-      --surf-strong: rgba(12,6,1,0.90);
-      --surf-pill:   rgba(14,7,1,0.84);
-      --surf-solid:  rgba(8,4,0,0.98);
-      --surf-modal:  rgba(6,3,0,0.94);
-      --surf-nav:    rgba(6,3,0,0.93);
-      --surf-tipo:   rgba(14,7,1,0.80);
+      --surf-screen: rgba(20,19,26,0.97);
+      --surf-header: rgba(24,23,31,0.85);
+      --surf-card:   rgba(24,23,31,0.74);
+      --surf-soft:   rgba(28,27,36,0.70);
+      --surf-input:  rgba(32,31,41,0.90);
+      --surf-strong: rgba(26,25,33,0.90);
+      --surf-pill:   rgba(28,27,36,0.84);
+      --surf-solid:  rgba(18,17,23,0.98);
+      --surf-modal:  rgba(16,15,20,0.94);
+      --surf-nav:    rgba(16,15,20,0.93);
+      --surf-tipo:   rgba(28,27,36,0.80);
       --badge-filter: none;
       --card-sh:     0 2px 16px rgba(0,0,0,0.35);
       --nav-sh:      0 8px 40px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.6);
+      /* ── Ancla fija de la tarjeta "Disponible": siempre obsidiana, en ambos temas ── */
+      --hero-bg:     #14131A;
+      --hero-border: rgba(255,255,255,0.06);
+      --hero-lbl:    rgba(245,243,240,0.55);
+      --hero-sub:    rgba(245,243,240,0.42);
     }
 
     /* ═══ MODO CLARO ═══ */
     html[data-theme="light"] {
       color-scheme: light;
-      --bg:          #F7EFE3;
-      --surface:     rgba(255,255,255,0.90);
-      --surface-2:   rgba(255,255,255,0.97);
-      --border:      rgba(150,90,40,0.16);
-      --t1:          #2B1B0E;
-      --t2:          #7A5A40;
-      --t3:          #B2957A;
-      --accent:      #E8720F;
-      --accent-lt:   rgba(232,114,15,0.14);
-      --income:      #2F8F3F;
-      --income-lt:   rgba(47,143,63,0.16);
-      --expense:     #D91700;
-      --expense-lt:  rgba(217,23,0,0.13);
-      --savings:     #B8860B;
-      --savings-lt:  rgba(184,134,11,0.17);
-      --surf-screen: rgba(250,243,232,0.98);
+      --bg:          #F6F3EE;
+      --surface:     rgba(255,255,255,0.92);
+      --surface-2:   rgba(255,255,255,0.98);
+      --border:      rgba(27,27,31,0.08);
+      --t1:          #1B1B1F;
+      --t2:          #6B6875;
+      --t3:          #9A97A3;
+      --accent:      #4F46E5;
+      --accent-lt:   rgba(79,70,229,0.10);
+      --income:      #16A34A;
+      --income-lt:   rgba(22,163,74,0.12);
+      --expense:     #DC1C48;
+      --expense-lt:  rgba(220,28,72,0.10);
+      --savings:     #E86A0C;
+      --savings-lt:  rgba(232,106,12,0.12);
+      --surf-screen: rgba(246,243,238,0.98);
       --surf-header: rgba(255,255,255,0.90);
       --surf-card:   rgba(255,255,255,0.94);
       --surf-soft:   rgba(255,255,255,0.92);
@@ -110,8 +115,8 @@
       --surf-nav:    rgba(255,255,255,0.96);
       --surf-tipo:   rgba(255,255,255,0.92);
       /* Sombra propia para tarjetas: en oscuro es casi decorativa, en claro es la que da profundidad real */
-      --card-sh:     0 1px 2px rgba(120,72,20,0.06), 0 6px 20px rgba(120,72,20,0.10);
-      --nav-sh:      0 4px 22px rgba(120,72,20,0.16), 0 1px 6px rgba(120,72,20,0.10);
+      --card-sh:     0 1px 2px rgba(20,20,30,0.05), 0 6px 20px rgba(20,20,30,0.08);
+      --nav-sh:      0 4px 22px rgba(20,20,30,0.12), 0 1px 6px rgba(20,20,30,0.08);
       /* Oscurece Y desatura las insignias de color libre (métodos de pago) para un look "tinta", no pastel neón */
       --badge-filter: brightness(0.62) saturate(0.8) contrast(1.08);
     }
@@ -123,19 +128,9 @@
       -webkit-tap-highlight-color: transparent;
     }
     html { height: 100%; }
-    html[data-theme="light"] body {
-      background-image:
-        radial-gradient(ellipse 65% 55% at 14% 42%, rgba(251,146,60,0.13) 0%, transparent 62%),
-        radial-gradient(ellipse 50% 65% at 85% 22%, rgba(194,65,12,0.09) 0%, transparent 62%),
-        radial-gradient(ellipse 40% 45% at 58% 92%, rgba(234,88,12,0.07) 0%, transparent 55%);
-    }
     body {
-      font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg);
-      background-image:
-        radial-gradient(ellipse 65% 55% at 14% 42%, rgba(251,146,60,0.20) 0%, transparent 62%),
-        radial-gradient(ellipse 50% 65% at 85% 22%, rgba(194,65,12,0.13) 0%, transparent 62%),
-        radial-gradient(ellipse 40% 45% at 58% 92%, rgba(234,88,12,0.10) 0%, transparent 55%);
       transition: background-color .25s ease;
       background-attachment: fixed;
       color: var(--t1);
@@ -190,7 +185,7 @@
     .login-logo {
       width: 72px; height: 72px;
       background: var(--accent-lt);
-      border: 1px solid rgba(251,146,60,0.25);
+      border: 1px solid rgba(99,102,241,0.25);
       border-radius: 22px;
       margin: 0 auto 24px;
       display: flex;
@@ -227,19 +222,47 @@
     }
     .btn-google:hover  { border-color: var(--accent); }
     .btn-google:active { opacity: 0.7; }
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0;
+      color: var(--t3);
+      font-size: 12px;
+    }
+    .login-divider::before, .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .btn-guest {
+      width: 100%;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--t2);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--r);
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .btn-guest:hover  { border-color: var(--accent); color: var(--accent); }
+    .btn-guest:active { opacity: 0.7; }
     .login-note {
       font-size: 12px;
       color: var(--t3);
       margin-top: 20px;
       line-height: 1.5;
     }
+    .login-note-guest { margin-top: 10px; }
 
     /* ===== USER AVATAR ===== */
     .user-avatar {
       width: 34px; height: 34px;
       border-radius: 50%;
       background: var(--accent-lt);
-      border: 1.5px solid rgba(251,146,60,0.30);
+      border: 1.5px solid rgba(99,102,241,0.30);
       color: var(--accent);
       font-size: 14px;
       font-weight: 700;
@@ -288,7 +311,7 @@
     .theme-toggle[data-active="moon"] .tt-thumb { transform: translateX(24px); }
     .user-avatar--inv {
       background: var(--accent-lt);
-      border-color: rgba(251,146,60,0.30);
+      border-color: rgba(99,102,241,0.30);
       color: var(--accent);
     }
 
@@ -313,8 +336,9 @@
     }
     .header-right { display: flex; align-items: center; gap: 10px; }
     .page-title {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: -0.4px;
       color: var(--t1);
     }
@@ -359,12 +383,14 @@
     input:focus { border-color: var(--accent); }
     input::placeholder { color: var(--t3); }
     .monto-preview {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       color: var(--t2);
       font-variant-numeric: tabular-nums;
       min-height: 18px;
     }
-    .monto-preview strong { color: var(--t1); font-weight: 700; }
+    .monto-preview strong { color: var(--t1); font-weight: 600; }
+    #monto { font-family: 'JetBrains Mono', monospace; }
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     input[type="number"] { -moz-appearance: textfield; }
@@ -554,7 +580,7 @@
       right: 0;
       top: calc(100% + 8px);
       background: var(--surf-solid);
-      border: 1px solid rgba(251,146,60,0.14);
+      border: 1px solid rgba(99,102,241,0.14);
       border-radius: 12px;
       padding: 6px;
       min-width: 190px;
@@ -627,13 +653,14 @@
     .s-card-label.exp { color: var(--expense); }
     .s-card-label.sav { color: var(--savings); }
     .s-card-amount {
-      font-size: 15px;
-      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
       color: var(--t1);
       margin-top: 4px;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.1px;
     }
 
     /* ===== DASHBOARD ===== */
@@ -662,10 +689,11 @@
     .dash-total.exp .dt-label { color: var(--expense); }
     .dash-total.sav .dt-label { color: var(--savings); }
     .dt-amount {
-      font-size: 17px;
-      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 600;
       color: var(--t1);
-      letter-spacing: -0.4px;
+      letter-spacing: -0.2px;
       margin-top: 2px;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -674,12 +702,10 @@
     /* ── Hero: balance disponible ── */
     .hero-card {
       margin: 14px 16px 0;
-      background: var(--surf-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
+      background: var(--hero-bg);
+      border: 1px solid var(--hero-border);
       border-radius: var(--r);
-      box-shadow: var(--card-sh), inset 0 1px 0 rgba(251,146,60,0.08);
+      box-shadow: var(--card-sh);
       padding: 18px 18px 16px;
     }
     .hero-lbl {
@@ -687,18 +713,19 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.7px;
-      color: var(--t2);
+      color: var(--hero-lbl);
     }
     .hero-amount {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
       margin-top: 4px;
       font-variant-numeric: tabular-nums;
     }
     .hero-amount.pos { color: var(--income); }
     .hero-amount.neg { color: var(--expense); }
-    .hero-sub { font-size: 12px; color: var(--t3); margin-top: 4px; }
+    .hero-sub { font-size: 12px; color: var(--hero-sub); margin-top: 4px; }
     /* ── Centro de la dona ── */
     .donut-center {
       position: absolute;
@@ -718,9 +745,10 @@
       color: var(--t2);
     }
     .dc-val {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
       font-variant-numeric: tabular-nums;
     }
     .dc-val.pos { color: var(--income); }
@@ -786,7 +814,7 @@
       align-items: center;
       gap: 12px;
       padding: 10px 0;
-      border-bottom: 1px solid rgba(251,146,60,0.06);
+      border-bottom: 1px solid rgba(99,102,241,0.06);
     }
     .top-row:last-child { border-bottom: none; padding-bottom: 2px; }
     .top-rank {
@@ -813,8 +841,9 @@
     }
     .top-meta { font-size: 11px; color: var(--t3); margin-top: 1px; }
     .top-monto {
-      font-size: 13px;
-      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
       color: var(--expense);
       flex-shrink: 0;
       font-variant-numeric: tabular-nums;
@@ -907,7 +936,7 @@
       color: var(--t2);
       white-space: nowrap;
     }
-    .md-rule { flex: 1; height: 1px; background: rgba(251,146,60,0.08); }
+    .md-rule { flex: 1; height: 1px; background: rgba(99,102,241,0.08); }
     .rec-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -963,7 +992,7 @@
       gap: 6px;
       flex-shrink: 0;
     }
-    .rec-monto { font-size: 14px; font-weight: 700; letter-spacing: -0.3px; }
+    .rec-monto { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: -0.1px; }
     .rec-monto.ingreso { color: var(--income); }
     .rec-monto.gasto   { color: var(--expense); }
     .rec-monto.ahorro  { color: var(--savings); }
@@ -1051,7 +1080,7 @@
       white-space: nowrap;
     }
     .nav-btn:active { opacity: 0.7; }
-    .nav-btn.active { background: rgba(251,146,60,0.12); color: var(--accent); }
+    .nav-btn.active { background: rgba(99,102,241,0.12); color: var(--accent); }
     .nav-btn svg    { width: 15px; height: 15px; }
 
     /* ===== TOAST ===== */
@@ -1105,7 +1134,7 @@
       border-color: var(--accent);
       color: var(--accent);
       background: var(--accent-lt);
-      box-shadow: 0 0 12px rgba(251,146,60,0.20);
+      box-shadow: 0 0 12px rgba(99,102,241,0.20);
     }
 
     /* ═══════════════════════════════════════
@@ -1122,7 +1151,7 @@
       background: var(--surf-soft);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--card-sh), inset 0 1px 0 rgba(251,146,60,0.07);
+      box-shadow: var(--card-sh), inset 0 1px 0 rgba(99,102,241,0.07);
     }
     .s-card, .dash-total {
       background: var(--surf-soft);
@@ -1134,7 +1163,7 @@
       background: var(--surf-card);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: var(--card-sh), inset 0 1px 0 rgba(251,146,60,0.08);
+      box-shadow: var(--card-sh), inset 0 1px 0 rgba(99,102,241,0.08);
     }
     .segment {
       background: var(--surf-strong);
@@ -1154,30 +1183,30 @@
       background: var(--surf-solid);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(251,146,60,0.14);
+      border: 1px solid rgba(99,102,241,0.14);
     }
     .login-card {
       background: var(--surf-modal);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      box-shadow: 0 8px 48px rgba(0,0,0,0.70), inset 0 1px 0 rgba(251,146,60,0.10);
+      box-shadow: 0 8px 48px rgba(0,0,0,0.70), inset 0 1px 0 rgba(99,102,241,0.10);
     }
     .toast {
       background: rgba(10,5,0,0.97);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-color: rgba(251,146,60,0.18);
+      border-color: rgba(99,102,241,0.18);
     }
 
     .bottom-nav {
       background: var(--surf-nav) !important;
       backdrop-filter: blur(28px) !important;
       -webkit-backdrop-filter: blur(28px) !important;
-      border: 1px solid rgba(251,146,60,0.14) !important;
+      border: 1px solid rgba(99,102,241,0.14) !important;
       box-shadow: var(--nav-sh) !important;
     }
-    .btn-primary { box-shadow: 0 0 28px rgba(251,146,60,0.28), 0 4px 12px rgba(0,0,0,0.35); }
-    .spinner { border-top-color: #FB923C; }
+    .btn-primary { box-shadow: 0 0 28px rgba(99,102,241,0.28), 0 4px 12px rgba(0,0,0,0.35); }
+    .spinner { border-top-color: #6366F1; }
     .method-efectivo    { color: #B0A090; background: rgba(176,160,144,0.08); }
     .method-debito      { color: #6B9EFF; background: rgba(107,158,255,0.08); }
     .method-bancolombia { color: #F5C518; background: rgba(245,197,24,0.08); }
@@ -1201,7 +1230,7 @@
       position: fixed;
       background: var(--surf-solid);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(251,146,60,0.15);
+      border: 1px solid rgba(99,102,241,0.15);
       border-radius: 12px;
       padding: 6px;
       min-width: 180px;
@@ -1225,7 +1254,20 @@
       cursor: pointer;
       transition: background 0.12s;
     }
-    .avatar-menu button:hover { background: rgba(251,146,60,0.08); }
+    .avatar-menu button:hover { background: rgba(99,102,241,0.08); }
+    .avatar-menu-label {
+      padding: 8px 14px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--t3);
+      white-space: normal;
+      line-height: 1.4;
+    }
+    .avatar-menu button.am-highlight { color: var(--accent); font-weight: 700; }
+    .avatar-menu button.am-highlight:hover { background: var(--accent-lt); }
+    .user-avatar.is-guest { border-style: dashed; }
 
     /* ── Modal bottom sheet ── */
     .modal-overlay {
@@ -1241,7 +1283,7 @@
       width: 100%;
       max-height: 88vh;
       background: #0A0500;
-      border: 1px solid rgba(251,146,60,0.12);
+      border: 1px solid rgba(99,102,241,0.12);
       border-radius: 20px 20px 0 0;
       padding: 0 0 env(safe-area-inset-bottom,0);
       overflow-y: auto;
@@ -1251,7 +1293,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 20px 20px 16px;
-      border-bottom: 1px solid rgba(251,146,60,0.08);
+      border-bottom: 1px solid rgba(99,102,241,0.08);
       position: sticky;
       top: 0;
       background: #0A0500;
@@ -1266,7 +1308,7 @@
     .modal-close {
       width: 32px; height: 32px;
       border: none;
-      background: rgba(251,146,60,0.08);
+      background: rgba(99,102,241,0.08);
       color: var(--t2);
       border-radius: 50%;
       font-size: 16px;
@@ -1283,7 +1325,7 @@
       align-items: center;
       gap: 12px;
       padding: 12px 0;
-      border-bottom: 1px solid rgba(251,146,60,0.06);
+      border-bottom: 1px solid rgba(99,102,241,0.06);
     }
     .method-list-dot {
       width: 12px; height: 12px;
@@ -1378,7 +1420,7 @@
     <div class="login-sub">Inicia sesión para sincronizar tus registros entre el celular y el PC en tiempo real.</div>
 
     <!-- Botón Google -->
-    <button class="btn-google" onclick="signIn()">
+    <button class="btn-google" onclick="signIn()" id="google-signin-btn">
       <!-- Ícono de Google -->
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -1389,7 +1431,12 @@
       Continuar con Google
     </button>
 
-    <p class="login-note">Tus datos se guardan en tu cuenta de Google Firebase y solo tú puedes acceder a ellos.</p>
+    <div class="login-divider"><span>o</span></div>
+
+    <button class="btn-guest" onclick="continueAsGuest()" id="guest-btn">Continuar sin cuenta</button>
+
+    <p class="login-note" id="login-note">Tus datos se guardan en tu cuenta de Google Firebase y solo tú puedes acceder a ellos.</p>
+    <p class="login-note login-note-guest" id="guest-note">Sin cuenta, tus registros solo viven en este dispositivo y este navegador. Si borras los datos del sitio o cambias de celular, se pierden — a menos que luego vincules una cuenta de Google desde el menú.</p>
   </div>
 </div>
 
@@ -1813,11 +1860,44 @@ function initApp() {
       });
   }
 
+  /* Entrar sin cuenta: crea un usuario anónimo real de Firebase.
+     Los datos quedan atados a ESTE navegador/dispositivo hasta que la persona
+     vincule una cuenta de Google (linkGuestToGoogle) para no perderlos. */
+  function continueAsGuest() {
+    auth.signInAnonymously()
+      .catch(err => {
+        console.error('Guest sign-in error:', err);
+        if (err.code === 'auth/operation-not-allowed') {
+          alert('El modo invitado no está habilitado todavía en este proyecto de Firebase. Actívalo en Firebase Console → Authentication → Sign-in method → Anonymous.');
+        } else {
+          alert('No se pudo continuar sin cuenta. Intenta de nuevo.');
+        }
+      });
+  }
+
+  /* Invitado → vincula su sesión anónima a una cuenta de Google real,
+     conservando TODOS sus registros y métodos (no crea un usuario nuevo). */
+  function linkGuestToGoogle() {
+    if (!currentUser || !currentUser.isAnonymous) return;
+    currentUser.linkWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(() => showToast('✓ Cuenta vinculada. Tus datos están a salvo.'))
+      .catch(err => {
+        console.error('Link error:', err);
+        if (err.code === 'auth/credential-already-in-use') {
+          alert('Esa cuenta de Google ya tiene registros propios. Para no perder ninguno de los dos historiales, contáctame y lo resolvemos manualmente.');
+        } else {
+          alert('No se pudo vincular la cuenta. Intenta de nuevo.');
+        }
+      });
+  }
+
   /* signOut → ver doSignOut en métodos de pago */
 
   /* Exponer al scope global para los onclick del HTML */
-  window.signIn  = signIn;
-  window.signOut = doSignOut;
+  window.signIn           = signIn;
+  window.signOut          = doSignOut;
+  window.continueAsGuest  = continueAsGuest;
+  window.linkGuestToGoogle = linkGuestToGoogle;
 
   auth.onAuthStateChanged(user => {
     document.getElementById('loading-screen').style.display = 'none';
@@ -1825,9 +1905,11 @@ function initApp() {
     if (user) {
       currentUser = user;
 
-      /* Poner la inicial del usuario en los dos avatares */
-      const ini = (user.displayName || user.email || 'U').charAt(0).toUpperCase();
+      /* Invitado (anónimo): inicial genérica + menú distinto (ofrece vincular cuenta) */
+      const ini = user.isAnonymous ? '?' : (user.displayName || user.email || 'U').charAt(0).toUpperCase();
       document.querySelectorAll('.user-initial').forEach(el => el.textContent = ini);
+      document.querySelectorAll('.user-avatar').forEach(el => el.classList.toggle('is-guest', user.isAnonymous));
+      renderAvatarMenu(user.isAnonymous);
 
       document.getElementById('login-screen').style.display  = 'none';
       document.getElementById('app-wrapper').style.display   = 'block';
@@ -2246,10 +2328,10 @@ function initApp() {
   function themeColors() {
     const light = document.documentElement.dataset.theme === 'light';
     return light
-      ? { t2:'#8A6A50', income:'#2F8F3F', expense:'#D91700', savings:'#B8860B',
-          grid:'rgba(180,90,20,0.08)', gridBorder:'rgba(180,90,20,0.16)' }
-      : { t2:'#A08068', income:'#57B259', expense:'#FA1E00', savings:'#FCCA45',
-          grid:'rgba(251,146,60,0.05)', gridBorder:'rgba(251,146,60,0.08)' };
+      ? { t2:'#6B6875', income:'#16A34A', expense:'#DC1C48', savings:'#E86A0C',
+          grid:'rgba(27,27,31,0.06)', gridBorder:'rgba(27,27,31,0.12)' }
+      : { t2:'#9C99A8', income:'#22C55E', expense:'#E1274D', savings:'#EF7A1A',
+          grid:'rgba(255,255,255,0.05)', gridBorder:'rgba(255,255,255,0.08)' };
   }
 
   function renderDashboard() {
@@ -2643,9 +2725,28 @@ function initApp() {
     }
   });
 
+  function renderAvatarMenu(isGuest) {
+    const menu = document.getElementById('avatar-menu');
+    if (isGuest) {
+      menu.innerHTML = `
+        <div class="avatar-menu-label">Modo invitado · datos solo en este dispositivo</div>
+        <button onclick="openMetodosModal()">💳 Métodos de pago</button>
+        <button class="am-highlight" onclick="linkGuestToGoogle()">🔗 Vincular cuenta de Google</button>
+        <button onclick="doSignOut()">→ Salir y borrar datos locales</button>`;
+    } else {
+      menu.innerHTML = `
+        <button onclick="openMetodosModal()">💳 Métodos de pago</button>
+        <button onclick="doSignOut()">→ Cerrar sesión</button>`;
+    }
+  }
+
   function doSignOut() {
     document.getElementById('avatar-menu').classList.remove('open');
-    if (!confirm('¿Cerrar sesión en este dispositivo?')) return;
+    const isGuest = currentUser && currentUser.isAnonymous;
+    const msg = isGuest
+      ? 'Como no vinculaste una cuenta, al salir se BORRAN todos tus registros de este dispositivo. ¿Seguro que quieres continuar?'
+      : '¿Cerrar sesión en este dispositivo?';
+    if (!confirm(msg)) return;
     auth.signOut();
   }
 
@@ -2844,7 +2945,7 @@ function initApp() {
   function syncMetaThemeColor() {
     const meta  = document.getElementById('meta-theme-color');
     const light = document.documentElement.dataset.theme === 'light';
-    if (meta) meta.setAttribute('content', light ? '#FBF3E7' : '#070400');
+    if (meta) meta.setAttribute('content', light ? '#F6F3EE' : '#14131A');
   }
 
   /* Todos los toggles (Dashboard, Registrar, Historial) deben reflejar el mismo estado */
