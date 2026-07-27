@@ -63,6 +63,7 @@
       --r-sm:        10px;
       --sh:          0 2px 12px rgba(0,0,0,0.45);
       --nav-h:       64px;
+      --bg-surround: #0A090E;
       /* ── Niveles de superficie (glass) ── */
       --surf-screen: rgba(20,19,26,0.97);
       --surf-header: rgba(24,23,31,0.85);
@@ -119,6 +120,7 @@
       --nav-sh:      0 4px 22px rgba(20,20,30,0.12), 0 1px 6px rgba(20,20,30,0.08);
       /* Oscurece Y desatura las insignias de color libre (métodos de pago) para un look "tinta", no pastel neón */
       --badge-filter: brightness(0.62) saturate(0.8) contrast(1.08);
+      --bg-surround: #E7E3DB;
     }
 
     /* ===== RESET ===== */
@@ -139,6 +141,23 @@
       -webkit-font-smoothing: antialiased;
     }
     button { cursor: pointer; font-family: inherit; }
+
+    /* ===== CONTENEDOR DE LA APP: columna centrada tipo "teléfono" en pantallas anchas ===== */
+    #app-wrapper {
+      max-width: 560px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--bg);
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      body { background-color: var(--bg-surround); }
+      #app-wrapper {
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+        box-shadow: 0 0 60px rgba(0,0,0,0.10);
+      }
+    }
 
     /* ===== LOADING SCREEN ===== */
     #loading-screen {
@@ -390,7 +409,53 @@
       min-height: 18px;
     }
     .monto-preview strong { color: var(--t1); font-weight: 600; }
-    #monto { font-family: 'JetBrains Mono', monospace; }
+    .monto-hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 0 0;
+    }
+    .monto-hero-currency {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--t3);
+      transform: translateY(1px);
+    }
+    #monto {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 44px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      text-align: left;
+      background: transparent;
+      border: none;
+      outline: none;
+      width: auto;
+      max-width: 240px;
+      padding: 0;
+      color: var(--t1);
+    }
+    #monto:focus { border-color: transparent; }
+    #monto::placeholder { color: var(--t3); opacity: 0.45; }
+    .monto-preview { text-align: center; margin-bottom: 6px; }
+    /* El monto y su signo reaccionan al tipo seleccionado (Gasto/Ingreso/Ahorro) */
+    #view-form[data-tipo="gasto"]   #monto, #view-form[data-tipo="gasto"]   .monto-hero-currency { color: var(--expense); }
+    #view-form[data-tipo="ingreso"] #monto, #view-form[data-tipo="ingreso"] .monto-hero-currency { color: var(--income); }
+    #view-form[data-tipo="ahorro"]  #monto, #view-form[data-tipo="ahorro"]  .monto-hero-currency { color: var(--savings); }
+    /* Fecha: ahora es un campo secundario y compacto (casi siempre es "hoy") */
+    .field-fecha-compact {
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+    }
+    .field-fecha-compact label { margin: 0; white-space: nowrap; }
+    .field-fecha-compact input {
+      max-width: 168px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     input[type="number"] { -moz-appearance: textfield; }
@@ -1536,27 +1601,10 @@
       </div>
     </div>
 
-    <div class="form-body">
+    <div class="form-body" id="view-form-body">
 
       <div class="field">
-        <label for="fecha">Fecha</label>
-        <input type="date" id="fecha">
-      </div>
-
-      <div class="field">
-        <label for="desc">Descripción</label>
-        <input type="text" id="desc" placeholder="¿En qué?" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-
-      <div class="field">
-        <label for="monto">Monto</label>
-        <input type="text" id="monto" placeholder="0" inputmode="numeric" autocomplete="off" oninput="fmtMontoLive(this)">
-        <div class="monto-preview" id="monto-preview"></div>
-      </div>
-
-      <div class="field">
-        <label>Tipo</label>
-        <div class="segment">
+        <div class="segment" id="tipo-segment">
           <button class="segment-btn gasto" data-tipo="gasto" onclick="selectTipo('gasto')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
@@ -1580,11 +1628,27 @@
         </div>
       </div>
 
+      <div class="monto-hero">
+        <span class="monto-hero-currency">$</span>
+        <input type="text" id="monto" placeholder="0" inputmode="numeric" autocomplete="off" oninput="fmtMontoLive(this)">
+      </div>
+      <div class="monto-preview" id="monto-preview"></div>
+
+      <div class="field">
+        <label for="desc">Descripción</label>
+        <input type="text" id="desc" placeholder="¿En qué?" autocomplete="off" autocorrect="off" spellcheck="false">
+      </div>
+
       <div class="field">
         <label>Método de pago</label>
         <div class="pill-group" id="metodo-pills">
         <!-- generado dinámicamente -->
       </div>
+      </div>
+
+      <div class="field field-fecha-compact">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha">
       </div>
 
       <div id="error-msg" class="error-msg"></div>
@@ -2085,6 +2149,7 @@ function initApp() {
   function syncBtns() {
     document.querySelectorAll('.segment-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.tipo === selTipo));
+    document.getElementById('view-form').dataset.tipo = selTipo;
     renderMetodoPills(); /* pills dinámicos */
   }
 
