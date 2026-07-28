@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v33: fix critico - eliminado el bottom-nav duplicado que quedo flotando, quitado el fondo crema circundante, layout de escritorio ahora usa todo el ancho, arreglado el input de Valor que habia heredado el tamano gigante del diseno anterior */
-const CACHE  = 'finanzas-v33';
+/* v34: el --bg del modo claro era literalmente crema (#F6F3EE), no solo el surround que ya se habia quitado. Ahora es gris neutro #F1F2F5 como el referente */
+const CACHE  = 'finanzas-v34';
 const ASSETS = [
   './',
   './index.html',
