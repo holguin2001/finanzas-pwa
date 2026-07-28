@@ -556,7 +556,7 @@
     }
     .gf-brand-txt { min-width: 0; }
     .gf-title-row { display: flex; align-items: center; gap: 8px; }
-    .gf-title { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -0.2px; white-space: nowrap; }
+    .gf-title { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gf-badge {
       font-size: 10px;
       font-weight: 700;
@@ -567,7 +567,7 @@
       padding: 2px 8px;
       white-space: nowrap;
     }
-    .gf-sub { font-size: 11.5px; color: #7C8AA5; margin-top: 1px; white-space: nowrap; }
+    .gf-sub { font-size: 11.5px; color: #7C8AA5; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gf-stats { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .gf-stat {
       background: rgba(255,255,255,0.04);
@@ -793,10 +793,25 @@
 
     /* En pantallas angostas: header y filas se apilan */
     @media (max-width: 640px) {
-      .gf-header { flex-direction: column; align-items: stretch; }
-      .gf-stats { justify-content: space-between; }
-      .gf-stat { flex: 1; min-width: 0; }
-      .gf-actions { justify-content: space-between; }
+      .gf-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: "brand actions" "stats stats";
+        align-items: center;
+        row-gap: 14px;
+        column-gap: 10px;
+      }
+      .gf-brand   { grid-area: brand; min-width: 0; }
+      .gf-actions { grid-area: actions; justify-content: flex-end; }
+      .gf-stats {
+        grid-area: stats;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+      }
+      .gf-stat { min-width: 0; }
+      .gf-stat-val { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .gf-action-btn span { display: none; }
       .gf-form-row { grid-template-columns: 1fr; gap: 18px; }
     }
@@ -1086,6 +1101,9 @@
     .hist-cat-name { font-size: 13px; font-weight: 600; }
     .hist-td-desc { color: var(--t1); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .hist-td-pago { font-size: 11px; color: var(--t3); margin-top: 2px; }
+    .hist-th-check, .hist-td-check { width: 40px; padding-right: 0 !important; }
+    .hist-row-checked { opacity: 0.45; }
+    .hist-row-checked .hist-td-desc { text-decoration: line-through; }
     .hist-td-monto {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 600;
@@ -2313,7 +2331,7 @@
       <table class="hist-table">
         <thead>
           <tr>
-            <th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Descripción</th><th class="ta-right">Monto</th><th>Acciones</th>
+            <th class="hist-th-check"></th><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Descripción</th><th class="ta-right">Monto</th><th>Acciones</th>
           </tr>
         </thead>
         <tbody id="hist-table-body"></tbody>
@@ -2808,7 +2826,7 @@ function initApp() {
     const tbody = document.getElementById('hist-table-body');
     if (!tbody) return;
     if (!pool.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="hist-empty">Sin registros que coincidan con los filtros</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="hist-empty">Sin registros que coincidan con los filtros</td></tr>';
       return;
     }
     const tipoLbl = { gasto:'Gasto', ingreso:'Ingreso', ahorro:'Ahorro' };
@@ -2818,7 +2836,14 @@ function initApp() {
       const catNombre = catId ? getMetodoNombre(catId) : 'Sin categoría';
       const catIcon   = catId ? getMetodoIcon(catId, catNombre) : CAT_ICONS.tag;
       const signo = r.tipo === 'gasto' ? '- ' : (r.tipo === 'ingreso' ? '+ ' : '');
-      return `<tr>
+      return `<tr class="${r.exportado ? 'hist-row-checked' : ''}">
+        <td class="hist-td-check">
+          <button class="check-btn${r.exportado ? ' checked' : ''}"
+                  onclick="toggleCheck('${esc(r.id)}', ${!!r.exportado})"
+                  title="${r.exportado ? 'Quitar marca' : 'Marcar como revisado'}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </td>
         <td class="hist-td-fecha">${fmtDate(r.fecha)}</td>
         <td><span class="hist-tipo-pill ${r.tipo}">● ${tipoLbl[r.tipo] || r.tipo}</span></td>
         <td>

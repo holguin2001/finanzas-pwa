@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v41: Categoria y Metodo de pago separados en dos campos/dropdowns independientes en el formulario (antes estaban fusionados). Se usa el campo "tipo" que ya existia en la coleccion (otro=categoria, resto=metodo de pago) para dividir sin migrar datos. Registros ahora guardan categoria + metodo por separado. Historial/CSV/Ultimos registros corregidos para mostrar ambos correctamente. Fix adicional: setSaving() borraba el icono del boton Guardar y perdia el texto dinamico por tipo */
-const CACHE  = 'finanzas-v41';
+/* v42: repuesto el check de "marcar como revisado" en la tabla de Historial (columna nueva, fila se atenua y tacha al marcarla). Header movil reorganizado con CSS grid: marca+acciones en una fila, stats en grid 2x2 limpio (antes se desbordaban y quedaba un espacio enorme entre el toggle y el avatar) */
+const CACHE  = 'finanzas-v42';
 const ASSETS = [
   './',
   './index.html',
