@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v31: "Gastos por método" ya no es un gráfico de Chart.js con ejes/gridlines — ahora son barras propias, planas y sin ejes */
-const CACHE  = 'finanzas-v31';
+/* v32: replica del referente (header global oscuro + stats, tabs superiores, tarjeta de registro, Categoría con iconos en vez de pills) */
+const CACHE  = 'finanzas-v32';
 const ASSETS = [
   './',
   './index.html',

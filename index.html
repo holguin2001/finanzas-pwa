@@ -542,14 +542,18 @@
       width: 100%;
       padding: 16px;
       background: var(--accent);
-      color: #1A0800;
+      color: #fff;
       border: none;
       border-radius: var(--r);
       font-size: 16px;
       font-weight: 700;
       letter-spacing: -0.1px;
-      transition: opacity 0.15s, transform 0.1s;
+      transition: opacity 0.15s, transform 0.1s, background 0.15s;
       user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     .btn-primary:active  { opacity: 0.82; transform: scale(0.98); }
     .btn-primary:disabled {
@@ -570,6 +574,281 @@
       user-select: none;
     }
     .btn-ghost:active { opacity: 0.65; }
+
+    /* El CTA reacciona al tipo seleccionado, igual que el monto */
+    #view-form[data-tipo="gasto"]   #guardar-btn { background: var(--expense); }
+    #view-form[data-tipo="ingreso"] #guardar-btn { background: var(--income); }
+    #view-form[data-tipo="ahorro"]  #guardar-btn { background: var(--savings); }
+
+    /* ══════════════════════════════════
+       HEADER GLOBAL + TABS (siempre oscuro, como el hero-card)
+       ══════════════════════════════════ */
+    .gf-header {
+      background: #0B1220;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .gf-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .gf-logo {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(16,185,129,0.14);
+      color: #10B981;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .gf-brand-txt { min-width: 0; }
+    .gf-title-row { display: flex; align-items: center; gap: 8px; }
+    .gf-title { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -0.2px; white-space: nowrap; }
+    .gf-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: #10B981;
+      background: rgba(16,185,129,0.14);
+      border: 1px solid rgba(16,185,129,0.30);
+      border-radius: 100px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+    .gf-sub { font-size: 11.5px; color: #7C8AA5; margin-top: 1px; white-space: nowrap; }
+    .gf-stats { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .gf-stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 6px 12px;
+      min-width: 92px;
+    }
+    .gf-stat-lbl {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: #7C8AA5;
+    }
+    .gf-stat-lbl.inc { color: #22C55E; }
+    .gf-stat-lbl.exp { color: #FB7185; }
+    .gf-stat-lbl.sav { color: #A5B4FC; }
+    .gf-stat-val {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; font-weight: 600;
+      color: #fff;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .gf-stat-val.pos { color: #22C55E; }
+    .gf-stat-val.neg { color: #FB7185; }
+    .gf-stat-val.inc { color: #E8ECF5; }
+    .gf-stat-val.exp { color: #FB7185; }
+    .gf-stat-val.sav { color: #A5B4FC; }
+    .gf-actions { display: flex; align-items: center; gap: 8px; }
+    .gf-action-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #C9D2E3;
+      font-size: 12.5px; font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .gf-action-btn:active { background: rgba(255,255,255,0.10); }
+    .gf-header .theme-toggle { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); }
+    .gf-header .tt-icon { color: #7C8AA5; }
+    .gf-header .user-avatar { background: rgba(16,185,129,0.14); border-color: rgba(16,185,129,0.30); color: #10B981; }
+
+    .gf-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      overflow-x: auto;
+    }
+    .gf-tab {
+      display: flex; align-items: center; gap: 7px;
+      padding: 14px 6px;
+      border: none;
+      border-bottom: 2.5px solid transparent;
+      background: transparent;
+      color: var(--t2);
+      font-size: 13.5px; font-weight: 600;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .gf-tab + .gf-tab { margin-left: 14px; }
+    .gf-tab.active { color: #10B981; border-color: #10B981; }
+    .gf-tab-count {
+      background: var(--surface-2);
+      color: var(--t2);
+      font-size: 10.5px; font-weight: 700;
+      border-radius: 100px;
+      padding: 1px 7px;
+    }
+    .gf-tab.active .gf-tab-count { background: rgba(16,185,129,0.14); color: #10B981; }
+
+    /* ══════════════════════════════════
+       TARJETA DE REGISTRO
+       ══════════════════════════════════ */
+    .gf-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin: 16px;
+      overflow: hidden;
+    }
+    .gf-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 16px 18px;
+    }
+    .gf-card-header-txt { min-width: 0; }
+    .gf-card-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 700;
+      color: var(--t1);
+    }
+    .gf-card-title svg { color: var(--income); flex-shrink: 0; }
+    .gf-card-sub { font-size: 12px; color: var(--t3); margin-top: 3px; margin-left: 24px; }
+    .gf-step-badge {
+      font-size: 11px; font-weight: 600;
+      color: var(--t2);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 11px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .gf-card-divider { height: 1px; background: var(--border); }
+    .gf-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .req { color: var(--expense); }
+
+    .input-with-icon { position: relative; }
+    .input-icon, .input-icon-svg {
+      position: absolute;
+      left: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--t3);
+      pointer-events: none;
+      font-size: 15px; font-weight: 600;
+    }
+    .input-with-icon input { padding-left: 34px; }
+    .field-help { font-size: 11.5px; color: var(--t3); }
+
+    /* Selector de categoría (dropdown con icono) */
+    .cat-select-wrap { position: relative; }
+    .cat-select-trigger {
+      width: 100%;
+      display: flex; align-items: center; gap: 9px;
+      padding: 10px 12px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      text-align: left;
+      transition: border-color 0.15s;
+    }
+    .cat-select-trigger:hover, .cat-select-trigger.open { border-color: var(--accent); }
+    .cat-select-icon {
+      width: 26px; height: 26px;
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .cat-select-label { flex: 1; font-size: 14px; font-weight: 500; color: var(--t1); }
+    .cat-select-trigger.placeholder .cat-select-label { color: var(--t3); font-weight: 400; }
+    .cat-select-chevron { color: var(--t3); flex-shrink: 0; }
+    .cat-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      max-height: 260px;
+      overflow-y: auto;
+      background: var(--surf-solid);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+      padding: 6px;
+      z-index: 300;
+    }
+    .cat-dropdown.open { display: block; }
+    .cat-opt {
+      width: 100%;
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 13.5px;
+      color: var(--t1);
+      transition: background 0.12s;
+    }
+    .cat-opt:hover { background: var(--surface-2); }
+    .cat-opt.active { background: var(--accent-lt); color: var(--accent); font-weight: 600; }
+    .cat-opt-icon {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .cat-opt-icon-add { background: var(--surface-2); color: var(--t2); font-weight: 700; }
+    .cat-dropdown-divider { height: 1px; background: var(--border); margin: 4px 2px; }
+
+    /* Tarjeta "Últimos registros" bajo el formulario */
+    .gf-mini-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin: 0 16px 24px;
+      padding: 14px 16px;
+    }
+    .gf-mini-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .gf-mini-title {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--t2);
+    }
+    .gf-mini-title svg { color: var(--income); }
+    .gf-mini-link { font-size: 12.5px; font-weight: 600; color: var(--income); white-space: nowrap; }
+    .mini-rec-list { display: flex; flex-direction: column; gap: 8px; }
+    .mini-rec-row {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface-2);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+    }
+    .mini-rec-icon {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .mini-rec-info { flex: 1; min-width: 0; }
+    .mini-rec-desc { font-size: 13.5px; font-weight: 600; color: var(--t1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-rec-meta { font-size: 11.5px; color: var(--t3); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-rec-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .mini-rec-monto { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .mini-rec-monto.ingreso { color: var(--income); }
+    .mini-rec-monto.gasto   { color: var(--expense); }
+    .mini-rec-monto.ahorro  { color: var(--savings); }
+
+    /* En pantallas angostas: header y filas se apilan */
+    @media (max-width: 640px) {
+      .gf-header { flex-direction: column; align-items: stretch; }
+      .gf-stats { justify-content: space-between; }
+      .gf-stat { flex: 1; min-width: 0; }
+      .gf-actions { justify-content: space-between; }
+      .gf-action-btn span { display: none; }
+      .gf-form-row { grid-template-columns: 1fr; gap: 18px; }
+    }
 
     /* ===== ERROR ===== */
     .error-msg {
@@ -1551,18 +1830,51 @@
      ══════════════════════════════════ -->
 <div id="app-wrapper" style="display:none">
 
-  <!-- ── VISTA: FORMULARIO ── -->
   <!-- ══════════════════════════════════
-     VIEW: DASHBOARD
-     ══════════════════════════════════ -->
-<section id="view-dashboard" class="view">
-
-  <div class="page-header">
-    <div>
-      <div class="page-title">Dashboard</div>
-      <div class="page-sub">Tu panorama financiero</div>
+       HEADER GLOBAL + TABS (persistente en las 3 vistas)
+       ══════════════════════════════════ -->
+  <header class="gf-header">
+    <div class="gf-brand">
+      <div class="gf-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="gf-brand-txt">
+        <div class="gf-title-row">
+          <span class="gf-title">Gestor de Finanzas</span>
+          <span class="gf-badge">Personal</span>
+        </div>
+        <div class="gf-sub">Control de presupuesto, registro diario y balances</div>
+      </div>
     </div>
-    <div class="header-right">
+
+    <div class="gf-stats">
+      <div class="gf-stat">
+        <span class="gf-stat-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Balance</span>
+        <span class="gf-stat-val" id="gf-balance">$ 0</span>
+      </div>
+      <div class="gf-stat">
+        <span class="gf-stat-lbl inc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>Ingresos</span>
+        <span class="gf-stat-val inc" id="gf-ingresos">$ 0</span>
+      </div>
+      <div class="gf-stat">
+        <span class="gf-stat-lbl exp"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>Gastos</span>
+        <span class="gf-stat-val exp" id="gf-gastos">$ 0</span>
+      </div>
+      <div class="gf-stat">
+        <span class="gf-stat-lbl sav"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="11" rx="2"/><path d="M7 9V7a5 5 0 0110 0v2"/></svg>Ahorro</span>
+        <span class="gf-stat-val sav" id="gf-ahorro">$ 0</span>
+      </div>
+    </div>
+
+    <div class="gf-actions">
+      <button class="gf-action-btn" onclick="showToast('Exportar: próximamente')" title="Exportar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Exportar</span>
+      </button>
+      <button class="gf-action-btn" onclick="showToast('Importar: próximamente')" title="Importar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span>Importar</span>
+      </button>
       <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
         <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
         <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
@@ -1572,7 +1884,28 @@
         <span class="user-initial"></span>
       </button>
     </div>
-  </div>
+  </header>
+
+  <nav class="gf-tabs">
+    <button class="gf-tab active" id="nav-form" onclick="switchView('form')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      1. Registrar
+    </button>
+    <button class="gf-tab" id="nav-historial" onclick="switchView('historial')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+      2. Historial <span class="gf-tab-count" id="gf-hist-count">0</span>
+    </button>
+    <button class="gf-tab" id="nav-dashboard" onclick="switchView('dashboard')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="20" y1="20" x2="20" y2="14"/></svg>
+      3. Resumen Gráfico
+    </button>
+  </nav>
+
+  <!-- ── VISTA: FORMULARIO ── -->
+  <!-- ══════════════════════════════════
+     VIEW: DASHBOARD
+     ══════════════════════════════════ -->
+<section id="view-dashboard" class="view">
 
   <!-- Balance disponible -->
   <div class="hero-card">
@@ -1624,79 +1957,113 @@
 
 
 <section id="view-form" class="view active">
-    <div class="page-header">
-      <div>
-        <div class="page-title" id="form-title">Nuevo registro</div>
-        <div class="page-sub"   id="form-sub">Anota rápido antes de olvidar</div>
-      </div>
-      <div class="header-right">
-        <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
-          <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
-          <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
-          <span class="tt-thumb"></span>
-        </button>
-        <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
-          <span class="user-initial"></span>
-        </button>
-      </div>
-    </div>
 
-    <div class="form-body" id="view-form-body">
-
-      <div class="field">
-        <div class="segment" id="tipo-segment">
-          <button class="segment-btn gasto" data-tipo="gasto" onclick="selectTipo('gasto')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
-            </svg>
-            Gasto
-          </button>
-          <button class="segment-btn ingreso" data-tipo="ingreso" onclick="selectTipo('ingreso')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
-            </svg>
-            Ingreso
-          </button>
-          <button class="segment-btn ahorro" data-tipo="ahorro" onclick="selectTipo('ahorro')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="3" y1="22" x2="21" y2="22"/>
-              <rect x="5" y="11" width="2" height="8"/><rect x="11" y="9" width="2" height="10"/><rect x="17" y="13" width="2" height="6"/>
-              <polygon points="12 2 2 7 22 7"/>
-            </svg>
-            Ahorro
-          </button>
+    <div class="gf-card">
+      <div class="gf-card-header">
+        <div class="gf-card-header-txt">
+          <div class="gf-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span id="form-title">Registrar Movimiento Financiero</span>
+          </div>
+          <div class="gf-card-sub" id="form-sub">Anota rápido antes de olvidar</div>
         </div>
+        <span class="gf-step-badge">Paso 1 de 3</span>
       </div>
+      <div class="gf-card-divider"></div>
 
-      <div class="monto-hero">
-        <span class="monto-hero-currency">$</span>
-        <input type="text" id="monto" placeholder="0" inputmode="numeric" autocomplete="off" oninput="fmtMontoLive(this)">
+      <div class="form-body" id="view-form-body">
+
+        <div class="field">
+          <label>Tipo de movimiento <span class="req">*</span></label>
+          <div class="segment" id="tipo-segment">
+            <button class="segment-btn gasto" data-tipo="gasto" onclick="selectTipo('gasto')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+              </svg>
+              Gasto
+            </button>
+            <button class="segment-btn ingreso" data-tipo="ingreso" onclick="selectTipo('ingreso')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+              </svg>
+              Ingreso
+            </button>
+            <button class="segment-btn ahorro" data-tipo="ahorro" onclick="selectTipo('ahorro')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="22" x2="21" y2="22"/>
+                <rect x="5" y="11" width="2" height="8"/><rect x="11" y="9" width="2" height="10"/><rect x="17" y="13" width="2" height="6"/>
+                <polygon points="12 2 2 7 22 7"/>
+              </svg>
+              Ahorro
+            </button>
+          </div>
+        </div>
+
+        <div class="gf-form-row">
+          <div class="field">
+            <label>Valor ($) <span class="req">*</span></label>
+            <div class="input-with-icon">
+              <span class="input-icon">$</span>
+              <input type="text" id="monto" placeholder="Ej: 50000" inputmode="numeric" autocomplete="off" oninput="fmtMontoLive(this)">
+            </div>
+            <div class="field-help" id="monto-preview">Ingrese el monto numérico exacto.</div>
+          </div>
+
+          <div class="field">
+            <label>Categoría <span class="req">*</span></label>
+            <div class="cat-select-wrap">
+              <button type="button" class="cat-select-trigger placeholder" id="cat-select-trigger" onclick="toggleCatDropdown(event)">
+                <span class="cat-select-icon" id="cat-select-icon"></span>
+                <span class="cat-select-label" id="cat-select-label">Selecciona una categoría</span>
+                <svg class="cat-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="cat-dropdown" id="cat-dropdown">
+                <!-- generado dinámicamente -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gf-form-row">
+          <div class="field">
+            <label>Fecha <span class="req">*</span></label>
+            <div class="input-with-icon">
+              <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <input type="date" id="fecha">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Breve descripción</label>
+            <div class="input-with-icon">
+              <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <input type="text" id="desc" placeholder="Ej: Mercado de la semana o pago factura" autocomplete="off" autocorrect="off" spellcheck="false">
+            </div>
+          </div>
+        </div>
+
+        <div id="error-msg" class="error-msg"></div>
+
+        <button class="btn-primary" id="guardar-btn" onclick="guardar()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          <span id="guardar-btn-label">Guardar Gasto</span>
+        </button>
+        <button class="btn-ghost" id="cancel-btn" onclick="cancelEdit()" style="display:none">Cancelar edición</button>
+
       </div>
-      <div class="monto-preview" id="monto-preview"></div>
-
-      <div class="field">
-        <label for="desc">Descripción</label>
-        <input type="text" id="desc" placeholder="¿En qué?" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-
-      <div class="field">
-        <label>Método de pago</label>
-        <div class="pill-group" id="metodo-pills">
-        <!-- generado dinámicamente -->
-      </div>
-      </div>
-
-      <div class="field field-fecha-compact">
-        <label for="fecha">Fecha</label>
-        <input type="date" id="fecha">
-      </div>
-
-      <div id="error-msg" class="error-msg"></div>
-
-      <button class="btn-primary" id="guardar-btn" onclick="guardar()">Guardar registro</button>
-      <button class="btn-ghost"   id="cancel-btn"  onclick="cancelEdit()" style="display:none">Cancelar edición</button>
-
     </div>
+
+    <div class="gf-mini-card">
+      <div class="gf-mini-header">
+        <span class="gf-mini-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+          Últimos registros
+        </span>
+        <a href="javascript:void(0)" class="gf-mini-link" onclick="switchView('historial')">Ver todos (<span id="ultimos-ver-todos-count">0</span>) →</a>
+      </div>
+      <div class="mini-rec-list" id="ultimos-registros-list"></div>
+    </div>
+
   </section>
 
 
@@ -1730,14 +2097,6 @@
             </svg>
           </button>
         </div>
-        <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
-          <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
-          <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
-          <span class="tt-thumb"></span>
-        </button>
-    <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
-          <span class="user-initial"></span>
-        </button>
       </div>
     </div>
 
@@ -2060,9 +2419,57 @@ function initApp() {
           });
           if (activeView === 'historial') renderHistorial();
           if (activeView === 'dashboard') renderDashboard();
+          renderHeaderStats();
+          renderUltimosRegistros();
         },
         err => console.error('Firestore listener:', err)
       );
+  }
+
+  /* Stats del header global (Balance/Ingresos/Gastos/Ahorro), siempre visibles sin importar la vista activa */
+  function renderHeaderStats() {
+    const totI = records.filter(r => r.tipo === 'ingreso').reduce((s, r) => s + r.monto, 0);
+    const totG = records.filter(r => r.tipo === 'gasto').reduce((s, r) => s + r.monto, 0);
+    const totA = records.filter(r => r.tipo === 'ahorro').reduce((s, r) => s + r.monto, 0);
+    const bal  = totI - totG - totA;
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('gf-balance',  fmtCOP(bal));
+    set('gf-ingresos', fmtCOP(totI));
+    set('gf-gastos',   fmtCOP(totG));
+    set('gf-ahorro',   fmtCOP(totA));
+    set('gf-hist-count', records.length);
+    const balEl = document.getElementById('gf-balance');
+    if (balEl) { balEl.classList.toggle('neg', bal < 0); balEl.classList.toggle('pos', bal >= 0); }
+  }
+
+  /* Mini-lista de últimos registros dentro de la pestaña Registrar */
+  function renderUltimosRegistros() {
+    const el = document.getElementById('ultimos-registros-list');
+    if (!el) return;
+    const countEl = document.getElementById('ultimos-ver-todos-count');
+    if (countEl) countEl.textContent = records.length;
+    const top = [...records].sort((a, b) => (b.ts || 0) - (a.ts || 0)).slice(0, 4);
+    if (!top.length) {
+      el.innerHTML = '<div class="dash-empty">Sin registros todavía</div>';
+      return;
+    }
+    el.innerHTML = top.map(r => {
+      const color = getMetodoColor(r.metodo);
+      const signo = r.tipo === 'gasto' ? '- ' : (r.tipo === 'ingreso' ? '+ ' : '');
+      return `<div class="mini-rec-row">
+        <span class="mini-rec-icon" style="background:${hexRgba(color,0.15)};color:${color}">${getMetodoIcon(r.metodo, getMetodoNombre(r.metodo))}</span>
+        <div class="mini-rec-info">
+          <div class="mini-rec-desc">${esc(r.desc)}</div>
+          <div class="mini-rec-meta">${esc(getMetodoNombre(r.metodo))} · ${fmtDate(r.fecha)}</div>
+        </div>
+        <div class="mini-rec-right">
+          <span class="mini-rec-monto ${r.tipo}">${signo}${fmtCOP(r.monto)}</span>
+          <button class="icon-btn del-btn" onclick="delRec('${esc(r.id)}')" aria-label="Eliminar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      </div>`;
+    }).join('');
   }
 
 
@@ -2156,9 +2563,9 @@ function initApp() {
     mEl.value = String(Math.round(r.monto));
     fmtMontoLive(mEl);
     syncBtns();
-    document.getElementById('form-title').textContent   = 'Editar registro';
+    document.getElementById('form-title').textContent   = 'Editar Movimiento Financiero';
     document.getElementById('form-sub').textContent     = 'Modifica y guarda los cambios';
-    document.getElementById('guardar-btn').textContent  = 'Actualizar registro';
+    document.getElementById('guardar-btn-label').textContent = 'Actualizar registro';
     document.getElementById('cancel-btn').style.display = 'block';
     switchView('form');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2172,16 +2579,13 @@ function initApp() {
     document.getElementById('fecha').value  = todayStr();
     document.getElementById('desc').value   = '';
     document.getElementById('monto').value  = '';
-    const mp = document.getElementById('monto-preview');
-    if (mp) mp.textContent = '';
     selTipo  = 'gasto';   /* default: el tipo más frecuente */
     /* selMetod se conserva: recuerda el último método usado */
     editId   = null;
     syncBtns();
     hideErr();
-    document.getElementById('form-title').textContent      = 'Nuevo registro';
+    document.getElementById('form-title').textContent      = 'Registrar Movimiento Financiero';
     document.getElementById('form-sub').textContent        = 'Anota rápido antes de olvidar';
-    document.getElementById('guardar-btn').textContent     = 'Guardar registro';
     document.getElementById('guardar-btn').disabled        = false;
     document.getElementById('cancel-btn').style.display   = 'none';
   }
@@ -2190,11 +2594,15 @@ function initApp() {
     document.querySelectorAll('.segment-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.tipo === selTipo));
     document.getElementById('view-form').dataset.tipo = selTipo;
-    renderMetodoPills(); /* pills dinámicos */
+    if (!editId) {
+      const lbl = document.getElementById('guardar-btn-label');
+      if (lbl) lbl.textContent = { gasto:'Guardar Gasto', ingreso:'Guardar Ingreso', ahorro:'Guardar Ahorro' }[selTipo] || 'Guardar';
+    }
+    renderMetodoPills(); /* categorías dinámicas */
   }
 
   function selectTipo(v)   { selTipo  = v; syncBtns(); }
-  function selectMetodo(v) { selMetod = v; syncBtns(); }
+  function selectMetodo(v) { selMetod = v; syncBtns(); document.getElementById('cat-dropdown')?.classList.remove('open'); }
 
 
   /* ═══ HISTORIAL ═══ */
@@ -2330,15 +2738,9 @@ function initApp() {
 
   function fmtMontoLive(input) {
     const digits = input.value.replace(/\D/g, '');
-    const prev = document.getElementById('monto-preview');
-    if (!digits) {
-      input.value = '';
-      if (prev) prev.textContent = '';
-      return;
-    }
+    if (!digits) { input.value = ''; return; }
     const n = parseInt(digits, 10);
     input.value = new Intl.NumberFormat('es-CO').format(n);
-    if (prev) prev.innerHTML = 'Vas a registrar <strong>' + fmtCOP(n) + '</strong>';
   }
 
   function fmtCOP(n) {
@@ -2715,6 +3117,7 @@ function initApp() {
         if (selMetod && !metodos.find(m => m.id === selMetod)) selMetod = null;
         renderMetodoPills();
         renderFilterOpts();
+        renderUltimosRegistros();
         if (document.getElementById('metodos-list-view')?.style.display !== 'none') {
           renderMetodosList();
         }
@@ -2727,9 +3130,13 @@ function initApp() {
     try {
       const snap = await db.collection('users').doc(uid).collection('metodos').limit(1).get();
       if (!snap.empty) return;
-      /* Cada persona registra sus propios métodos; solo Efectivo viene por defecto */
+      /* Cada persona registra sus propias categorías; estas son solo el punto de partida */
       const defaults = [
         { id:'efectivo', nombre:'Efectivo', tipo:'efectivo', color:'#B0A090' },
+        { id:'alimentacion', nombre:'Alimentación y Mercadería', tipo:'otro', color:'#F59E0B' },
+        { id:'vivienda', nombre:'Vivienda y Alquiler', tipo:'otro', color:'#8B5CF6' },
+        { id:'sueldo', nombre:'Sueldo / Salario', tipo:'otro', color:'#10B981' },
+        { id:'fondo-emergencia', nombre:'Fondo de Emergencia', tipo:'otro', color:'#6366F1' },
       ];
       const batch = db.batch();
       defaults.forEach(({ id, ...data }) =>
@@ -2758,23 +3165,82 @@ function initApp() {
   }
 
   /* Render pills en formulario */
+  /* Iconos por categoría, detectados por palabra clave en el nombre (sin migrar datos) */
+  const CAT_ICONS = {
+    tag:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L11 3.83A2 2 0 009.59 3.24L4 3a1 1 0 00-1 1l.24 5.59a2 2 0 00.58 1.41l9.59 9.59a2 2 0 002.83 0l5-5a2 2 0 000-2.83z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/></svg>',
+    wallet:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2v-5h-4a2 2 0 010-4z"/></svg>',
+    card:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>',
+    briefcase: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>',
+    shield:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    food:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v11M15 2c-2 0-3.5 2-3.5 5s1 5 3.5 5 3.5-2 3.5-5-1.5-5-3.5-5z"/><path d="M15 12v11"/></svg>',
+    house:     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 001 1h12a1 1 0 001-1V10"/></svg>',
+    car:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5A2 2 0 018.4 5h7.2a2 2 0 011.9 1.5L19 11"/><rect x="2" y="11" width="20" height="7" rx="2"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>',
+    health:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>'
+  };
+  function getMetodoIcon(id, nombre) {
+    const n = ((nombre || '') + ' ' + (id || '')).toLowerCase();
+    if (/aliment|mercad|comida|restaurant/.test(n)) return CAT_ICONS.food;
+    if (/vivienda|alquiler|arriendo/.test(n))        return CAT_ICONS.house;
+    if (/sueldo|salario|n[oó]mina/.test(n))          return CAT_ICONS.briefcase;
+    if (/ahorro|fondo|emergencia/.test(n))           return CAT_ICONS.shield;
+    if (/efectivo/.test(n))                          return CAT_ICONS.wallet;
+    if (/transporte|gasolina|uber|taxi/.test(n))     return CAT_ICONS.car;
+    if (/salud|medic|farmacia/.test(n))              return CAT_ICONS.health;
+    if (/tc-|tarjeta|cr[eé]dito|d[eé]bito/.test(n))  return CAT_ICONS.card;
+    return CAT_ICONS.tag;
+  }
+
+  /* Dropdown de categorías (reemplaza visualmente a las pills) */
+  function toggleCatDropdown(e) {
+    if (e) e.stopPropagation();
+    document.getElementById('cat-dropdown')?.classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('cat-dropdown');
+    if (dd?.classList.contains('open') && !e.target.closest('.cat-select-wrap')) {
+      dd.classList.remove('open');
+    }
+  });
+
   function renderMetodoPills() {
-    const c = document.getElementById('metodo-pills');
-    if (!c) return;
-    c.innerHTML = metodos.map(m => {
+    const dd = document.getElementById('cat-dropdown');
+    if (!dd) return;
+    dd.innerHTML = metodos.map(m => {
       const active = selMetod === m.id;
-      const style  = active
-        ? `color:${m.color};border-color:${m.color};background:${hexRgba(m.color,0.10)};`
-        : '';
-      return `<button class="pill-btn${active?' active':''}" data-metodo="${esc(m.id)}"
-                onclick="selectMetodo('${esc(m.id)}')" style="${style}">${esc(m.nombre)}</button>`;
+      return `<button type="button" class="cat-opt${active ? ' active' : ''}" data-metodo="${esc(m.id)}" onclick="selectMetodo('${esc(m.id)}')">
+        <span class="cat-opt-icon" style="background:${hexRgba(m.color,0.15)};color:${m.color}">${getMetodoIcon(m.id, m.nombre)}</span>
+        <span class="cat-opt-label">${esc(m.nombre)}</span>
+      </button>`;
     }).join('') +
-    `<button class="pill-btn pill-add" onclick="openMetodosModal();openAddMetodo()" title="Agregar método de pago" aria-label="Agregar método de pago">+</button>
-     <button class="pill-btn pill-add" onclick="openMetodosModal()" title="Editar métodos de pago" aria-label="Editar métodos de pago">
-       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-         <path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5z"/>
-       </svg>
+    `<div class="cat-dropdown-divider"></div>
+     <button type="button" class="cat-opt cat-opt-add" onclick="openMetodosModal();openAddMetodo()">
+       <span class="cat-opt-icon cat-opt-icon-add">+</span>
+       <span class="cat-opt-label">Agregar categoría</span>
+     </button>
+     <button type="button" class="cat-opt cat-opt-add" onclick="openMetodosModal()">
+       <span class="cat-opt-icon cat-opt-icon-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5z"/></svg></span>
+       <span class="cat-opt-label">Editar categorías</span>
      </button>`;
+
+    const trigger = document.getElementById('cat-select-trigger');
+    const iconEl  = document.getElementById('cat-select-icon');
+    const lblEl   = document.getElementById('cat-select-label');
+    const sel     = metodos.find(m => m.id === selMetod);
+    if (trigger && iconEl && lblEl) {
+      if (sel) {
+        iconEl.innerHTML = getMetodoIcon(sel.id, sel.nombre);
+        iconEl.style.color = sel.color;
+        iconEl.style.background = hexRgba(sel.color, 0.15);
+        lblEl.textContent = sel.nombre;
+        trigger.classList.remove('placeholder');
+      } else {
+        iconEl.innerHTML = CAT_ICONS.tag;
+        iconEl.style.color = 'var(--t3)';
+        iconEl.style.background = 'var(--surface-2)';
+        lblEl.textContent = 'Selecciona una categoría';
+        trigger.classList.add('placeholder');
+      }
+    }
   }
 
   /* Render opciones de filtro en historial */
