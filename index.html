@@ -2304,7 +2304,7 @@ function initApp() {
       switchView('form');
       setupListener(user.uid);
       setupMetodosListener(user.uid);
-      seedDefaultMetodos(user.uid);
+      seedDefaultMetodos(user.uid).then(() => ensureCategoriasBase(user.uid));
 
     } else {
       currentUser = null;
@@ -3053,19 +3053,40 @@ function initApp() {
     try {
       const snap = await db.collection('users').doc(uid).collection('metodos').limit(1).get();
       if (!snap.empty) return;
-      /* Cada persona registra sus propias categorías; estas son solo el punto de partida */
+      /* Cada persona registra sus propias categorías; el seed real vive en ensureCategoriasBase */
       const defaults = [
         { id:'efectivo', nombre:'Efectivo', tipo:'efectivo', color:'#B0A090' },
-        { id:'alimentacion', nombre:'Alimentación y Mercadería', tipo:'otro', color:'#F59E0B' },
-        { id:'vivienda', nombre:'Vivienda y Alquiler', tipo:'otro', color:'#8B5CF6' },
-        { id:'sueldo', nombre:'Sueldo / Salario', tipo:'otro', color:'#10B981' },
-        { id:'fondo-emergencia', nombre:'Fondo de Emergencia', tipo:'otro', color:'#6366F1' },
       ];
       const batch = db.batch();
       defaults.forEach(({ id, ...data }) =>
         batch.set(db.collection('users').doc(uid).collection('metodos').doc(id), data));
       await batch.commit();
     } catch(e) { console.warn('seedDefaultMetodos:', e); }
+  }
+
+  /* Agrega estas categorías a CUALQUIER cuenta (nueva o existente) sin tocar ni borrar
+     lo que la persona ya tenga creado — solo rellena las que falten, por id fijo. */
+  async function ensureCategoriasBase(uid) {
+    try {
+      const col = db.collection('users').doc(uid).collection('metodos');
+      const snap = await col.get();
+      const existentes = new Set(snap.docs.map(d => d.id));
+      const base = [
+        { id:'cat-alimentacion',    nombre:'Alimentación',                                      tipo:'otro', color:'#F59E0B' },
+        { id:'cat-transporte',      nombre:'Transporte y Gasolina',                              tipo:'otro', color:'#3B82F6' },
+        { id:'cat-arriendo',        nombre:'Arriendo y Servicios Básicos (Luz, Agua, Gas)',      tipo:'otro', color:'#8B5CF6' },
+        { id:'cat-internet',        nombre:'Internet y Plan de datos',                           tipo:'otro', color:'#0EA5E9' },
+        { id:'cat-entretenimiento', nombre:'Entretenimiento y Ocio',                             tipo:'otro', color:'#EC4899' },
+        { id:'cat-salud',           nombre:'Salud y Farmacia',                                   tipo:'otro', color:'#EF4444' },
+        { id:'cat-educacion',       nombre:'Educación',                                          tipo:'otro', color:'#14B8A6' },
+        { id:'cat-ropa',            nombre:'Ropa y Compras',                                     tipo:'otro', color:'#D946EF' },
+        { id:'cat-otros',           nombre:'Otros Gastos',                                       tipo:'otro', color:'#94A3B8' },
+      ].filter(c => !existentes.has(c.id));
+      if (!base.length) return;
+      const batch = db.batch();
+      base.forEach(({ id, ...data }) => batch.set(col.doc(id), data));
+      await batch.commit();
+    } catch(e) { console.warn('ensureCategoriasBase:', e); }
   }
 
   /* Helpers */
@@ -3098,17 +3119,25 @@ function initApp() {
     food:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v11M15 2c-2 0-3.5 2-3.5 5s1 5 3.5 5 3.5-2 3.5-5-1.5-5-3.5-5z"/><path d="M15 12v11"/></svg>',
     house:     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 001 1h12a1 1 0 001-1V10"/></svg>',
     car:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5A2 2 0 018.4 5h7.2a2 2 0 011.9 1.5L19 11"/><rect x="2" y="11" width="20" height="7" rx="2"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>',
-    health:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>'
+    health:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>',
+    wifi:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a11 11 0 0114 0"/><path d="M8.5 16a6 6 0 017 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></svg>',
+    film:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="17" y2="20"/><line x1="2" y1="9" x2="7" y2="9"/><line x1="2" y1="15" x2="7" y2="15"/><line x1="17" y1="9" x2="22" y2="9"/><line x1="17" y1="15" x2="22" y2="15"/></svg>',
+    grad:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>',
+    bag:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1.5 14h-15z"/><path d="M9 7a3 3 0 016 0"/></svg>'
   };
   function getMetodoIcon(id, nombre) {
     const n = ((nombre || '') + ' ' + (id || '')).toLowerCase();
     if (/aliment|mercad|comida|restaurant/.test(n)) return CAT_ICONS.food;
-    if (/vivienda|alquiler|arriendo/.test(n))        return CAT_ICONS.house;
+    if (/vivienda|alquiler|arriendo|servicios b[aá]sic/.test(n)) return CAT_ICONS.house;
     if (/sueldo|salario|n[oó]mina/.test(n))          return CAT_ICONS.briefcase;
     if (/ahorro|fondo|emergencia/.test(n))           return CAT_ICONS.shield;
     if (/efectivo/.test(n))                          return CAT_ICONS.wallet;
     if (/transporte|gasolina|uber|taxi/.test(n))     return CAT_ICONS.car;
     if (/salud|medic|farmacia/.test(n))              return CAT_ICONS.health;
+    if (/internet|datos|wifi/.test(n))               return CAT_ICONS.wifi;
+    if (/entreten|ocio|pel[ií]cula|cine/.test(n))    return CAT_ICONS.film;
+    if (/educaci[oó]n|colegio|universidad|curso/.test(n)) return CAT_ICONS.grad;
+    if (/ropa|compras|vestuario/.test(n))             return CAT_ICONS.bag;
     if (/tc-|tarjeta|cr[eé]dito|d[eé]bito/.test(n))  return CAT_ICONS.card;
     return CAT_ICONS.tag;
   }

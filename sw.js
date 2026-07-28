@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v34: el --bg del modo claro era literalmente crema (#F6F3EE), no solo el surround que ya se habia quitado. Ahora es gris neutro #F1F2F5 como el referente */
-const CACHE  = 'finanzas-v34';
+/* v35: agregadas 9 categorias nuevas (Alimentacion, Transporte, Arriendo/Servicios, Internet, Entretenimiento, Salud, Educacion, Ropa, Otros) con iconos propios, se aplican a cualquier cuenta sin borrar nada existente */
+const CACHE  = 'finanzas-v35';
 const ASSETS = [
   './',
   './index.html',
