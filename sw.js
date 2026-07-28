@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v30: reestructura UX del formulario (monto protagonista, tipo arriba, fecha compacta) + fix de layout en escritorio (columna centrada) */
-const CACHE  = 'finanzas-v30';
+/* v31: "Gastos por método" ya no es un gráfico de Chart.js con ejes/gridlines — ahora son barras propias, planas y sin ejes */
+const CACHE  = 'finanzas-v31';
 const ASSETS = [
   './',
   './index.html',

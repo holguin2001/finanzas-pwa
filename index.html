@@ -930,6 +930,46 @@
     }
     .chart-wrap { position: relative; height: 200px; }
     .chart-donut-wrap { height: 220px; max-width: 250px; margin: 0 auto; }
+    /* ── Gastos por método: barras propias, sin ejes ni gridlines ── */
+    .metodo-bars { display: flex; flex-direction: column; gap: 14px; }
+    .metodo-bar-row { display: flex; flex-direction: column; gap: 6px; }
+    .metodo-bar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .metodo-bar-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--t1);
+    }
+    .metodo-bar-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .metodo-bar-amount {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--t2);
+      white-space: nowrap;
+    }
+    .metodo-bar-track {
+      height: 7px;
+      border-radius: 100px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+    .metodo-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 0.4s ease;
+    }
     .dash-empty {
       text-align: center;
       padding: 32px 0;
@@ -1286,7 +1326,7 @@
     .filter-btn[data-filter="tc-lulo"].active        { background:rgba(90,184,135,0.07); border-color:rgba(90,184,135,0.35); }
     .rec-card.exportado { opacity: 0.35; }
     /* Oscurece insignias de color libre (métodos de pago) y la barra de "gastos por método" en modo claro */
-    .rec-method, .method-dot, #chart-metodos {
+    .rec-method, .method-dot, .metodo-bar-dot, .metodo-bar-fill {
       filter: var(--badge-filter);
     }
   
@@ -2379,7 +2419,7 @@ function initApp() {
     const section = document.getElementById('view-dashboard');
     section.querySelectorAll('.dash-card').forEach(c => c.remove());
     const pm = document.createElement('div'); pm.className = 'dash-card';
-    pm.innerHTML = '<div class="dash-card-title" id="metodos-chart-title">Gastos por método · este mes</div><div class="chart-wrap" id="metodos-wrap" style="height:140px"><canvas id="chart-metodos"></canvas></div>';
+    pm.innerHTML = '<div class="dash-card-title" id="metodos-chart-title">Gastos por método · este mes</div><div class="metodo-bars" id="metodos-wrap"></div>';
     const m = document.createElement('div'); m.className = 'dash-card';
     m.innerHTML = '<div class="dash-card-title">Últimos 6 meses</div><div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>';
     const d = document.createElement('div'); d.className = 'dash-card';
@@ -2586,35 +2626,19 @@ function initApp() {
         metWrap.style.height = 'auto';
         metWrap.innerHTML = '<div class="dash-empty">Sin gastos este mes todavía</div>';
       } else {
-        metWrap.style.height = Math.max(120, metEntries.length * 40 + 34) + 'px';
-        metWrap.innerHTML = '<canvas id="chart-metodos"></canvas>';
-        const ctxP = document.getElementById('chart-metodos').getContext('2d');
-        chartMetodos = new Chart(ctxP, {
-          type: 'bar',
-          data: {
-            labels: metEntries.map(([id]) => getMetodoNombre(id)),
-            datasets: [{
-              data: metEntries.map(([,v]) => v),
-              backgroundColor: metEntries.map(([id]) => hexRgba(getMetodoColor(id), 0.38)),
-              borderColor:     metEntries.map(([id]) => getMetodoColor(id)),
-              borderWidth: 1.5,
-              borderRadius: 5,
-              barThickness: 20
-            }]
-          },
-          options: {
-            indexAxis: 'y',
-            responsive: true, maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              tooltip: { callbacks: { label: ctx => ' ' + fmtCOP(ctx.raw) } }
-            },
-            scales: {
-              x: { ticks: { color:TC.t2, font:{size:10}, callback: v => v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v }, grid: { color:TC.grid }, border: { color:TC.gridBorder } },
-              y: { ticks: { color:TC.t2, font:{size:11} }, grid: { display:false }, border: { color:TC.gridBorder } }
-            }
-          }
-        });
+        metWrap.style.height = 'auto';
+        const maxVal = metEntries[0][1];
+        metWrap.innerHTML = metEntries.map(([id, v]) => {
+          const color = getMetodoColor(id);
+          const pct = Math.max(4, Math.round(v / maxVal * 100));
+          return '<div class="metodo-bar-row">'
+            + '<div class="metodo-bar-top">'
+            +   '<span class="metodo-bar-label"><span class="metodo-bar-dot" style="background:' + color + '"></span>' + esc(getMetodoNombre(id)) + '</span>'
+            +   '<span class="metodo-bar-amount">' + fmtCOP(v) + '</span>'
+            + '</div>'
+            + '<div class="metodo-bar-track"><div class="metodo-bar-fill" style="width:' + pct + '%; background:' + color + ';"></div></div>'
+            + '</div>';
+        }).join('');
       }
     }
 
