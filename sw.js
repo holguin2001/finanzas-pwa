@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v39: FIX REAL del dropdown de categoria (confirmado con prueba automatizada): faltaba window.toggleCatDropdown = toggleCatDropdown en el bloque de exportacion de funciones (todo vive dentro de initApp() y cada funcion usada en onclick debe exponerse a window explicitamente, se me habia olvidado justo esta). Tambien: texto de validacion actualizado a "Selecciona una categoria" */
-const CACHE  = 'finanzas-v39';
+/* v41: Categoria y Metodo de pago separados en dos campos/dropdowns independientes en el formulario (antes estaban fusionados). Se usa el campo "tipo" que ya existia en la coleccion (otro=categoria, resto=metodo de pago) para dividir sin migrar datos. Registros ahora guardan categoria + metodo por separado. Historial/CSV/Ultimos registros corregidos para mostrar ambos correctamente. Fix adicional: setSaving() borraba el icono del boton Guardar y perdia el texto dinamico por tipo */
+const CACHE  = 'finanzas-v41';
 const ASSETS = [
   './',
   './index.html',

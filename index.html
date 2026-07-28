@@ -840,7 +840,7 @@
       border-radius: var(--r-sm);
       font-size: 16px;
       color: var(--t1);
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', 'Open Sans', sans-serif;
       outline: none;
       color-scheme: dark;
       -webkit-appearance: none;
@@ -891,7 +891,7 @@
       border: none;
       background: transparent;
       color: var(--t2);
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', 'Open Sans', sans-serif;
       font-size: 13px;
       font-weight: 500;
       border-radius: 8px;
@@ -924,6 +924,189 @@
     .method-dot.nu          { background: #9B6DFF; }
     .method-dot.lulo        { background: #5AB887; }
     .method-dot.ahorro      { background: #FCCA45; }
+
+    /* ══════════════════════════════════
+       HISTORIAL: KPIs + filtros + tabla
+       ══════════════════════════════════ */
+    .hist-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 16px;
+    }
+    .hist-kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .hist-kpi-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--t2); }
+    .hist-kpi-val { font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 600; margin-top: 6px; color: var(--t1); }
+    .hist-kpi-val.inc { color: var(--income); }
+    .hist-kpi-val.exp { color: var(--expense); }
+    .hist-kpi-val.sav { color: var(--savings); }
+    .hist-kpi-val.pos { color: var(--income); }
+    .hist-kpi-val.neg { color: var(--expense); }
+    .hist-kpi-sub { font-size: 11.5px; color: var(--t3); margin-top: 4px; }
+    .hist-kpi-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: var(--surface-2);
+      color: var(--t2);
+    }
+    .hist-kpi-icon.inc { background: var(--income-lt); color: var(--income); }
+    .hist-kpi-icon.exp { background: var(--expense-lt); color: var(--expense); }
+    .hist-kpi-icon.sav { background: var(--savings-lt); color: var(--savings); }
+
+    .hist-search-row { display: flex; gap: 10px; padding: 0 16px 14px; }
+    .hist-export-btn {
+      display: flex; align-items: center; gap: 7px;
+      flex-shrink: 0;
+      padding: 0 16px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      color: var(--t1);
+      font-size: 13px; font-weight: 600;
+      white-space: nowrap;
+    }
+    .hist-export-btn:active { opacity: 0.7; }
+
+    .hist-filters-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 0 16px 14px;
+    }
+    .hist-filter-field label {
+      display: block;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+      color: var(--t2);
+      margin-bottom: 6px;
+    }
+    .hist-filter-field select, .hist-filter-field input[type="date"] {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 13.5px;
+      color: var(--t1);
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .hist-quick-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 16px 14px;
+    }
+    .hist-quick-lbl { font-size: 12.5px; color: var(--t2); white-space: nowrap; margin-right: 2px; }
+    .hist-quick-chip {
+      padding: 7px 13px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--surface-2);
+      color: var(--t2);
+      font-size: 12.5px; font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.12s;
+    }
+    .hist-quick-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .hist-quick-spacer { flex: 1; }
+    .hist-sort-lbl { font-size: 12.5px; color: var(--t2); white-space: nowrap; }
+    #hist-sort {
+      padding: 8px 12px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 12.5px;
+      color: var(--t1);
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .hist-results-head { font-size: 12.5px; font-weight: 700; color: var(--t2); padding: 4px 16px 10px; }
+    .hist-results-count {
+      background: var(--income-lt); color: var(--income);
+      font-weight: 700; border-radius: 100px; padding: 1px 8px; font-size: 11.5px;
+    }
+
+    .hist-table-wrap {
+      margin: 0 16px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow-x: auto;
+    }
+    .hist-table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    .hist-table thead th {
+      text-align: left;
+      font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--t2);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .hist-table thead th.ta-right { text-align: right; }
+    .hist-table tbody tr { border-bottom: 1px solid var(--border); }
+    .hist-table tbody tr:last-child { border-bottom: none; }
+    .hist-table tbody tr:hover { background: var(--surface-2); }
+    .hist-table td { padding: 12px 16px; font-size: 13.5px; color: var(--t1); vertical-align: middle; }
+    .hist-td-fecha { color: var(--t2); white-space: nowrap; }
+    .hist-tipo-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 12px; font-weight: 600;
+      white-space: nowrap;
+    }
+    .hist-tipo-pill.gasto   { background: var(--expense-lt); color: var(--expense); }
+    .hist-tipo-pill.ingreso { background: var(--income-lt);  color: var(--income); }
+    .hist-tipo-pill.ahorro  { background: var(--savings-lt); color: var(--savings); }
+    .hist-cat-cell { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .hist-cat-icon {
+      width: 26px; height: 26px;
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .hist-cat-name { font-size: 13px; font-weight: 600; }
+    .hist-td-desc { color: var(--t1); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hist-td-pago { font-size: 11px; color: var(--t3); margin-top: 2px; }
+    .hist-td-monto {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .hist-td-monto.gasto   { color: var(--expense); }
+    .hist-td-monto.ingreso { color: var(--income); }
+    .hist-td-monto.ahorro  { color: var(--savings); }
+    .hist-td-acciones { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .hist-empty { text-align: center; color: var(--t3); padding: 40px 0 !important; }
+
+    @media (max-width: 900px) {
+      .hist-kpi-row { grid-template-columns: 1fr 1fr; }
+      .hist-filters-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .hist-kpi-row { grid-template-columns: 1fr; }
+      .hist-filters-row { grid-template-columns: 1fr; }
+      .hist-search-row { flex-direction: column; }
+    }
 
     /* Mini summary cards */
     .summary-row {
@@ -1408,7 +1591,7 @@
       border: none;
       background: transparent;
       color: var(--t2);
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', 'Open Sans', sans-serif;
       font-size: 13px;
       font-weight: 600;
       transition: all 0.2s ease;
@@ -1443,7 +1626,7 @@
       border: none;
       background: transparent;
       color: var(--accent);
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', 'Open Sans', sans-serif;
       font-size: 14px;
       font-weight: 700;
       padding: 0;
@@ -1581,7 +1764,7 @@
       border: none;
       background: transparent;
       color: var(--t1);
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', 'Open Sans', sans-serif;
       font-size: 13px;
       font-weight: 500;
       border-radius: 8px;
@@ -1692,7 +1875,7 @@
       background: var(--surf-tipo);
       border-radius: var(--r-sm);
       color: var(--t2);
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', 'Open Sans', sans-serif;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
@@ -1953,7 +2136,7 @@
 
           <div class="field">
             <label>Categoría <span class="req">*</span></label>
-            <div class="cat-select-wrap">
+            <div class="cat-select-wrap" id="wrap-categoria">
               <button type="button" class="cat-select-trigger placeholder" id="cat-select-trigger" onclick="toggleCatDropdown(event)">
                 <span class="cat-select-icon" id="cat-select-icon"></span>
                 <span class="cat-select-label" id="cat-select-label">Selecciona una categoría</span>
@@ -1968,19 +2151,33 @@
 
         <div class="gf-form-row">
           <div class="field">
+            <label>Método de pago <span class="req">*</span></label>
+            <div class="cat-select-wrap" id="wrap-pago">
+              <button type="button" class="cat-select-trigger placeholder" id="pago-select-trigger" onclick="togglePagoDropdown(event)">
+                <span class="cat-select-icon" id="pago-select-icon"></span>
+                <span class="cat-select-label" id="pago-select-label">Selecciona un método de pago</span>
+                <svg class="cat-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="cat-dropdown" id="pago-dropdown">
+                <!-- generado dinámicamente -->
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
             <label>Fecha <span class="req">*</span></label>
             <div class="input-with-icon">
               <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
               <input type="date" id="fecha">
             </div>
           </div>
+        </div>
 
-          <div class="field">
-            <label>Breve descripción</label>
-            <div class="input-with-icon">
-              <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              <input type="text" id="desc" placeholder="Ej: Mercado de la semana o pago factura" autocomplete="off" autocorrect="off" spellcheck="false">
-            </div>
+        <div class="field">
+          <label>Breve descripción</label>
+          <div class="input-with-icon">
+            <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <input type="text" id="desc" placeholder="Ej: Mercado de la semana o pago factura" autocomplete="off" autocorrect="off" spellcheck="false">
           </div>
         </div>
 
@@ -2012,95 +2209,121 @@
   <!-- ── VISTA: HISTORIAL ── -->
   <section id="view-historial" class="view">
 
-    <!-- Header: buscar + filtrar -->
-    <div class="hist-header">
-      <div class="search-row">
-        <div class="search-box">
-          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          <input type="search" id="search-input" placeholder="Buscar registros…" oninput="setSearch(this.value)" autocomplete="off">
+    <div class="hist-kpi-row">
+      <div class="hist-kpi">
+        <div class="hist-kpi-info">
+          <div class="hist-kpi-label">Total Ingresos</div>
+          <div class="hist-kpi-val inc" id="hk-ingresos">$ 0</div>
+          <div class="hist-kpi-sub" id="hk-ingresos-sub">0 registros</div>
         </div>
-        <button class="hide-exp-btn" id="hide-exp-btn" onclick="toggleHideExported()" title="Ocultar exportados a Excel">
-          <svg id="eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-          <svg id="eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
-            <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
-            <line x1="1" y1="1" x2="23" y2="23"/>
-          </svg>
-        </button>
-        <div class="filter-btn-wrap">
-          <button class="filter-toggle-btn" id="filter-toggle" onclick="toggleFilterMenu()" title="Filtrar por método">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
-            </svg>
-          </button>
+        <div class="hist-kpi-icon inc">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
         </div>
       </div>
+      <div class="hist-kpi">
+        <div class="hist-kpi-info">
+          <div class="hist-kpi-label">Total Gastos</div>
+          <div class="hist-kpi-val exp" id="hk-gastos">$ 0</div>
+          <div class="hist-kpi-sub" id="hk-gastos-sub">0 registros</div>
+        </div>
+        <div class="hist-kpi-icon exp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+      </div>
+      <div class="hist-kpi">
+        <div class="hist-kpi-info">
+          <div class="hist-kpi-label">Total Ahorros</div>
+          <div class="hist-kpi-val sav" id="hk-ahorros">$ 0</div>
+          <div class="hist-kpi-sub" id="hk-ahorros-sub">0 registros</div>
+        </div>
+        <div class="hist-kpi-icon sav">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="11" rx="2"/><path d="M7 9V7a5 5 0 0110 0v2"/></svg>
+        </div>
+      </div>
+      <div class="hist-kpi">
+        <div class="hist-kpi-info">
+          <div class="hist-kpi-label">Balance Neto</div>
+          <div class="hist-kpi-val" id="hk-balance">$ 0</div>
+          <div class="hist-kpi-sub">Ingresos menos Gastos</div>
+        </div>
+        <div class="hist-kpi-icon neutral">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </div>
+      </div>
     </div>
 
-    <div class="summary-row">
-      <div class="s-card">
-        <div class="s-card-label inc">Ingresos</div>
-        <div class="s-card-amount" id="total-ingresos">$ 0</div>
+    <div class="hist-search-row">
+      <div class="search-box hist-search-box">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar por descripción o categoría..." oninput="setSearch(this.value)" autocomplete="off">
       </div>
-      <div class="s-card">
-        <div class="s-card-label exp">Gastos</div>
-        <div class="s-card-amount" id="total-gastos">$ 0</div>
+      <button class="hist-export-btn" onclick="exportarHistorialCSV()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar CSV
+      </button>
+    </div>
+
+    <div class="hist-filters-row">
+      <div class="hist-filter-field">
+        <label>Tipo</label>
+        <select id="filter-tipo" onchange="setFilterTipo(this.value)">
+          <option value="all">Todos los tipos</option>
+          <option value="gasto">Gasto</option>
+          <option value="ingreso">Ingreso</option>
+          <option value="ahorro">Ahorro</option>
+        </select>
       </div>
-      <div class="s-card">
-        <div class="s-card-label sav">Ahorros</div>
-        <div class="s-card-amount" id="total-ahorros">$ 0</div>
+      <div class="hist-filter-field">
+        <label>Categoría</label>
+        <select id="filter-categoria" onchange="setFilter(this.value)">
+          <option value="all">Todas las categorías</option>
+        </select>
+      </div>
+      <div class="hist-filter-field">
+        <label>Desde</label>
+        <input type="date" id="filter-desde" onchange="setFilterDesde(this.value)">
+      </div>
+      <div class="hist-filter-field">
+        <label>Hasta</label>
+        <input type="date" id="filter-hasta" onchange="setFilterHasta(this.value)">
       </div>
     </div>
 
-    <div class="section-wrap" id="sw-gastos">
-      <div class="section-head" onclick="toggleSection('gastos')">
-        <span class="section-lbl exp">Gastos</span>
-        <span class="section-count"></span>
-        <div class="section-rule"></div>
-        <span class="section-total exp"></span>
-        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </div>
-      <div class="rec-list" id="lista-gastos"></div>
+    <div class="hist-quick-row">
+      <span class="hist-quick-lbl">Accesos rápidos:</span>
+      <button class="hist-quick-chip active" data-preset="mes" onclick="setQuickPreset('mes')">Este Mes</button>
+      <button class="hist-quick-chip" data-preset="mes-ant" onclick="setQuickPreset('mes-ant')">Mes Anterior</button>
+      <button class="hist-quick-chip" data-preset="30d" onclick="setQuickPreset('30d')">Últimos 30 días</button>
+      <button class="hist-quick-chip" data-preset="todo" onclick="setQuickPreset('todo')">Todo</button>
+      <div class="hist-quick-spacer"></div>
+      <label class="hist-sort-lbl">Ordenar por:</label>
+      <select id="hist-sort" onchange="setSortOrder(this.value)">
+        <option value="fecha-desc">Fecha (Recientes primero)</option>
+        <option value="fecha-asc">Fecha (Antiguos primero)</option>
+        <option value="monto-desc">Monto (Mayor primero)</option>
+        <option value="monto-asc">Monto (Menor primero)</option>
+      </select>
     </div>
 
-    <div class="section-wrap" id="sw-ingresos">
-      <div class="section-head" onclick="toggleSection('ingresos')">
-        <span class="section-lbl inc">Ingresos</span>
-        <span class="section-count"></span>
-        <div class="section-rule"></div>
-        <span class="section-total inc"></span>
-        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </div>
-      <div class="rec-list" id="lista-ingresos"></div>
+    <div class="hist-results-head">
+      Resultados: <span class="hist-results-count" id="hist-results-count">0</span>
     </div>
 
-    <div class="section-wrap" id="sw-ahorros">
-      <div class="section-head" onclick="toggleSection('ahorros')">
-        <span class="section-lbl sav">Ahorros</span>
-        <span class="section-count"></span>
-        <div class="section-rule"></div>
-        <span class="section-total sav"></span>
-        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </div>
-      <div class="rec-list" id="lista-ahorros"></div>
+    <div class="hist-table-wrap">
+      <table class="hist-table">
+        <thead>
+          <tr>
+            <th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Descripción</th><th class="ta-right">Monto</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="hist-table-body"></tbody>
+      </table>
     </div>
 
   </section>
 
 </div><!-- /app-wrapper -->
 
-<!-- Filter dropdown (global — fuera de cualquier backdrop-filter) -->
 <div class="filter-dropdown" id="filter-dropdown" style="z-index:3000">
   <div id="filter-opts-container"></div>
 </div>
@@ -2219,11 +2442,17 @@ function initApp() {
   let currentUser = null;
   let unsub       = null;   // cleanup del listener de Firestore
   let selTipo     = 'gasto';
-  let selMetod    = null;
+  let selMetod    = null;  /* método de pago (Efectivo, Débito, TC...) */
+  let selCategoria = null; /* categoría del gasto/ingreso (Alimentación, Transporte...) */
   let editId      = null;
   let activeView   = 'form';
   let searchQuery   = '';
   let filterMetodo  = 'all';
+  let filterTipo    = 'all';
+  let filterDesde   = '';
+  let filterHasta   = '';
+  let quickPreset   = 'mes';
+  let sortOrder     = 'fecha-desc';
   let hideExported  = false;
 
 
@@ -2367,13 +2596,16 @@ function initApp() {
       return;
     }
     el.innerHTML = top.map(r => {
-      const color = getMetodoColor(r.metodo);
+      const catId     = r.categoria || null;
+      const catColor  = catId ? getMetodoColor(catId) : '#9CA3AF';
+      const catNombre = catId ? getMetodoNombre(catId) : 'Sin categoría';
+      const catIcon   = catId ? getMetodoIcon(catId, catNombre) : CAT_ICONS.tag;
       const signo = r.tipo === 'gasto' ? '- ' : (r.tipo === 'ingreso' ? '+ ' : '');
       return `<div class="mini-rec-row">
-        <span class="mini-rec-icon" style="background:${hexRgba(color,0.15)};color:${color}">${getMetodoIcon(r.metodo, getMetodoNombre(r.metodo))}</span>
+        <span class="mini-rec-icon" style="background:${hexRgba(catColor,0.15)};color:${catColor}">${catIcon}</span>
         <div class="mini-rec-info">
           <div class="mini-rec-desc">${esc(r.desc)}</div>
-          <div class="mini-rec-meta">${esc(getMetodoNombre(r.metodo))} · ${fmtDate(r.fecha)}</div>
+          <div class="mini-rec-meta">${esc(catNombre)} · ${esc(getMetodoNombre(r.metodo))} · ${fmtDate(r.fecha)}</div>
         </div>
         <div class="mini-rec-right">
           <span class="mini-rec-monto ${r.tipo}">${signo}${fmtCOP(r.monto)}</span>
@@ -2397,11 +2629,12 @@ function initApp() {
     if (!desc)                              return showErr('Escribe una descripción.');
     if (!raw || isNaN(monto) || monto <= 0) return showErr('Ingresa un monto válido (mayor que 0).');
     if (!selTipo)                           return showErr('Selecciona el tipo de registro.');
-    if (!selMetod)                          return showErr('Selecciona una categoría.');
+    if (!selCategoria)                      return showErr('Selecciona una categoría.');
+    if (!selMetod)                          return showErr('Selecciona un método de pago.');
     if (!currentUser)                       return showErr('Sesión expirada. Recarga la app.');
 
     const uid  = currentUser.uid;
-    const data = { fecha, desc, monto, tipo: selTipo, metodo: selMetod };
+    const data = { fecha, desc, monto, tipo: selTipo, metodo: selMetod, categoria: selCategoria };
 
     setSaving(true);
     try {
@@ -2424,10 +2657,13 @@ function initApp() {
 
   function setSaving(on) {
     const btn = document.getElementById('guardar-btn');
-    btn.disabled    = on;
-    btn.textContent = on
-      ? (editId ? 'Actualizando...' : 'Guardando...')
-      : (editId ? 'Actualizar registro' : 'Guardar registro');
+    const lbl = document.getElementById('guardar-btn-label');
+    btn.disabled = on;
+    if (lbl) {
+      lbl.textContent = on
+        ? (editId ? 'Actualizando...' : 'Guardando...')
+        : (editId ? 'Actualizar registro' : ({ gasto:'Guardar Gasto', ingreso:'Guardar Ingreso', ahorro:'Guardar Ahorro' }[selTipo] || 'Guardar'));
+    }
   }
 
 
@@ -2467,15 +2703,18 @@ function initApp() {
   function editRec(id) {
     const r = records.find(r => r.id === id);
     if (!r) return;
-    editId   = id;
-    selTipo  = r.tipo;
-    selMetod = r.metodo;
+    editId      = id;
+    selTipo     = r.tipo;
+    selMetod    = r.metodo;
+    selCategoria = r.categoria || null; /* registros viejos, previos a separar categoria/metodo, quedan sin categoria */
     document.getElementById('fecha').value  = r.fecha;
     document.getElementById('desc').value   = r.desc;
     const mEl = document.getElementById('monto');
     mEl.value = String(Math.round(r.monto));
     fmtMontoLive(mEl);
     syncBtns();
+    renderCategoriaDropdown();
+    renderMetodoPagoDropdown();
     document.getElementById('form-title').textContent   = 'Editar Movimiento Financiero';
     document.getElementById('form-sub').textContent     = 'Modifica y guarda los cambios';
     document.getElementById('guardar-btn-label').textContent = 'Actualizar registro';
@@ -2492,10 +2731,13 @@ function initApp() {
     document.getElementById('fecha').value  = todayStr();
     document.getElementById('desc').value   = '';
     document.getElementById('monto').value  = '';
-    selTipo  = 'gasto';   /* default: el tipo más frecuente */
-    /* selMetod se conserva: recuerda el último método usado */
+    selTipo      = 'gasto';   /* default: el tipo más frecuente */
+    selCategoria = null;      /* la categoría se vuelve a elegir cada vez */
+    /* selMetod se conserva: recuerda el último método de pago usado */
     editId   = null;
     syncBtns();
+    renderCategoriaDropdown();
+    renderMetodoPagoDropdown();
     hideErr();
     document.getElementById('form-title').textContent      = 'Registrar Movimiento Financiero';
     document.getElementById('form-sub').textContent        = 'Anota rápido antes de olvidar';
@@ -2511,128 +2753,182 @@ function initApp() {
       const lbl = document.getElementById('guardar-btn-label');
       if (lbl) lbl.textContent = { gasto:'Guardar Gasto', ingreso:'Guardar Ingreso', ahorro:'Guardar Ahorro' }[selTipo] || 'Guardar';
     }
-    renderMetodoPills(); /* categorías dinámicas */
   }
 
   function selectTipo(v)   { selTipo  = v; syncBtns(); }
-  function selectMetodo(v) { selMetod = v; syncBtns(); document.getElementById('cat-dropdown')?.classList.remove('open'); }
+  function selectMetodo(v) { selMetod = v; renderMetodoPagoDropdown(); document.getElementById('pago-dropdown')?.classList.remove('open'); }
 
 
   /* ═══ HISTORIAL ═══ */
-  function renderHistorial() {
-    /* Aplicar filtros activos */
+  function getFilteredSortedRecords() {
     let pool = records;
-    if (filterMetodo !== 'all') pool = pool.filter(r => r.metodo === filterMetodo);
-    if (searchQuery)            pool = pool.filter(r => r.desc.toLowerCase().includes(searchQuery));
-    if (hideExported)           pool = pool.filter(r => !r.exportado);
+    if (filterTipo   !== 'all') pool = pool.filter(r => r.tipo === filterTipo);
+    /* filterMetodo aquí representa la CATEGORÍA seleccionada en el filtro del Historial */
+    if (filterMetodo !== 'all') pool = pool.filter(r => r.categoria === filterMetodo);
+    if (filterDesde)            pool = pool.filter(r => r.fecha >= filterDesde);
+    if (filterHasta)            pool = pool.filter(r => r.fecha <= filterHasta);
+    if (searchQuery) {
+      pool = pool.filter(r =>
+        r.desc.toLowerCase().includes(searchQuery) ||
+        getMetodoNombre(r.metodo).toLowerCase().includes(searchQuery) ||
+        (r.categoria && getMetodoNombre(r.categoria).toLowerCase().includes(searchQuery)));
+    }
+    pool = [...pool];
+    if      (sortOrder === 'fecha-desc') pool.sort((a,b) => b.fecha.localeCompare(a.fecha) || (b.ts||0)-(a.ts||0));
+    else if (sortOrder === 'fecha-asc')  pool.sort((a,b) => a.fecha.localeCompare(b.fecha) || (a.ts||0)-(b.ts||0));
+    else if (sortOrder === 'monto-desc') pool.sort((a,b) => b.monto - a.monto);
+    else if (sortOrder === 'monto-asc')  pool.sort((a,b) => a.monto - b.monto);
+    return pool;
+  }
 
-    const ingresos = pool
-      .filter(r => r.tipo === 'ingreso')
-      .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.ts - a.ts);
-    const gastos = pool
-      .filter(r => r.tipo === 'gasto')
-      .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.ts - a.ts);
+  function renderHistorial() {
+    const pool = getFilteredSortedRecords();
 
-    const totI = ingresos.reduce((s, r) => s + r.monto, 0);
-    const totG = gastos.reduce((s, r)   => s + r.monto, 0);
+    const ingresos = pool.filter(r => r.tipo === 'ingreso');
+    const gastos   = pool.filter(r => r.tipo === 'gasto');
+    const ahorros  = pool.filter(r => r.tipo === 'ahorro');
+    const totI = ingresos.reduce((s,r) => s + r.monto, 0);
+    const totG = gastos.reduce((s,r)   => s + r.monto, 0);
+    const totA = ahorros.reduce((s,r)  => s + r.monto, 0);
     const bal  = totI - totG;
 
-    const ahorros = pool
-      .filter(r => r.tipo === 'ahorro')
-      .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.ts - a.ts);
-    const totA = ahorros.reduce((s,r) => s + r.monto, 0);
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('hk-ingresos',     fmtCOP(totI));
+    set('hk-ingresos-sub', ingresos.length + (ingresos.length === 1 ? ' registro' : ' registros'));
+    set('hk-gastos',       fmtCOP(totG));
+    set('hk-gastos-sub',   gastos.length + (gastos.length === 1 ? ' registro' : ' registros'));
+    set('hk-ahorros',      fmtCOP(totA));
+    set('hk-ahorros-sub',  ahorros.length + (ahorros.length === 1 ? ' registro' : ' registros'));
+    set('hk-balance',      fmtCOP(bal));
+    set('hist-results-count', pool.length);
 
-    document.getElementById('total-ingresos').textContent = fmtCOP(totI);
-    document.getElementById('total-gastos').textContent   = fmtCOP(totG);
-    document.getElementById('total-ahorros').textContent  = fmtCOP(totA);
+    const balEl = document.getElementById('hk-balance');
+    if (balEl) { balEl.classList.toggle('neg', bal < 0); balEl.classList.toggle('pos', bal >= 0); }
 
-    renderList('lista-ingresos', ingresos, 'ingreso');
-    renderList('lista-gastos',   gastos,   'gasto');
-    renderList('lista-ahorros',  ahorros,  'ahorro');
-
-    setSectionMeta('ingresos', ingresos.length, totI);
-    setSectionMeta('gastos',   gastos.length,   totG);
-    setSectionMeta('ahorros',  ahorros.length,  totA);
-  }
-
-  function setSectionMeta(name, n, total) {
-    const w = document.getElementById('sw-' + name);
-    if (!w) return;
-    const c = w.querySelector('.section-count');
-    const t = w.querySelector('.section-total');
-    if (c) c.textContent = '(' + n + ')';
-    if (t) t.textContent = fmtCOP(total);
-  }
-
-  function renderList(cId, list, tipo) {
-    const el = document.getElementById(cId);
-    if (!list.length) {
-      el.innerHTML = '<div class="empty-state">Sin registros todavía</div>';
+    const tbody = document.getElementById('hist-table-body');
+    if (!tbody) return;
+    if (!pool.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="hist-empty">Sin registros que coincidan con los filtros</td></tr>';
       return;
     }
-    const multiMes = new Set(list.map(r => r.fecha.slice(0, 7))).size > 1;
-    let prevMes = null;
-    el.innerHTML = list.map(r => {
-      const mesKey = r.fecha.slice(0, 7);
-      let divider = '';
-      if (mesKey !== prevMes) {
-        if (multiMes) divider = `<div class="month-divider"><span>${mesLabel(mesKey)}</span><div class="md-rule"></div></div>`;
-        prevMes = mesKey;
-      }
-      return divider + `
-      <div class="rec-card${r.exportado ? ' exportado' : ''}">
-        <button class="check-btn${r.exportado ? ' checked' : ''}"
-                onclick="toggleCheck('${esc(r.id)}', ${r.exportado})"
-                title="${r.exportado ? 'Quitar marca' : 'Marcar como exportado a Excel'}">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </button>
-        <div class="rec-dot ${tipo}"></div>
-        <div class="rec-info">
-          <div class="rec-desc">${esc(r.desc)}</div>
-          <div class="rec-meta">
-            <span class="rec-fecha">${fmtDate(r.fecha)}</span>
-            <span class="rec-method" style="color:${getMetodoColor(r.metodo)};background:${hexRgba(getMetodoColor(r.metodo),0.08)}">${esc(getMetodoNombre(r.metodo))}</span>
-          </div>
-        </div>
-        <div class="rec-right">
-          <div class="rec-monto ${tipo}">${fmtCOP(r.monto)}</div>
-          <div class="rec-actions">
-            <button class="icon-btn edit-btn" onclick="editRec('${esc(r.id)}')" aria-label="Editar">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-              </svg>
-            </button>
-            <button class="icon-btn del-btn" onclick="delRec('${esc(r.id)}')" aria-label="Eliminar">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-                <path d="M10 11v6M14 11v6"/>
-                <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
+    const tipoLbl = { gasto:'Gasto', ingreso:'Ingreso', ahorro:'Ahorro' };
+    tbody.innerHTML = pool.map(r => {
+      const catId     = r.categoria || null;
+      const catColor  = catId ? getMetodoColor(catId) : '#9CA3AF';
+      const catNombre = catId ? getMetodoNombre(catId) : 'Sin categoría';
+      const catIcon   = catId ? getMetodoIcon(catId, catNombre) : CAT_ICONS.tag;
+      const signo = r.tipo === 'gasto' ? '- ' : (r.tipo === 'ingreso' ? '+ ' : '');
+      return `<tr>
+        <td class="hist-td-fecha">${fmtDate(r.fecha)}</td>
+        <td><span class="hist-tipo-pill ${r.tipo}">● ${tipoLbl[r.tipo] || r.tipo}</span></td>
+        <td>
+          <span class="hist-cat-cell">
+            <span class="hist-cat-icon" style="background:${hexRgba(catColor,0.15)};color:${catColor}">${catIcon}</span>
+            <span class="hist-cat-name" style="color:${catColor}">${esc(catNombre)}</span>
+          </span>
+        </td>
+        <td class="hist-td-desc">
+          ${esc(r.desc)}
+          <div class="hist-td-pago">${esc(getMetodoNombre(r.metodo))}</div>
+        </td>
+        <td class="hist-td-monto ${r.tipo}">${signo}${fmtCOP(r.monto)}</td>
+        <td class="hist-td-acciones">
+          <button class="icon-btn edit-btn" onclick="editRec('${esc(r.id)}')" aria-label="Editar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+          <button class="icon-btn del-btn" onclick="delRec('${esc(r.id)}')" aria-label="Eliminar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/>
+            </svg>
+          </button>
+        </td>
+      </tr>`;
     }).join('');
   }
+
+  /* Botones de acceso rápido de fecha */
+  function setQuickPreset(p) {
+    quickPreset = p;
+    const hoy = new Date();
+    const y = hoy.getFullYear(), m = hoy.getMonth();
+    const toISO = d => d.toISOString().slice(0, 10);
+    if (p === 'mes') {
+      filterDesde = toISO(new Date(y, m, 1));
+      filterHasta = toISO(new Date(y, m + 1, 0));
+    } else if (p === 'mes-ant') {
+      filterDesde = toISO(new Date(y, m - 1, 1));
+      filterHasta = toISO(new Date(y, m, 0));
+    } else if (p === '30d') {
+      const d30 = new Date(hoy); d30.setDate(d30.getDate() - 30);
+      filterDesde = toISO(d30);
+      filterHasta = toISO(hoy);
+    } else {
+      filterDesde = '';
+      filterHasta = '';
+    }
+    const fd = document.getElementById('filter-desde'); if (fd) fd.value = filterDesde;
+    const fh = document.getElementById('filter-hasta'); if (fh) fh.value = filterHasta;
+    syncQuickChips();
+    renderHistorial();
+  }
+  function syncQuickChips() {
+    document.querySelectorAll('.hist-quick-chip').forEach(b =>
+      b.classList.toggle('active', b.dataset.preset === quickPreset));
+  }
+  function setFilterTipo(v)  { filterTipo  = v; renderHistorial(); }
+  function setFilterDesde(v) { filterDesde = v; quickPreset = null; syncQuickChips(); renderHistorial(); }
+  function setFilterHasta(v) { filterHasta = v; quickPreset = null; syncQuickChips(); renderHistorial(); }
+  function setSortOrder(v)   { sortOrder   = v; renderHistorial(); }
+
+  function csvEscape(val) {
+    const s = String(val ?? '');
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function exportarHistorialCSV() {
+    const pool = getFilteredSortedRecords();
+    const tipoLbl = { gasto:'Gasto', ingreso:'Ingreso', ahorro:'Ahorro' };
+    const filas = [['Fecha','Tipo','Categoria','Metodo de pago','Descripcion','Monto']]
+      .concat(pool.map(r => [
+        fmtDate(r.fecha),
+        tipoLbl[r.tipo] || r.tipo,
+        r.categoria ? getMetodoNombre(r.categoria) : 'Sin categoría',
+        getMetodoNombre(r.metodo),
+        r.desc,
+        r.monto
+      ]));
+    const csv = filas.map(fila => fila.map(csvEscape).join(',')).join('\r\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'historial-' + todayStr() + '.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* Opciones del filtro de Categoría (select nativo, se repuebla cuando cambian las categorías) */
+  function renderHistFiltroCategorias() {
+    const sel = document.getElementById('filter-categoria');
+    if (!sel) return;
+    const actual = sel.value || 'all';
+    sel.innerHTML = '<option value="all">Todas las categorías</option>' +
+      getCategorias().map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join('');
+    if ([...sel.options].some(o => o.value === actual)) sel.value = actual;
+  }
+
 
 
   /* ═══ NAVEGACIÓN ═══ */
   function switchView(v) {
     activeView = v;
     document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.gf-tab').forEach(el => el.classList.remove('active'));
     document.getElementById('view-' + v).classList.add('active');
     document.getElementById('nav-'  + v).classList.add('active');
     if (v === 'historial') {
-      document.getElementById('sw-gastos')?.classList.remove('collapsed');
-      ['ingresos','ahorros'].forEach(n => {
-        document.getElementById('sw-' + n)?.classList.add('collapsed');
-      });
+      renderHistFiltroCategorias();
       renderHistorial();
     }
     if (v === 'dashboard') renderDashboard();
@@ -2768,7 +3064,7 @@ function initApp() {
     /* Chart.js defaults */
     Chart.defaults.color       = TC.t2;
     Chart.defaults.borderColor = TC.grid;
-    Chart.defaults.font.family = "'Open Sans', sans-serif";
+    Chart.defaults.font.family = "Inter, 'Open Sans', sans-serif";
 
     /* Totales generales */
     const totI = records.filter(r=>r.tipo==='ingreso').reduce((s,r)=>s+r.monto,0);
@@ -3028,9 +3324,12 @@ function initApp() {
         metodos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         /* Si el método seleccionado ya no existe, limpiar la selección */
         if (selMetod && !metodos.find(m => m.id === selMetod)) selMetod = null;
-        renderMetodoPills();
+        renderCategoriaDropdown();
+        renderMetodoPagoDropdown();
         renderFilterOpts();
         renderUltimosRegistros();
+        renderHistFiltroCategorias();
+        if (activeView === 'historial') renderHistorial();
         if (document.getElementById('metodos-list-view')?.style.display !== 'none') {
           renderMetodosList();
         }
@@ -3083,6 +3382,12 @@ function initApp() {
   function getMetodoNombre(id) {
     return metodos.find(m => m.id === id)?.nombre || id;
   }
+  /* La misma colección "metodos" contiene dos cosas distintas, diferenciadas por tipo:
+     tipo === 'otro' -> categoría (Alimentación, Transporte...)
+     cualquier otro tipo (efectivo/debito/credito) -> método de pago (Efectivo, Débito, TC...) */
+  function getCategorias()  { return metodos.filter(m => m.tipo === 'otro'); }
+  function getMediosPago()  { return metodos.filter(m => m.tipo !== 'otro'); }
+
   function getMetodoColor(id) {
     const m = metodos.find(m => m.id === id);
     if (m && m.color) return m.color;
@@ -3134,24 +3439,43 @@ function initApp() {
     return CAT_ICONS.tag;
   }
 
-  /* Dropdown de categorías (reemplaza visualmente a las pills) */
+  /* Dropdown de Categoría */
   function toggleCatDropdown(e) {
     if (e) e.stopPropagation();
     document.getElementById('cat-dropdown')?.classList.toggle('open');
   }
   document.addEventListener('click', function(e) {
     const dd = document.getElementById('cat-dropdown');
-    if (dd?.classList.contains('open') && !e.target.closest('.cat-select-wrap')) {
+    if (dd?.classList.contains('open') && !e.target.closest('#wrap-categoria')) {
       dd.classList.remove('open');
     }
   });
 
-  function renderMetodoPills() {
+  /* Dropdown de Método de pago */
+  function togglePagoDropdown(e) {
+    if (e) e.stopPropagation();
+    document.getElementById('pago-dropdown')?.classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('pago-dropdown');
+    if (dd?.classList.contains('open') && !e.target.closest('#wrap-pago')) {
+      dd.classList.remove('open');
+    }
+  });
+
+  function selectCategoria(v) {
+    selCategoria = v;
+    renderCategoriaDropdown();
+    document.getElementById('cat-dropdown')?.classList.remove('open');
+  }
+
+  function renderCategoriaDropdown() {
     const dd = document.getElementById('cat-dropdown');
     if (!dd) return;
-    dd.innerHTML = metodos.map(m => {
-      const active = selMetod === m.id;
-      return `<button type="button" class="cat-opt${active ? ' active' : ''}" data-metodo="${esc(m.id)}" onclick="selectMetodo('${esc(m.id)}')">
+    const lista = getCategorias();
+    dd.innerHTML = lista.map(m => {
+      const active = selCategoria === m.id;
+      return `<button type="button" class="cat-opt${active ? ' active' : ''}" onclick="selectCategoria('${esc(m.id)}')">
         <span class="cat-opt-icon" style="background:${hexRgba(m.color,0.15)};color:${m.color}">${getMetodoIcon(m.id, m.nombre)}</span>
         <span class="cat-opt-label">${esc(m.nombre)}</span>
       </button>`;
@@ -3169,7 +3493,7 @@ function initApp() {
     const trigger = document.getElementById('cat-select-trigger');
     const iconEl  = document.getElementById('cat-select-icon');
     const lblEl   = document.getElementById('cat-select-label');
-    const sel     = metodos.find(m => m.id === selMetod);
+    const sel     = lista.find(m => m.id === selCategoria);
     if (trigger && iconEl && lblEl) {
       if (sel) {
         iconEl.innerHTML = getMetodoIcon(sel.id, sel.nombre);
@@ -3186,6 +3510,49 @@ function initApp() {
       }
     }
   }
+
+  function renderMetodoPagoDropdown() {
+    const dd = document.getElementById('pago-dropdown');
+    if (!dd) return;
+    const lista = getMediosPago();
+    dd.innerHTML = lista.map(m => {
+      const active = selMetod === m.id;
+      return `<button type="button" class="cat-opt${active ? ' active' : ''}" onclick="selectMetodo('${esc(m.id)}')">
+        <span class="cat-opt-icon" style="background:${hexRgba(m.color,0.15)};color:${m.color}">${getMetodoIcon(m.id, m.nombre)}</span>
+        <span class="cat-opt-label">${esc(m.nombre)}</span>
+      </button>`;
+    }).join('') +
+    `<div class="cat-dropdown-divider"></div>
+     <button type="button" class="cat-opt cat-opt-add" onclick="openMetodosModal();openAddMetodo()">
+       <span class="cat-opt-icon cat-opt-icon-add">+</span>
+       <span class="cat-opt-label">Agregar método de pago</span>
+     </button>
+     <button type="button" class="cat-opt cat-opt-add" onclick="openMetodosModal()">
+       <span class="cat-opt-icon cat-opt-icon-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5z"/></svg></span>
+       <span class="cat-opt-label">Editar métodos de pago</span>
+     </button>`;
+
+    const trigger = document.getElementById('pago-select-trigger');
+    const iconEl  = document.getElementById('pago-select-icon');
+    const lblEl   = document.getElementById('pago-select-label');
+    const sel     = lista.find(m => m.id === selMetod);
+    if (trigger && iconEl && lblEl) {
+      if (sel) {
+        iconEl.innerHTML = getMetodoIcon(sel.id, sel.nombre);
+        iconEl.style.color = sel.color;
+        iconEl.style.background = hexRgba(sel.color, 0.15);
+        lblEl.textContent = sel.nombre;
+        trigger.classList.remove('placeholder');
+      } else {
+        iconEl.innerHTML = CAT_ICONS.wallet;
+        iconEl.style.color = 'var(--t3)';
+        iconEl.style.background = 'var(--surface-2)';
+        lblEl.textContent = 'Selecciona un método de pago';
+        trigger.classList.add('placeholder');
+      }
+    }
+  }
+
 
   /* Render opciones de filtro en historial */
   function renderFilterOpts() {
@@ -3387,13 +3754,13 @@ function initApp() {
 
   function setFilter(metodo) {
     filterMetodo = metodo;
-    /* Cerrar dropdown y actualizar opciones */
-    document.getElementById('filter-dropdown').classList.remove('open');
+    /* Cerrar dropdown viejo y actualizar opciones (si existen en esta vista) */
+    document.getElementById('filter-dropdown')?.classList.remove('open');
     document.querySelectorAll('.filter-opt').forEach(b =>
       b.classList.toggle('active', b.dataset.filter === metodo));
-    /* Indicador en el botón: lit si hay filtro activo */
+    /* Indicador en el botón viejo: lit si hay filtro activo (puede no existir ya) */
     document.getElementById('filter-toggle')
-      .classList.toggle('has-filter', metodo !== 'all');
+      ?.classList.toggle('has-filter', metodo !== 'all');
     renderHistorial();
   }
 
@@ -3438,6 +3805,14 @@ function initApp() {
   window.fmtMontoLive  = fmtMontoLive;
   window.toggleTheme   = toggleTheme;
   window.toggleCatDropdown = toggleCatDropdown;
+  window.togglePagoDropdown = togglePagoDropdown;
+  window.selectCategoria = selectCategoria;
+  window.setFilterTipo   = setFilterTipo;
+  window.setFilterDesde  = setFilterDesde;
+  window.setFilterHasta  = setFilterHasta;
+  window.setSortOrder    = setSortOrder;
+  window.setQuickPreset  = setQuickPreset;
+  window.exportarHistorialCSV = exportarHistorialCSV;
 
   /* ═══ TEMA CLARO / OSCURO ═══ */
 
