@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v32: replica del referente (header global oscuro + stats, tabs superiores, tarjeta de registro, Categoría con iconos en vez de pills) */
-const CACHE  = 'finanzas-v32';
+/* v33: fix critico - eliminado el bottom-nav duplicado que quedo flotando, quitado el fondo crema circundante, layout de escritorio ahora usa todo el ancho, arreglado el input de Valor que habia heredado el tamano gigante del diseno anterior */
+const CACHE  = 'finanzas-v33';
 const ASSETS = [
   './',
   './index.html',
