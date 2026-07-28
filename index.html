@@ -2397,7 +2397,7 @@ function initApp() {
     if (!desc)                              return showErr('Escribe una descripción.');
     if (!raw || isNaN(monto) || monto <= 0) return showErr('Ingresa un monto válido (mayor que 0).');
     if (!selTipo)                           return showErr('Selecciona el tipo de registro.');
-    if (!selMetod)                          return showErr('Selecciona el método de pago.');
+    if (!selMetod)                          return showErr('Selecciona una categoría.');
     if (!currentUser)                       return showErr('Sesión expirada. Recarga la app.');
 
     const uid  = currentUser.uid;
@@ -3437,6 +3437,7 @@ function initApp() {
   window.undoDelete    = undoDelete;
   window.fmtMontoLive  = fmtMontoLive;
   window.toggleTheme   = toggleTheme;
+  window.toggleCatDropdown = toggleCatDropdown;
 
   /* ═══ TEMA CLARO / OSCURO ═══ */
 

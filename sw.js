@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v38: re-entrega limpia tras confirmar que el repo tenia una version intermedia (con badge "Paso 1 de 3" pero sin el fix). Contenido identico a v37: sin badge, sin Exportar/Importar, placeholders chicos, hexRgba blindado */
-const CACHE  = 'finanzas-v38';
+/* v39: FIX REAL del dropdown de categoria (confirmado con prueba automatizada): faltaba window.toggleCatDropdown = toggleCatDropdown en el bloque de exportacion de funciones (todo vive dentro de initApp() y cada funcion usada en onclick debe exponerse a window explicitamente, se me habia olvidado justo esta). Tambien: texto de validacion actualizado a "Selecciona una categoria" */
+const CACHE  = 'finanzas-v39';
 const ASSETS = [
   './',
   './index.html',
