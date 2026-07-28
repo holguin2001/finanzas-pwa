@@ -1378,10 +1378,12 @@
       font-weight: 500;
       color: var(--t1);
     }
-    .metodo-bar-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
+    .metodo-bar-icon {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: inline-flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      margin-right: 2px;
     }
     .metodo-bar-amount {
       font-family: 'JetBrains Mono', monospace;
@@ -1808,7 +1810,7 @@
       box-shadow: 0 8px 48px rgba(0,0,0,0.70), inset 0 1px 0 rgba(99,102,241,0.10);
     }
     .toast {
-      background: rgba(10,5,0,0.97);
+      background: var(--surf-solid);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-color: rgba(99,102,241,0.18);
@@ -1837,7 +1839,7 @@
     .filter-btn[data-filter="tc-lulo"].active        { background:rgba(90,184,135,0.07); border-color:rgba(90,184,135,0.35); }
     .rec-card.exportado { opacity: 0.35; }
     /* Oscurece insignias de color libre (métodos de pago) y la barra de "gastos por método" en modo claro */
-    .rec-method, .method-dot, .metodo-bar-dot, .metodo-bar-fill {
+    .rec-method, .method-dot {
       filter: var(--badge-filter);
     }
   
@@ -2699,6 +2701,7 @@ function initApp() {
               monto:  d.monto  || 0,
               tipo:   d.tipo   || '',
               metodo: d.metodo || '',
+              categoria: d.categoria || '',
               /* ts puede ser null en escrituras pendientes (offline) */
               ts:        d.ts?.toMillis?.() ?? d.ts ?? 0,
               exportado: d.exportado ?? false
@@ -3458,10 +3461,11 @@ function initApp() {
         const maxVal = metEntries[0][1];
         metWrap.innerHTML = metEntries.map(([id, v]) => {
           const color = getMetodoColor(id);
+          const nombre = getMetodoNombre(id);
           const pct = Math.max(4, Math.round(v / maxVal * 100));
           return '<div class="metodo-bar-row">'
             + '<div class="metodo-bar-top">'
-            +   '<span class="metodo-bar-label"><span class="metodo-bar-dot" style="background:' + color + '"></span>' + esc(getMetodoNombre(id)) + '</span>'
+            +   '<span class="metodo-bar-label"><span class="metodo-bar-icon" style="background:' + hexRgba(color,0.15) + ';color:' + color + '">' + getMetodoIcon(id, nombre) + '</span>' + esc(nombre) + '</span>'
             +   '<span class="metodo-bar-amount">' + fmtCOP(v) + '</span>'
             + '</div>'
             + '<div class="metodo-bar-track"><div class="metodo-bar-fill" style="width:' + pct + '%; background:' + color + ';"></div></div>'

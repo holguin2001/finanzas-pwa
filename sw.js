@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v43: Resumen Grafico rediseñado calcando el referente: header con selector de Periodo, Comparativa Mensual (barras agrupadas), Gastos por Categoria (dona+leyenda) e Indicadores Clave de Salud Financiera + recomendacion. Se quito hero/insights/totales (redundantes con el header global) y las tarjetas "Distribucion general"/"Top gastos" (no pedidas). Se conservaron y restilizaron "Gastos por metodo" (ahora respeta el selector de Periodo) y "Ultimos 6 meses" tal cual estaban */
-const CACHE  = 'finanzas-v43';
+/* v45: "Gastos por metodo" ahora coincide en color con el resto de la app (se le habia quedado pegado un filtro de desaturacion que solo aplicaba ahi) y muestra icono en vez de un punto, igual que en Categoria/Historial */
+const CACHE  = 'finanzas-v45';
 const ASSETS = [
   './',
   './index.html',
