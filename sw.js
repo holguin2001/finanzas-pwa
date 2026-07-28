@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v42: repuesto el check de "marcar como revisado" en la tabla de Historial (columna nueva, fila se atenua y tacha al marcarla). Header movil reorganizado con CSS grid: marca+acciones en una fila, stats en grid 2x2 limpio (antes se desbordaban y quedaba un espacio enorme entre el toggle y el avatar) */
-const CACHE  = 'finanzas-v42';
+/* v43: Resumen Grafico rediseñado calcando el referente: header con selector de Periodo, Comparativa Mensual (barras agrupadas), Gastos por Categoria (dona+leyenda) e Indicadores Clave de Salud Financiera + recomendacion. Se quito hero/insights/totales (redundantes con el header global) y las tarjetas "Distribucion general"/"Top gastos" (no pedidas). Se conservaron y restilizaron "Gastos por metodo" (ahora respeta el selector de Periodo) y "Ultimos 6 meses" tal cual estaban */
+const CACHE  = 'finanzas-v43';
 const ASSETS = [
   './',
   './index.html',

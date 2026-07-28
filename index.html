@@ -1408,6 +1408,86 @@
       color: var(--t2);
     }
 
+    /* ══════════════════════════════════
+       RESUMEN GRÁFICO: header + periodo + comparativa + categoría + indicadores
+       ══════════════════════════════════ */
+    .rg-header-card { padding: 16px 18px; }
+    .rg-header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .rg-header-txt { min-width: 0; }
+    .rg-subtitle { font-size: 12px; color: var(--t3); margin-top: 2px; margin-bottom: 14px; }
+    .rg-period-field {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      flex-shrink: 0;
+      color: var(--t2);
+    }
+    .rg-period-lbl { font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+    .rg-period-field select {
+      border: none;
+      background: transparent;
+      font-size: 13px; font-weight: 700;
+      color: var(--accent);
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      -webkit-appearance: none; appearance: none;
+      padding-right: 4px;
+    }
+
+    .rg-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 16px; }
+    .rg-two-col .dash-card { margin: 0; }
+    .rg-card-head-flex { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    .rg-card-head-flex .dash-card-title { margin-bottom: 0; }
+    .rg-mini-btn {
+      font-size: 11.5px; font-weight: 600;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--surface-2);
+      color: var(--t2);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rg-cat-donut-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+    .chart-donut-wrap-sm { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
+    .rg-cat-legend { flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 12px; }
+    .rg-legend-row { display: flex; flex-direction: column; gap: 5px; }
+    .rg-legend-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .rg-legend-lbl { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 500; color: var(--t1); }
+    .rg-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .rg-legend-amt { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--t2); white-space: nowrap; }
+    .rg-legend-track { height: 6px; border-radius: 100px; background: var(--surface-2); overflow: hidden; }
+    .rg-legend-fill { height: 100%; border-radius: 100px; }
+
+    .rg-indicators-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .rg-indicator { background: var(--surface-2); border-radius: var(--r-sm); padding: 12px 14px; }
+    .rg-ind-lbl { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--t2); }
+    .rg-ind-lbl.exp { color: var(--expense); }
+    .rg-ind-lbl.sav { color: var(--savings); }
+    .rg-ind-lbl.inc { color: var(--income); }
+    .rg-ind-val { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; color: var(--t1); margin-top: 6px; }
+    .rg-ind-val.sav { color: var(--savings); }
+    .rg-ind-sub { font-size: 10.5px; color: var(--t3); margin-top: 3px; }
+    .rg-recomendacion {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--income-lt);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: var(--t1);
+      line-height: 1.5;
+    }
+    .rg-recomendacion svg { color: var(--income); flex-shrink: 0; margin-top: 1px; }
+
+    @media (max-width: 720px) {
+      .rg-two-col { grid-template-columns: 1fr; }
+      .rg-header-row { flex-direction: column; align-items: stretch; }
+      .rg-period-field { justify-content: center; }
+    }
+
     /* ===== SECTION DIVIDERS ===== */
     /* Colapsable */
     .section-head { cursor: pointer; user-select: none; -webkit-user-select: none; }
@@ -2051,50 +2131,88 @@
      ══════════════════════════════════ -->
 <section id="view-dashboard" class="view">
 
-  <!-- Balance disponible -->
-  <div class="hero-card">
-    <div class="hero-lbl">Disponible</div>
-    <div class="hero-amount pos" id="hero-amount">$ 0</div>
-    <div class="hero-sub" id="hero-sub">Ingresos − gastos − ahorros</div>
-  </div>
-
-  <!-- Insights del mes actual -->
-  <div class="insight-row">
-    <div class="insight-card">
-      <div class="in-lbl" id="in-mes-lbl">Gastos del mes</div>
-      <div class="in-val" id="in-gasto-mes">$ 0</div>
-      <div class="in-delta na" id="in-gasto-delta"></div>
-      <div class="in-note" id="in-proyeccion"></div>
-    </div>
-    <div class="insight-col">
-      <div class="insight-card">
-        <div class="in-lbl">Promedio diario</div>
-        <div class="in-val sm" id="in-prom-dia">$ 0</div>
+  <div class="gf-card rg-header-card">
+    <div class="rg-header-row">
+      <div class="rg-header-txt">
+        <div class="gf-card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="20" y1="20" x2="20" y2="14"/></svg>
+          <span>Resumen Gráfico y Análisis de Balances</span>
+        </div>
+        <div class="gf-card-sub">Visualización interactiva de ingresos, gastos y ahorros acumulados por mes</div>
       </div>
-      <div class="insight-card">
-        <div class="in-lbl">Tasa de ahorro</div>
-        <div class="in-val sm gold" id="in-tasa-ahorro">—</div>
+      <div class="rg-period-field">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="rg-period-lbl">Periodo para detalle:</span>
+        <select id="rg-periodo" onchange="setResumenPeriodo(this.value)">
+          <option value="todo">Todo el Historial</option>
+        </select>
       </div>
     </div>
   </div>
 
-  <!-- Totales -->
-  <div class="dash-totals">
-    <div class="dash-total inc"><span class="dt-label">Ingresos</span><span class="dt-amount" id="dt-ingresos">$ 0</span></div>
-    <div class="dash-total exp"><span class="dt-label">Gastos</span><span class="dt-amount" id="dt-gastos">$ 0</span></div>
-    <div class="dash-total sav"><span class="dt-label">Ahorros</span><span class="dt-amount" id="dt-ahorros">$ 0</span></div>
+  <div class="dash-card rg-static-card">
+    <div class="dash-card-title">Comparativa Mensual (Ingresos vs Gastos vs Ahorros)</div>
+    <div class="rg-subtitle">Gráfico de barras interactivo con totales por mes</div>
+    <div class="chart-wrap"><canvas id="chart-comparativa"></canvas></div>
   </div>
 
-  <!-- Gráfica mensual -->
-  <div class="dash-card">
-    <div class="dash-card-title">Últimos 6 meses</div>
-    <div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>
-  </div>
+  <div class="rg-two-col">
+    <div class="dash-card rg-static-card">
+      <div class="rg-card-head-flex">
+        <div>
+          <div class="dash-card-title">Gastos por Categoría</div>
+          <div class="rg-subtitle">Distribución porcentual de egresos por rubro</div>
+        </div>
+        <button class="rg-mini-btn" onclick="setResumenPeriodo('todo')">Todo el historial</button>
+      </div>
+      <div class="rg-cat-donut-row">
+        <div class="chart-donut-wrap-sm"><canvas id="chart-categorias"></canvas></div>
+        <div class="rg-cat-legend" id="rg-cat-legend"></div>
+      </div>
+    </div>
 
-  <!-- Distribución general -->
-  <div class="dash-card">
-    <div class="dash-card-title">Distribución general</div>
-    <div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas></div>
+    <div class="dash-card rg-static-card">
+      <div class="dash-card-title">Indicadores Clave de Salud Financiera</div>
+      <div class="rg-subtitle">Métricas calculadas sobre tu comportamiento de gastos y ahorro</div>
+      <div class="rg-indicators-grid">
+        <div class="rg-indicator">
+          <div class="rg-ind-lbl exp">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            Gasto promedio mensual
+          </div>
+          <div class="rg-ind-val" id="rg-gasto-prom">$ 0</div>
+          <div class="rg-ind-sub">Promedio estimado por mes</div>
+        </div>
+        <div class="rg-indicator">
+          <div class="rg-ind-lbl sav">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            Tasa de ahorro
+          </div>
+          <div class="rg-ind-val sav" id="rg-tasa-ahorro">0%</div>
+          <div class="rg-ind-sub">Porcentaje destinado al ahorro</div>
+        </div>
+        <div class="rg-indicator">
+          <div class="rg-ind-lbl inc">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            Pico de ingresos
+          </div>
+          <div class="rg-ind-val" id="rg-pico-ingresos">—</div>
+          <div class="rg-ind-sub">Mes con mayores entradas</div>
+        </div>
+        <div class="rg-indicator">
+          <div class="rg-ind-lbl exp">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Pico de gastos
+          </div>
+          <div class="rg-ind-val" id="rg-pico-gastos">—</div>
+          <div class="rg-ind-sub">Mes de mayor desembolso</div>
+        </div>
+      </div>
+      <div class="rg-recomendacion">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0L19 4m-3.5 3.5L19 11"/></svg>
+        <div><strong>Recomendación financiera:</strong> <span id="rg-recomendacion-txt"></span></div>
+      </div>
+    </div>
   </div>
 
 </section>
@@ -2457,6 +2575,15 @@ function initApp() {
   let chartMonthly      = null;
   let chartDist         = null;
   let chartMetodos      = null;
+  let chartComparativa  = null;
+  let chartCategorias   = null;
+  let resumenPeriodo    = 'todo';
+  function setResumenPeriodo(v) {
+    resumenPeriodo = v;
+    const sel = document.getElementById('rg-periodo');
+    if (sel) sel.value = v;
+    renderDashboard();
+  }
   let currentUser = null;
   let unsub       = null;   // cleanup del listener de Firestore
   let selTipo     = 'gasto';
@@ -3053,16 +3180,12 @@ function initApp() {
   /* Restaura los contenedores de charts del Dashboard al estado original */
   function restoreDashboardCards() {
     const section = document.getElementById('view-dashboard');
-    section.querySelectorAll('.dash-card').forEach(c => c.remove());
+    section.querySelectorAll('.dash-card:not(.rg-static-card)').forEach(c => c.remove());
     const pm = document.createElement('div'); pm.className = 'dash-card';
     pm.innerHTML = '<div class="dash-card-title" id="metodos-chart-title">Gastos por método · este mes</div><div class="metodo-bars" id="metodos-wrap"></div>';
     const m = document.createElement('div'); m.className = 'dash-card';
     m.innerHTML = '<div class="dash-card-title">Últimos 6 meses</div><div class="chart-wrap"><canvas id="chart-monthly"></canvas></div>';
-    const d = document.createElement('div'); d.className = 'dash-card';
-    d.innerHTML = '<div class="dash-card-title">Distribución general</div><div class="chart-wrap chart-donut-wrap"><canvas id="chart-dist"></canvas><div class="donut-center"><span class="dc-lbl">Balance</span><span class="dc-val"></span></div></div>';
-    const t = document.createElement('div'); t.className = 'dash-card';
-    t.innerHTML = '<div class="dash-card-title" id="top-gastos-title">Top gastos · este mes</div><div id="top-gastos"></div>';
-    section.appendChild(pm); section.appendChild(m); section.appendChild(d); section.appendChild(t);
+    section.appendChild(pm); section.appendChild(m);
   }
 
   /* Paleta exacta usada por Chart.js; debe reflejar los mismos valores que los tokens CSS del tema activo */
@@ -3096,9 +3219,9 @@ function initApp() {
     const totG = records.filter(r=>r.tipo==='gasto')  .reduce((s,r)=>s+r.monto,0);
     const totA = records.filter(r=>r.tipo==='ahorro') .reduce((s,r)=>s+r.monto,0);
 
-    document.getElementById('dt-ingresos').textContent = fmtCOP(totI);
-    document.getElementById('dt-gastos').textContent   = fmtCOP(totG);
-    document.getElementById('dt-ahorros').textContent  = fmtCOP(totA);
+    const dtI = document.getElementById('dt-ingresos'); if (dtI) dtI.textContent = fmtCOP(totI);
+    const dtG = document.getElementById('dt-gastos');   if (dtG) dtG.textContent = fmtCOP(totG);
+    const dtA = document.getElementById('dt-ahorros');  if (dtA) dtA.textContent = fmtCOP(totA);
 
     /* Hero: balance disponible */
     const disp = totI - totG - totA;
@@ -3202,57 +3325,126 @@ function initApp() {
       }
     });
 
-    /* Dona distribución */
-    const ctxD = document.getElementById('chart-dist').getContext('2d');
-    const donutCenter = document.querySelector('#view-dashboard .donut-center');
-    if (totI+totG+totA === 0) {
-      ctxD.clearRect(0,0,ctxD.canvas.width,ctxD.canvas.height);
-      if (donutCenter) donutCenter.style.display = 'none';
-      const mwEmpty = document.getElementById('metodos-wrap');
-      if (mwEmpty) { mwEmpty.style.height = 'auto'; mwEmpty.innerHTML = '<div class="dash-empty">Sin gastos este mes todavía</div>'; }
-      const tgEmpty = document.getElementById('top-gastos');
-      if (tgEmpty) tgEmpty.innerHTML = '<div class="dash-empty">Sin gastos este mes todavía</div>';
-      return;
-    }
-    if (donutCenter) {
-      donutCenter.style.display = 'flex';
-      const dv = donutCenter.querySelector('.dc-val');
-      if (dv) {
-        const bal = totI - totG - totA;
-        dv.textContent = fmtCOP(bal);
-        dv.classList.toggle('neg', bal < 0);
-        dv.classList.toggle('pos', bal >= 0);
-      }
-    }
-    chartDist = new Chart(ctxD, {
-      type: 'doughnut',
-      data: {
-        labels: ['Ingresos','Gastos','Ahorros'],
-        datasets:[{
-          data:[totI,totG,totA],
-          backgroundColor:[hexRgba(TC.income,0.18),hexRgba(TC.expense,0.18),hexRgba(TC.savings,0.18)],
-          borderColor:[TC.income,TC.expense,TC.savings],
-          borderWidth:2, hoverOffset:6
-        }]
-      },
-      options:{
-        responsive:true, maintainAspectRatio:false, cutout:'68%',
-        plugins:{
-          legend:{ position:'bottom', labels:{ color:TC.t2, font:{size:11}, padding:14, boxWidth:12 } },
-          tooltip:{ callbacks:{ label: ctx => {
-            const tot = totI + totG + totA;
-            const pct = tot ? Math.round(ctx.raw / tot * 100) : 0;
-            return ` ${ctx.label}: ${fmtCOP(ctx.raw)} (${pct}%)`;
-          } } }
-        }
-      }
-    });
+    /* ── Periodo seleccionado para el detalle (Categoría, Gastos por método, indicadores) ── */
+    const periodoRecords = resumenPeriodo === 'todo'
+      ? records
+      : records.filter(r => r.fecha.startsWith(resumenPeriodo));
 
-    /* ── Gastos por método (mes actual) ── */
+    const mesesConDatos = [...new Set(records.map(r => r.fecha.slice(0,7)))].sort();
+
+    const selPeriodo = document.getElementById('rg-periodo');
+    if (selPeriodo) {
+      const actual = selPeriodo.value || resumenPeriodo;
+      selPeriodo.innerHTML = '<option value="todo">Todo el Historial</option>' +
+        [...mesesConDatos].reverse().map(k => `<option value="${k}">${mesLabel(k)}</option>`).join('');
+      if ([...selPeriodo.options].some(o => o.value === actual)) selPeriodo.value = actual;
+    }
+
+    /* ── Comparativa Mensual: todos los meses con datos, sin importar el periodo elegido ── */
+    if (chartComparativa) { chartComparativa.destroy(); chartComparativa = null; }
+    const ctxComp = document.getElementById('chart-comparativa')?.getContext('2d');
+    if (ctxComp) {
+      const cI = mesesConDatos.map(k => records.filter(r=>r.tipo==='ingreso'&&r.fecha.startsWith(k)).reduce((s,r)=>s+r.monto,0));
+      const cG = mesesConDatos.map(k => records.filter(r=>r.tipo==='gasto'  &&r.fecha.startsWith(k)).reduce((s,r)=>s+r.monto,0));
+      const cA = mesesConDatos.map(k => records.filter(r=>r.tipo==='ahorro' &&r.fecha.startsWith(k)).reduce((s,r)=>s+r.monto,0));
+      chartComparativa = new Chart(ctxComp, {
+        type: 'bar',
+        data: {
+          labels: mesesConDatos.map(k => mesLabel(k)),
+          datasets: [
+            { label:'Ingresos', data:cI, backgroundColor:TC.income,  borderRadius:6, maxBarThickness:36 },
+            { label:'Gastos',   data:cG, backgroundColor:TC.expense, borderRadius:6, maxBarThickness:36 },
+            { label:'Ahorros',  data:cA, backgroundColor:TC.savings, borderRadius:6, maxBarThickness:36 }
+          ]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{ position:'bottom', labels:{ color:TC.t2, font:{size:11}, boxWidth:12, padding:14 } } },
+          scales:{
+            x:{ ticks:{color:TC.t2,font:{size:11}}, grid:{display:false}, border:{color:TC.gridBorder} },
+            y:{ ticks:{color:TC.t2,font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'k':v}, grid:{color:TC.grid}, border:{color:TC.gridBorder} }
+          }
+        }
+      });
+    }
+
+    /* ── Gastos por Categoría (respeta el periodo elegido) ── */
+    const porCategoria = {};
+    periodoRecords.filter(r => r.tipo === 'gasto').forEach(r => {
+      const cid = r.categoria || '_sin';
+      porCategoria[cid] = (porCategoria[cid] || 0) + r.monto;
+    });
+    const catEntries    = Object.entries(porCategoria).sort((a,b) => b[1] - a[1]);
+    const totCatGasto   = catEntries.reduce((s,[,v]) => s + v, 0);
+
+    if (chartCategorias) { chartCategorias.destroy(); chartCategorias = null; }
+    const ctxCat   = document.getElementById('chart-categorias')?.getContext('2d');
+    const legendEl = document.getElementById('rg-cat-legend');
+    if (!catEntries.length) {
+      if (ctxCat) ctxCat.clearRect(0, 0, ctxCat.canvas.width, ctxCat.canvas.height);
+      if (legendEl) legendEl.innerHTML = '<div class="dash-empty">Sin gastos en este periodo</div>';
+    } else {
+      const catColors  = catEntries.map(([cid]) => cid === '_sin' ? '#9CA3AF' : getMetodoColor(cid));
+      const catNombres = catEntries.map(([cid]) => cid === '_sin' ? 'Sin categoría' : getMetodoNombre(cid));
+      if (ctxCat) {
+        chartCategorias = new Chart(ctxCat, {
+          type: 'doughnut',
+          data: {
+            labels: catNombres,
+            datasets: [{ data: catEntries.map(([,v]) => v), backgroundColor: catColors, borderWidth: 0, hoverOffset: 6 }]
+          },
+          options: {
+            responsive:true, maintainAspectRatio:false, cutout:'62%',
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: ctx => {
+                const pct = totCatGasto ? Math.round(ctx.raw / totCatGasto * 100) : 0;
+                return ` ${ctx.label}: ${fmtCOP(ctx.raw)} (${pct}%)`;
+              } } }
+            }
+          }
+        });
+      }
+      if (legendEl) {
+        legendEl.innerHTML = catEntries.map(([, v], i) => {
+          const color = catColors[i];
+          const pct = totCatGasto ? Math.round(v / totCatGasto * 100) : 0;
+          return `<div class="rg-legend-row">
+            <div class="rg-legend-top">
+              <span class="rg-legend-lbl"><span class="rg-legend-dot" style="background:${color}"></span>${esc(catNombres[i])}</span>
+              <span class="rg-legend-amt">${fmtCOP(v)}</span>
+            </div>
+            <div class="rg-legend-track"><div class="rg-legend-fill" style="width:${pct}%;background:${color};"></div></div>
+          </div>`;
+        }).join('');
+      }
+    }
+
+    /* ── Indicadores clave de salud financiera (todo el histórico, sin filtrar por periodo) ── */
+    const gastoPorMesArr   = mesesConDatos.map(k => records.filter(r=>r.tipo==='gasto'  &&r.fecha.startsWith(k)).reduce((s,r)=>s+r.monto,0));
+    const ingresoPorMesArr = mesesConDatos.map(k => records.filter(r=>r.tipo==='ingreso'&&r.fecha.startsWith(k)).reduce((s,r)=>s+r.monto,0));
+    const gastoProm        = gastoPorMesArr.length ? gastoPorMesArr.reduce((a,b) => a+b, 0) / gastoPorMesArr.length : 0;
+    const tasaAhorroGlobal = totI > 0 ? Math.round(totA / totI * 100) : 0;
+    let picoIngMes = '—', picoGasMes = '—', iMax = -1, gMax = -1;
+    mesesConDatos.forEach((k, idx) => {
+      if (ingresoPorMesArr[idx] > iMax) { iMax = ingresoPorMesArr[idx]; picoIngMes = mesLabel(k); }
+      if (gastoPorMesArr[idx]   > gMax) { gMax = gastoPorMesArr[idx];   picoGasMes = mesLabel(k); }
+    });
+    const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    setTxt('rg-gasto-prom',    fmtCOP(Math.round(gastoProm)));
+    setTxt('rg-tasa-ahorro',   tasaAhorroGlobal + '%');
+    setTxt('rg-pico-ingresos', picoIngMes);
+    setTxt('rg-pico-gastos',   picoGasMes);
+    const recoTxt = document.getElementById('rg-recomendacion-txt');
+    if (recoTxt) {
+      recoTxt.textContent = 'Mantener un fondo de ahorro equivalente a al menos 3 meses de tu gasto promedio (' + fmtCOP(Math.round(gastoProm)) + ').';
+    }
+
+    /* ── Gastos por método (respeta el periodo elegido) ── */
     const tituloMet = document.getElementById('metodos-chart-title');
-    if (tituloMet) tituloMet.textContent = 'Gastos por método · ' + nombreMes;
+    if (tituloMet) tituloMet.textContent = 'Gastos por método · ' + (resumenPeriodo === 'todo' ? 'todo el historial' : mesLabel(resumenPeriodo));
     const porMetodo = {};
-    mesAct.filter(r => r.tipo === 'gasto').forEach(r => {
+    periodoRecords.filter(r => r.tipo === 'gasto').forEach(r => {
       porMetodo[r.metodo] = (porMetodo[r.metodo] || 0) + r.monto;
     });
     const metEntries = Object.entries(porMetodo).sort((a,b) => b[1] - a[1]);
@@ -3260,7 +3452,7 @@ function initApp() {
     if (metWrap) {
       if (!metEntries.length) {
         metWrap.style.height = 'auto';
-        metWrap.innerHTML = '<div class="dash-empty">Sin gastos este mes todavía</div>';
+        metWrap.innerHTML = '<div class="dash-empty">Sin gastos en este periodo</div>';
       } else {
         metWrap.style.height = 'auto';
         const maxVal = metEntries[0][1];
@@ -3276,28 +3468,6 @@ function initApp() {
             + '</div>';
         }).join('');
       }
-    }
-
-    /* ── Top 5 gastos del mes ── */
-    const tituloTop = document.getElementById('top-gastos-title');
-    if (tituloTop) tituloTop.textContent = 'Top gastos · ' + nombreMes;
-    const topEl = document.getElementById('top-gastos');
-    if (topEl) {
-      const top5 = mesAct
-        .filter(r => r.tipo === 'gasto')
-        .sort((a,b) => b.monto - a.monto)
-        .slice(0, 5);
-      topEl.innerHTML = top5.length
-        ? top5.map((r, i) => `
-            <div class="top-row">
-              <span class="top-rank">${i + 1}</span>
-              <div class="top-info">
-                <div class="top-desc">${esc(r.desc)}</div>
-                <div class="top-meta">${fmtDate(r.fecha)} · ${esc(getMetodoNombre(r.metodo))}</div>
-              </div>
-              <div class="top-monto">${fmtCOP(r.monto)}</div>
-            </div>`).join('')
-        : '<div class="dash-empty">Sin gastos este mes todavía</div>';
     }
   }
 
@@ -3836,6 +4006,7 @@ function initApp() {
   window.setFilterDesde  = setFilterDesde;
   window.setFilterHasta  = setFilterHasta;
   window.setSortOrder    = setSortOrder;
+  window.setResumenPeriodo = setResumenPeriodo;
   window.setQuickPreset  = setQuickPreset;
   window.exportarHistorialCSV = exportarHistorialCSV;
 
