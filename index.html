@@ -390,7 +390,7 @@
       color-scheme: dark;
     }
     input:focus { border-color: var(--accent); }
-    input::placeholder { color: var(--t3); }
+    input::placeholder { color: var(--t3); font-size: 13.5px; }
     .monto-preview {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -727,7 +727,7 @@
       border-radius: 12px;
       box-shadow: 0 12px 32px rgba(0,0,0,0.25);
       padding: 6px;
-      z-index: 300;
+      z-index: 500;
     }
     .cat-dropdown.open { display: block; }
     .cat-opt {
@@ -1818,14 +1818,6 @@
     </div>
 
     <div class="gf-actions">
-      <button class="gf-action-btn" onclick="showToast('Exportar: próximamente')" title="Exportar">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>Exportar</span>
-      </button>
-      <button class="gf-action-btn" onclick="showToast('Importar: próximamente')" title="Importar">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        <span>Importar</span>
-      </button>
       <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
         <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
         <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
@@ -1918,7 +1910,6 @@
           </div>
           <div class="gf-card-sub" id="form-sub">Anota rápido antes de olvidar</div>
         </div>
-        <span class="gf-step-badge">Paso 1 de 3</span>
       </div>
       <div class="gf-card-divider"></div>
 
@@ -3094,13 +3085,15 @@ function initApp() {
   }
   function getMetodoColor(id) {
     const m = metodos.find(m => m.id === id);
-    if (m) return m.color;
+    if (m && m.color) return m.color;
     const fb = {efectivo:'#B0A090',debito:'#6B9EFF','tc-bancolombia':'#F5C518','tc-nu':'#A78BFA','tc-lulo':'#5AB887',ahorro:'#FCCA45'};
     return fb[id] || '#B0A090';
   }
   function hexRgba(hex, a) {
+    if (!hex || typeof hex !== 'string') hex = '#B0A090';
     const h = hex.replace('#','');
     const [r,g,b] = [h.slice(0,2),h.slice(2,4),h.slice(4,6)].map(x=>parseInt(x,16));
+    if ([r,g,b].some(n => Number.isNaN(n))) return `rgba(176,160,144,${a})`;
     return `rgba(${r},${g},${b},${a})`;
   }
   function tipoLabel(t) {

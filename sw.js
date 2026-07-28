@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v36: fix - la tarjeta de Registro tenia overflow:hidden que recortaba (invisible) el menu desplegable de Categoria */
-const CACHE  = 'finanzas-v36';
+/* v38: re-entrega limpia tras confirmar que el repo tenia una version intermedia (con badge "Paso 1 de 3" pero sin el fix). Contenido identico a v37: sin badge, sin Exportar/Importar, placeholders chicos, hexRgba blindado */
+const CACHE  = 'finanzas-v38';
 const ASSETS = [
   './',
   './index.html',
