@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v35: agregadas 9 categorias nuevas (Alimentacion, Transporte, Arriendo/Servicios, Internet, Entretenimiento, Salud, Educacion, Ropa, Otros) con iconos propios, se aplican a cualquier cuenta sin borrar nada existente */
-const CACHE  = 'finanzas-v35';
+/* v36: fix - la tarjeta de Registro tenia overflow:hidden que recortaba (invisible) el menu desplegable de Categoria */
+const CACHE  = 'finanzas-v36';
 const ASSETS = [
   './',
   './index.html',
