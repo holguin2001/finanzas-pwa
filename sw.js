@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v45: "Gastos por metodo" ahora coincide en color con el resto de la app (se le habia quedado pegado un filtro de desaturacion que solo aplicaba ahi) y muestra icono en vez de un punto, igual que en Categoria/Historial */
-const CACHE  = 'finanzas-v45';
+/* v46: header global + barra de tabs ahora quedan "anclados" (sticky) al hacer scroll, envueltos en un nuevo contenedor .gf-topbar; ya no hay que subir hasta arriba para cambiar de pestaña */
+const CACHE  = 'finanzas-v46';
 const ASSETS = [
   './',
   './index.html',

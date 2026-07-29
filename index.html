@@ -535,6 +535,11 @@
     /* ══════════════════════════════════
        HEADER GLOBAL + TABS (siempre oscuro, como el hero-card)
        ══════════════════════════════════ */
+    .gf-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 700;
+    }
     .gf-header {
       background: #0B1220;
       border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -2065,8 +2070,9 @@
 <div id="app-wrapper" style="display:none">
 
   <!-- ══════════════════════════════════
-       HEADER GLOBAL + TABS (persistente en las 3 vistas)
+       HEADER GLOBAL + TABS (persistente en las 3 vistas, anclado al hacer scroll)
        ══════════════════════════════════ -->
+  <div class="gf-topbar">
   <header class="gf-header">
     <div class="gf-brand">
       <div class="gf-logo">
@@ -2126,6 +2132,7 @@
       3. Resumen Gráfico
     </button>
   </nav>
+  </div>
 
   <!-- ── VISTA: FORMULARIO ── -->
   <!-- ══════════════════════════════════
