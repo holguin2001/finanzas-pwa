@@ -998,9 +998,32 @@
     }
     .hist-export-btn:active { opacity: 0.7; }
 
+    .hist-tipo-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 16px 14px;
+    }
+    .hist-tipo-lbl { font-size: 12.5px; color: var(--t2); white-space: nowrap; margin-right: 2px; }
+    .hist-tipo-chip {
+      padding: 7px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--surface-2);
+      color: var(--t2);
+      font-size: 12.5px; font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.12s;
+    }
+    .hist-tipo-chip.active[data-tipo="all"]     { background: var(--accent);  border-color: var(--accent);  color: #fff; }
+    .hist-tipo-chip.active[data-tipo="gasto"]   { background: var(--expense); border-color: var(--expense); color: #fff; }
+    .hist-tipo-chip.active[data-tipo="ingreso"] { background: var(--income);  border-color: var(--income);  color: #fff; }
+    .hist-tipo-chip.active[data-tipo="ahorro"]  { background: var(--savings); border-color: var(--savings); color: #fff; }
+
     .hist-filters-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
       padding: 0 16px 14px;
     }
@@ -2121,15 +2144,15 @@
   <nav class="gf-tabs">
     <button class="gf-tab active" id="nav-form" onclick="switchView('form')">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      1. Registrar
+      Registrar
     </button>
     <button class="gf-tab" id="nav-historial" onclick="switchView('historial')">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
-      2. Historial <span class="gf-tab-count" id="gf-hist-count">0</span>
+      Historial <span class="gf-tab-count" id="gf-hist-count">0</span>
     </button>
     <button class="gf-tab" id="nav-dashboard" onclick="switchView('dashboard')">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="20" y1="20" x2="20" y2="14"/></svg>
-      3. Resumen Gráfico
+      Resumen
     </button>
   </nav>
   </div>
@@ -2145,7 +2168,7 @@
       <div class="rg-header-txt">
         <div class="gf-card-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="20" y1="20" x2="20" y2="14"/></svg>
-          <span>Resumen Gráfico y Análisis de Balances</span>
+          <span>Resumen y Análisis de Balances</span>
         </div>
         <div class="gf-card-sub">Visualización interactiva de ingresos, gastos y ahorros acumulados por mes</div>
       </div>
@@ -2408,16 +2431,15 @@
       </button>
     </div>
 
+    <div class="hist-tipo-row">
+      <span class="hist-tipo-lbl">Tipo:</span>
+      <button class="hist-tipo-chip active" data-tipo="all" onclick="setFilterTipo('all')">Todos</button>
+      <button class="hist-tipo-chip" data-tipo="gasto" onclick="setFilterTipo('gasto')">Gasto</button>
+      <button class="hist-tipo-chip" data-tipo="ingreso" onclick="setFilterTipo('ingreso')">Ingreso</button>
+      <button class="hist-tipo-chip" data-tipo="ahorro" onclick="setFilterTipo('ahorro')">Ahorro</button>
+    </div>
+
     <div class="hist-filters-row">
-      <div class="hist-filter-field">
-        <label>Tipo</label>
-        <select id="filter-tipo" onchange="setFilterTipo(this.value)">
-          <option value="all">Todos los tipos</option>
-          <option value="gasto">Gasto</option>
-          <option value="ingreso">Ingreso</option>
-          <option value="ahorro">Ahorro</option>
-        </select>
-      </div>
       <div class="hist-filter-field">
         <label>Categoría</label>
         <select id="filter-categoria" onchange="setFilter(this.value)">
@@ -3040,7 +3062,12 @@ function initApp() {
     document.querySelectorAll('.hist-quick-chip').forEach(b =>
       b.classList.toggle('active', b.dataset.preset === quickPreset));
   }
-  function setFilterTipo(v)  { filterTipo  = v; renderHistorial(); }
+  function setFilterTipo(v) {
+    filterTipo = v;
+    document.querySelectorAll('.hist-tipo-chip').forEach(b =>
+      b.classList.toggle('active', b.dataset.tipo === v));
+    renderHistorial();
+  }
   function setFilterDesde(v) { filterDesde = v; quickPreset = null; syncQuickChips(); renderHistorial(); }
   function setFilterHasta(v) { filterHasta = v; quickPreset = null; syncQuickChips(); renderHistorial(); }
   function setSortOrder(v)   { sortOrder   = v; renderHistorial(); }

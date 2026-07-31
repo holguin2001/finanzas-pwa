@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v46: header global + barra de tabs ahora quedan "anclados" (sticky) al hacer scroll, envueltos en un nuevo contenedor .gf-topbar; ya no hay que subir hasta arriba para cambiar de pestaña */
-const CACHE  = 'finanzas-v46';
+/* v47: tabs sin numeración (Registrar/Historial/Resumen), seccion "Resumen Grafico" renombrada a "Resumen", y filtro de Tipo en Historial ahora son chips visibles (Todos/Gasto/Ingreso/Ahorro) en vez de un <select> escondido */
+const CACHE  = 'finanzas-v47';
 const ASSETS = [
   './',
   './index.html',
