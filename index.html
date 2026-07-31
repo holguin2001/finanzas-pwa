@@ -686,6 +686,20 @@
     .gf-card-divider { height: 1px; background: var(--border); }
     .gf-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .req { color: var(--expense); }
+    .field-optional { color: var(--t3); font-size: 11.5px; font-weight: 500; }
+    .cat-clear-btn {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      border: none;
+      background: transparent;
+      color: var(--expense);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .cat-clear-btn.show { display: inline-flex; }
+    .cat-clear-btn:active { opacity: 0.65; }
 
     .input-with-icon { position: relative; }
     .input-icon, .input-icon-svg {
@@ -2303,7 +2317,7 @@
           </div>
 
           <div class="field">
-            <label>Categoría <span class="req">*</span></label>
+            <label>Categoría <span class="field-optional">(opcional)</span></label>
             <div class="cat-select-wrap" id="wrap-categoria">
               <button type="button" class="cat-select-trigger placeholder" id="cat-select-trigger" onclick="toggleCatDropdown(event)">
                 <span class="cat-select-icon" id="cat-select-icon"></span>
@@ -2314,6 +2328,10 @@
                 <!-- generado dinámicamente -->
               </div>
             </div>
+            <button type="button" class="cat-clear-btn" id="cat-clear-btn" onclick="clearCategoria()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Borrar categoría
+            </button>
           </div>
         </div>
 
@@ -2806,7 +2824,6 @@ function initApp() {
     if (!desc)                              return showErr('Escribe una descripción.');
     if (!raw || isNaN(monto) || monto <= 0) return showErr('Ingresa un monto válido (mayor que 0).');
     if (!selTipo)                           return showErr('Selecciona el tipo de registro.');
-    if (!selCategoria)                      return showErr('Selecciona una categoría.');
     if (!selMetod)                          return showErr('Selecciona un método de pago.');
     if (!currentUser)                       return showErr('Sesión expirada. Recarga la app.');
 
@@ -3596,12 +3613,13 @@ function initApp() {
       const base = [
         { id:'cat-alimentacion',    nombre:'Alimentación',                                      tipo:'otro', color:'#F59E0B' },
         { id:'cat-transporte',      nombre:'Transporte y Gasolina',                              tipo:'otro', color:'#3B82F6' },
-        { id:'cat-arriendo',        nombre:'Arriendo y Servicios Básicos (Luz, Agua, Gas)',      tipo:'otro', color:'#8B5CF6' },
+        { id:'cat-arriendo',        nombre:'Arriendo y Servicios',                                tipo:'otro', color:'#8B5CF6' },
         { id:'cat-internet',        nombre:'Internet y Plan de datos',                           tipo:'otro', color:'#0EA5E9' },
         { id:'cat-entretenimiento', nombre:'Entretenimiento y Ocio',                             tipo:'otro', color:'#EC4899' },
-        { id:'cat-salud',           nombre:'Salud y Farmacia',                                   tipo:'otro', color:'#EF4444' },
+        { id:'cat-salud',           nombre:'Salud e Higiene',                                    tipo:'otro', color:'#EF4444' },
         { id:'cat-educacion',       nombre:'Educación',                                          tipo:'otro', color:'#14B8A6' },
         { id:'cat-ropa',            nombre:'Ropa y Compras',                                     tipo:'otro', color:'#D946EF' },
+        { id:'cat-tecnologia',      nombre:'Tecnología',                                          tipo:'otro', color:'#22D3EE' },
         { id:'cat-otros',           nombre:'Otros Gastos',                                       tipo:'otro', color:'#94A3B8' },
       ].filter(c => !existentes.has(c.id));
       if (!base.length) return;
@@ -3653,7 +3671,8 @@ function initApp() {
     wifi:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a11 11 0 0114 0"/><path d="M8.5 16a6 6 0 017 0"/><line x1="12" y1="19.5" x2="12.01" y2="19.5"/></svg>',
     film:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="17" y2="20"/><line x1="2" y1="9" x2="7" y2="9"/><line x1="2" y1="15" x2="7" y2="15"/><line x1="17" y1="9" x2="22" y2="9"/><line x1="17" y1="15" x2="22" y2="15"/></svg>',
     grad:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>',
-    bag:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1.5 14h-15z"/><path d="M9 7a3 3 0 016 0"/></svg>'
+    bag:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1.5 14h-15z"/><path d="M9 7a3 3 0 016 0"/></svg>',
+    cpu:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>'
   };
   function getMetodoIcon(id, nombre) {
     const n = ((nombre || '') + ' ' + (id || '')).toLowerCase();
@@ -3668,6 +3687,7 @@ function initApp() {
     if (/entreten|ocio|pel[ií]cula|cine/.test(n))    return CAT_ICONS.film;
     if (/educaci[oó]n|colegio|universidad|curso/.test(n)) return CAT_ICONS.grad;
     if (/ropa|compras|vestuario/.test(n))             return CAT_ICONS.bag;
+    if (/tecnolog|computador|hardware|procesador|electr[oó]nic|gadget/.test(n)) return CAT_ICONS.cpu;
     if (/tc-|tarjeta|cr[eé]dito|d[eé]bito/.test(n))  return CAT_ICONS.card;
     return CAT_ICONS.tag;
   }
@@ -3702,6 +3722,12 @@ function initApp() {
     document.getElementById('cat-dropdown')?.classList.remove('open');
   }
 
+  function clearCategoria() {
+    selCategoria = null;
+    renderCategoriaDropdown();
+    document.getElementById('cat-dropdown')?.classList.remove('open');
+  }
+
   function renderCategoriaDropdown() {
     const dd = document.getElementById('cat-dropdown');
     if (!dd) return;
@@ -3726,6 +3752,7 @@ function initApp() {
     const trigger = document.getElementById('cat-select-trigger');
     const iconEl  = document.getElementById('cat-select-icon');
     const lblEl   = document.getElementById('cat-select-label');
+    const clearBtn = document.getElementById('cat-clear-btn');
     const sel     = lista.find(m => m.id === selCategoria);
     if (trigger && iconEl && lblEl) {
       if (sel) {
@@ -3734,12 +3761,14 @@ function initApp() {
         iconEl.style.background = hexRgba(sel.color, 0.15);
         lblEl.textContent = sel.nombre;
         trigger.classList.remove('placeholder');
+        clearBtn?.classList.add('show');
       } else {
         iconEl.innerHTML = CAT_ICONS.tag;
         iconEl.style.color = 'var(--t3)';
         iconEl.style.background = 'var(--surface-2)';
         lblEl.textContent = 'Selecciona una categoría';
         trigger.classList.add('placeholder');
+        clearBtn?.classList.remove('show');
       }
     }
   }
@@ -4040,6 +4069,7 @@ function initApp() {
   window.toggleCatDropdown = toggleCatDropdown;
   window.togglePagoDropdown = togglePagoDropdown;
   window.selectCategoria = selectCategoria;
+  window.clearCategoria  = clearCategoria;
   window.setFilterTipo   = setFilterTipo;
   window.setFilterDesde  = setFilterDesde;
   window.setFilterHasta  = setFilterHasta;

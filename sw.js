@@ -1,6 +1,6 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v47: tabs sin numeración (Registrar/Historial/Resumen), seccion "Resumen Grafico" renombrada a "Resumen", y filtro de Tipo en Historial ahora son chips visibles (Todos/Gasto/Ingreso/Ahorro) en vez de un <select> escondido */
-const CACHE  = 'finanzas-v47';
+/* v51: nueva categoria semilla "Tecnologia" (id cat-tecnologia, color cian #22D3EE, icono de chip) agregada a ensureCategoriasBase; como es id nuevo, se crea automaticamente en cuentas existentes en el proximo login, sin tocar nada mas */
+const CACHE  = 'finanzas-v51';
 const ASSETS = [
   './',
   './index.html',
