@@ -1,6 +1,12 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v51: nueva categoria semilla "Tecnologia" (id cat-tecnologia, color cian #22D3EE, icono de chip) agregada a ensureCategoriasBase; como es id nuevo, se crea automaticamente en cuentas existentes en el proximo login, sin tocar nada mas */
-const CACHE  = 'finanzas-v51';
+/* v52: Historial movil reorganizado en tarjetas (grid) para evitar scroll horizontal
+   -- categoria+monto arriba, descripcion en medio, fecha+acciones abajo, se oculta el
+   pill de Tipo redundante en movil (ya lo indica el color del monto). Header global:
+   ahora el header (marca+acciones) y las tabs se anclan por separado (sticky), y el
+   bloque de stats (Balance/Ingresos/Gastos/Ahorro) ya no es sticky -- se desplaza con
+   el contenido y las tabs se "acoplan" debajo del header apenas las stats salen de
+   vista, en vez de quedar todo el bloque fijo como antes. */
+const CACHE  = 'finanzas-v52';
 const ASSETS = [
   './',
   './index.html',

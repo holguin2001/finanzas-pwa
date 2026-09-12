@@ -535,20 +535,27 @@
     /* ══════════════════════════════════
        HEADER GLOBAL + TABS (siempre oscuro, como el hero-card)
        ══════════════════════════════════ */
-    .gf-topbar {
+    /* El header (marca+acciones) y las tabs se anclan por separado: el header queda
+       fijo arriba de todo, las stats (no ancladas) se desplazan con el contenido, y las
+       tabs se anclan justo debajo del header apenas las stats salen de vista.
+       El "top" de .gf-tabs se recalcula en JS (syncStickyTabsOffset) según la altura
+       real del header, para no depender de un valor fijo en px. */
+    .gf-header {
       position: sticky;
       top: 0;
-      z-index: 700;
-    }
-    .gf-header {
+      z-index: 701;
       background: #0B1220;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
       padding: 14px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
+    }
+    .gf-stats-bar {
+      background: #0B1220;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 12px 16px 14px;
     }
     .gf-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .gf-logo {
@@ -620,6 +627,9 @@
     .gf-header .user-avatar { background: rgba(16,185,129,0.14); border-color: rgba(16,185,129,0.30); color: #10B981; }
 
     .gf-tabs {
+      position: sticky;
+      top: 70px; /* fallback; syncStickyTabsOffset() lo ajusta a la altura real del header */
+      z-index: 700;
       display: flex;
       gap: 4px;
       background: var(--surface);
@@ -812,18 +822,9 @@
 
     /* En pantallas angostas: header y filas se apilan */
     @media (max-width: 640px) {
-      .gf-header {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-areas: "brand actions" "stats stats";
-        align-items: center;
-        row-gap: 14px;
-        column-gap: 10px;
-      }
-      .gf-brand   { grid-area: brand; min-width: 0; }
-      .gf-actions { grid-area: actions; justify-content: flex-end; }
+      .gf-brand   { min-width: 0; }
+      .gf-actions { justify-content: flex-end; }
       .gf-stats {
-        grid-area: stats;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
@@ -1157,6 +1158,39 @@
     .hist-td-monto.ahorro  { color: var(--savings); }
     .hist-td-acciones { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     .hist-empty { text-align: center; color: var(--t3); padding: 40px 0 !important; }
+
+    /* En móvil: cada fila se reorganiza en tarjeta (grid) en vez de columnas de tabla,
+       así se ve toda la info sin necesidad de deslizar hacia la derecha.
+       Jerarquía: Categoría+Monto arriba, Descripción en medio, Fecha+Acciones abajo.
+       El check de "revisado" ocupa las 3 filas a la izquierda (es el tap-target fijo). */
+    @media (max-width: 680px) {
+      .hist-table-wrap { overflow-x: hidden; }
+      .hist-table, .hist-table tbody { display: block; width: 100%; }
+      .hist-table { min-width: 0; }
+      .hist-table thead { display: none; }
+      .hist-table tbody tr {
+        display: grid;
+        grid-template-columns: 28px 1fr auto;
+        grid-template-areas:
+          "check cat    monto"
+          "check desc   desc"
+          "check fecha  acc";
+        column-gap: 10px;
+        row-gap: 5px;
+        align-items: center;
+        padding: 13px 14px;
+      }
+      .hist-table td { padding: 0 !important; }
+      .hist-td-check { grid-area: check; align-self: start; margin-top: 1px; }
+      .hist-td-cat   { grid-area: cat; min-width: 0; }
+      .hist-cat-cell { white-space: nowrap; }
+      .hist-cat-name { overflow: hidden; text-overflow: ellipsis; }
+      .hist-td-monto { grid-area: monto; font-size: 13.5px; }
+      .hist-td-tipo  { display: none; } /* redundante: el color del monto ya indica el tipo */
+      .hist-td-desc  { grid-area: desc; max-width: none; white-space: normal; word-break: break-word; font-size: 13px; }
+      .hist-td-fecha { grid-area: fecha; font-size: 11.5px; }
+      .hist-td-acciones { grid-area: acc; justify-content: flex-end; }
+    }
 
     @media (max-width: 900px) {
       .hist-kpi-row { grid-template-columns: 1fr 1fr; }
@@ -2109,7 +2143,6 @@
   <!-- ══════════════════════════════════
        HEADER GLOBAL + TABS (persistente en las 3 vistas, anclado al hacer scroll)
        ══════════════════════════════════ -->
-  <div class="gf-topbar">
   <header class="gf-header">
     <div class="gf-brand">
       <div class="gf-logo">
@@ -2124,6 +2157,20 @@
       </div>
     </div>
 
+    <div class="gf-actions">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
+        <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+        <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
+        <span class="tt-thumb"></span>
+      </button>
+      <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
+        <span class="user-initial"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Stats: NO anclado — se desplaza con el contenido y desaparece bajo el header+tabs al hacer scroll -->
+  <div class="gf-stats-bar">
     <div class="gf-stats">
       <div class="gf-stat">
         <span class="gf-stat-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Balance</span>
@@ -2142,18 +2189,7 @@
         <span class="gf-stat-val sav" id="gf-ahorro">$ 0</span>
       </div>
     </div>
-
-    <div class="gf-actions">
-      <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
-        <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
-        <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
-        <span class="tt-thumb"></span>
-      </button>
-      <button class="user-avatar" onclick="toggleAvatarMenu(event)" title="Menú">
-        <span class="user-initial"></span>
-      </button>
-    </div>
-  </header>
+  </div>
 
   <nav class="gf-tabs">
     <button class="gf-tab active" id="nav-form" onclick="switchView('form')">
@@ -2169,7 +2205,6 @@
       Resumen
     </button>
   </nav>
-  </div>
 
   <!-- ── VISTA: FORMULARIO ── -->
   <!-- ══════════════════════════════════
@@ -3025,8 +3060,8 @@ function initApp() {
           <div class="hist-td-pago">${esc(getMetodoNombre(r.metodo))}</div>
         </td>
         <td class="hist-td-monto ${r.tipo}">${signo}${fmtCOP(r.monto)}</td>
-        <td><span class="hist-tipo-pill ${r.tipo}">● ${tipoLbl[r.tipo] || r.tipo}</span></td>
-        <td>
+        <td class="hist-td-tipo"><span class="hist-tipo-pill ${r.tipo}">● ${tipoLbl[r.tipo] || r.tipo}</span></td>
+        <td class="hist-td-cat">
           <span class="hist-cat-cell">
             <span class="hist-cat-icon" style="background:${hexRgba(catColor,0.15)};color:${catColor}">${catIcon}</span>
             <span class="hist-cat-name" style="color:${catColor}">${esc(catNombre)}</span>
@@ -4104,6 +4139,20 @@ function initApp() {
   }
 
   syncThemeToggles();
+
+  /* ═══ HEADER STICKY: las tabs se anclan justo debajo del header ═══
+     El header (marca+acciones) es sticky con top:0. Las tabs son sticky con
+     top = altura real del header, para que se "acoplen" debajo apenas las
+     stats (que no son sticky) salen de vista al hacer scroll. Se recalcula
+     en load/resize por si el alto del header cambia (fuentes, wrap del título). */
+  function syncStickyTabsOffset() {
+    const header = document.querySelector('.gf-header');
+    const tabs   = document.querySelector('.gf-tabs');
+    if (header && tabs) tabs.style.top = header.offsetHeight + 'px';
+  }
+  syncStickyTabsOffset();
+  window.addEventListener('resize', syncStickyTabsOffset);
+  window.addEventListener('load', syncStickyTabsOffset);
 
   /* ═══ SERVICE WORKER ═══ */
   if ('serviceWorker' in navigator) {
