@@ -1,12 +1,11 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v52: Historial movil reorganizado en tarjetas (grid) para evitar scroll horizontal
-   -- categoria+monto arriba, descripcion en medio, fecha+acciones abajo, se oculta el
-   pill de Tipo redundante en movil (ya lo indica el color del monto). Header global:
-   ahora el header (marca+acciones) y las tabs se anclan por separado (sticky), y el
-   bloque de stats (Balance/Ingresos/Gastos/Ahorro) ya no es sticky -- se desplaza con
-   el contenido y las tabs se "acoplan" debajo del header apenas las stats salen de
-   vista, en vez de quedar todo el bloque fijo como antes. */
-const CACHE  = 'finanzas-v52';
+/* v53: correcciones de ajuste fino en el header y en Historial movil -- (1) marca+titulo
+   y el toggle de tema+avatar vuelven a compartir el mismo renglon en pantallas angostas
+   (se habia roto al separar las stats del header en v52, quedaban en 2 filas); (2) las
+   4 tarjetas de totales de Historial (Ingresos/Gastos/Ahorros/Balance) pasan a una
+   cuadricula 2x2 mas compacta en movil en vez de apilarse en 1 columna ocupando media
+   pantalla. */
+const CACHE  = 'finanzas-v53';
 const ASSETS = [
   './',
   './index.html',
