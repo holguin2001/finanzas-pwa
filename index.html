@@ -1103,95 +1103,71 @@
       font-weight: 700; border-radius: 100px; padding: 1px 8px; font-size: 11.5px;
     }
 
-    .hist-table-wrap {
-      margin: 0 16px 24px;
+    .hist-list-wrap { margin: 0 16px 24px; display: flex; flex-direction: column; gap: 18px; }
+    .hist-empty { text-align: center; color: var(--t3); padding: 40px 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); }
+
+    /* Grupo por día: encabezado (punto + fecha + Neto del día) + tarjetas del día */
+    .hist-day-group { display: flex; flex-direction: column; gap: 8px; }
+    .hist-day-header { display: flex; align-items: center; gap: 8px; padding: 0 4px; }
+    .hist-day-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .hist-day-label { font-size: 12.5px; font-weight: 700; color: var(--t2); text-transform: capitalize; }
+    .hist-day-spacer { flex: 1; }
+    .hist-day-neto { font-size: 12px; color: var(--t3); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+    .hist-day-neto .val { font-weight: 700; }
+    .hist-day-neto .val.pos { color: var(--income); }
+    .hist-day-neto .val.neg { color: var(--expense); }
+
+    .hist-card-list { display: flex; flex-direction: column; gap: 8px; }
+    .hist-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
-      overflow-x: auto;
+      border-radius: var(--r-sm);
     }
-    .hist-table { width: 100%; border-collapse: collapse; min-width: 720px; }
-    .hist-table thead th {
-      text-align: left;
-      font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-      color: var(--t2);
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    .hist-table thead th.ta-right { text-align: right; }
-    .hist-table tbody tr { border-bottom: 1px solid var(--border); }
-    .hist-table tbody tr:last-child { border-bottom: none; }
-    .hist-table tbody tr:hover { background: var(--surface-2); }
-    .hist-table td { padding: 12px 16px; font-size: 13.5px; color: var(--t1); vertical-align: middle; }
-    .hist-td-fecha { color: var(--t2); white-space: nowrap; }
-    .hist-tipo-pill {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 100px;
-      font-size: 12px; font-weight: 600;
-      white-space: nowrap;
-    }
-    .hist-tipo-pill.gasto   { background: var(--expense-lt); color: var(--expense); }
-    .hist-tipo-pill.ingreso { background: var(--income-lt);  color: var(--income); }
-    .hist-tipo-pill.ahorro  { background: var(--savings-lt); color: var(--savings); }
-    .hist-cat-cell { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .hist-cat-icon {
-      width: 26px; height: 26px;
-      border-radius: 7px;
+    .hist-card:hover { background: var(--surface-2); }
+    .hist-card.checked { opacity: 0.45; }
+    .hist-card.checked .hist-card-title { text-decoration: line-through; }
+    .hist-card-check { flex-shrink: 0; }
+    .hist-card-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      color: #fff;
     }
-    .hist-cat-name { font-size: 13px; font-weight: 600; }
-    .hist-td-desc { color: var(--t1); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .hist-td-pago { font-size: 11px; color: var(--t3); margin-top: 2px; }
-    .hist-th-check, .hist-td-check { width: 40px; padding-right: 0 !important; }
-    .hist-row-checked { opacity: 0.45; }
-    .hist-row-checked .hist-td-desc { text-decoration: line-through; }
-    .hist-td-monto {
+    .hist-card-info { flex: 1; min-width: 0; }
+    .hist-card-title {
+      font-size: 14px; font-weight: 700; color: var(--t1);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .hist-card-sub { font-size: 12px; color: var(--t3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hist-card-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .hist-card-monto {
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      text-align: right;
+      font-weight: 700;
+      font-size: 14px;
       white-space: nowrap;
     }
-    .hist-td-monto.gasto   { color: var(--expense); }
-    .hist-td-monto.ingreso { color: var(--income); }
-    .hist-td-monto.ahorro  { color: var(--savings); }
-    .hist-td-acciones { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
-    .hist-empty { text-align: center; color: var(--t3); padding: 40px 0 !important; }
+    .hist-card-monto.gasto   { color: var(--expense); }
+    .hist-card-monto.ingreso { color: var(--income); }
+    .hist-card-monto.ahorro  { color: var(--savings); }
+    .hist-card-actions { display: flex; align-items: center; gap: 4px; }
 
-    /* En móvil: cada fila se reorganiza en tarjeta (grid) en vez de columnas de tabla,
-       así se ve toda la info sin necesidad de deslizar hacia la derecha.
-       Jerarquía: Categoría+Monto arriba, Descripción en medio, Fecha+Acciones abajo.
-       El check de "revisado" ocupa las 3 filas a la izquierda (es el tap-target fijo). */
+    /* En móvil se conserva la misma tarjeta, solo se recorta info secundaria y se
+       acercan los elementos para que quepan sin desbordar. */
     @media (max-width: 680px) {
-      .hist-table-wrap { overflow-x: hidden; }
-      .hist-table, .hist-table tbody { display: block; width: 100%; }
-      .hist-table { min-width: 0; }
-      .hist-table thead { display: none; }
-      .hist-table tbody tr {
-        display: grid;
-        grid-template-columns: 28px 1fr auto;
-        grid-template-areas:
-          "check cat    monto"
-          "check desc   desc"
-          "check fecha  acc";
-        column-gap: 10px;
-        row-gap: 5px;
-        align-items: center;
-        padding: 13px 14px;
-      }
-      .hist-table td { padding: 0 !important; }
-      .hist-td-check { grid-area: check; align-self: start; margin-top: 1px; }
-      .hist-td-cat   { grid-area: cat; min-width: 0; }
-      .hist-cat-cell { white-space: nowrap; }
-      .hist-cat-name { overflow: hidden; text-overflow: ellipsis; }
-      .hist-td-monto { grid-area: monto; font-size: 13.5px; }
-      .hist-td-tipo  { display: none; } /* redundante: el color del monto ya indica el tipo */
-      .hist-td-desc  { grid-area: desc; max-width: none; white-space: normal; word-break: break-word; font-size: 13px; }
-      .hist-td-fecha { grid-area: fecha; font-size: 11.5px; }
-      .hist-td-acciones { grid-area: acc; justify-content: flex-end; }
+      .hist-day-neto { font-size: 11px; }
+      .hist-card { padding: 11px 12px; gap: 10px; }
+      .hist-card-icon { width: 36px; height: 36px; }
+      .hist-card-title { font-size: 13.5px; }
+      .hist-card-sub { font-size: 11.5px; }
+      .hist-card-monto { font-size: 13.5px; }
+      .hist-card-actions .icon-btn { width: 26px; height: 26px; }
     }
+
 
     @media (max-width: 900px) {
       .hist-kpi-row { grid-template-columns: 1fr 1fr; }
@@ -2543,16 +2519,7 @@
       Resultados: <span class="hist-results-count" id="hist-results-count">0</span>
     </div>
 
-    <div class="hist-table-wrap">
-      <table class="hist-table">
-        <thead>
-          <tr>
-            <th class="hist-th-check"></th><th>Descripción</th><th class="ta-right">Monto</th><th>Tipo</th><th>Categoría</th><th>Fecha</th><th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="hist-table-body"></tbody>
-      </table>
-    </div>
+    <div class="hist-list-wrap" id="hist-list-wrap"></div>
 
   </section>
 
@@ -3048,54 +3015,79 @@ function initApp() {
     const balEl = document.getElementById('hk-balance');
     if (balEl) { balEl.classList.toggle('neg', bal < 0); balEl.classList.toggle('pos', bal >= 0); }
 
-    const tbody = document.getElementById('hist-table-body');
-    if (!tbody) return;
+    const listWrap = document.getElementById('hist-list-wrap');
+    if (!listWrap) return;
     if (!pool.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="hist-empty">Sin registros que coincidan con los filtros</td></tr>';
+      listWrap.innerHTML = '<div class="hist-empty">Sin registros que coincidan con los filtros</div>';
       return;
     }
-    const tipoLbl = { gasto:'Gasto', ingreso:'Ingreso', ahorro:'Ahorro' };
-    tbody.innerHTML = pool.map(r => {
-      const catId     = r.categoria || null;
-      const catColor  = catId ? getMetodoColor(catId) : '#9CA3AF';
-      const catNombre = catId ? getMetodoNombre(catId) : 'Sin categoría';
-      const catIcon   = catId ? getMetodoIcon(catId, catNombre) : CAT_ICONS.tag;
-      const signo = r.tipo === 'gasto' ? '- ' : (r.tipo === 'ingreso' ? '+ ' : '');
-      return `<tr class="${r.exportado ? 'hist-row-checked' : ''}">
-        <td class="hist-td-check">
-          <button class="check-btn${r.exportado ? ' checked' : ''}"
+
+    /* Agrupar manteniendo el orden relativo del pool (respeta "Ordenar por"
+       dentro de cada día); los días en sí se ordenan cronológicamente
+       descendente, salvo que el usuario haya pedido fecha ascendente. */
+    const grupos = new Map();
+    pool.forEach(r => {
+      if (!grupos.has(r.fecha)) grupos.set(r.fecha, []);
+      grupos.get(r.fecha).push(r);
+    });
+    const fechas = Array.from(grupos.keys())
+      .sort((a, b) => sortOrder === 'fecha-asc' ? a.localeCompare(b) : b.localeCompare(a));
+
+    listWrap.innerHTML = fechas.map(fecha => {
+      const registros = grupos.get(fecha);
+      const netoDia = registros.reduce((s, r) => {
+        if (r.tipo === 'ingreso') return s + r.monto;
+        if (r.tipo === 'gasto')   return s - r.monto;
+        return s;
+      }, 0);
+      const netoClase = netoDia >= 0 ? 'pos' : 'neg';
+      const netoSigno = netoDia >= 0 ? '+ ' : '- ';
+
+      const tarjetas = registros.map(r => {
+        const catId     = r.categoria || null;
+        const catColor  = catId ? getMetodoColor(catId) : '#9CA3AF';
+        const catNombre = catId ? getMetodoNombre(catId) : 'Sin categoría';
+        const catIcon   = catId ? getMetodoIcon(catId, catNombre) : CAT_ICONS.tag;
+        const signo = r.tipo === 'gasto' ? '- ' : (r.tipo === 'ingreso' ? '+ ' : '+ ');
+        return `<div class="hist-card${r.exportado ? ' checked' : ''}">
+          <button class="check-btn hist-card-check${r.exportado ? ' checked' : ''}"
                   onclick="toggleCheck('${esc(r.id)}', ${!!r.exportado})"
                   title="${r.exportado ? 'Quitar marca' : 'Marcar como revisado'}">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </button>
-        </td>
-        <td class="hist-td-desc">
-          ${esc(r.desc)}
-          <div class="hist-td-pago">${esc(getMetodoNombre(r.metodo))}</div>
-        </td>
-        <td class="hist-td-monto ${r.tipo}">${signo}${fmtCOP(r.monto)}</td>
-        <td class="hist-td-tipo"><span class="hist-tipo-pill ${r.tipo}">● ${tipoLbl[r.tipo] || r.tipo}</span></td>
-        <td class="hist-td-cat">
-          <span class="hist-cat-cell">
-            <span class="hist-cat-icon" style="background:${hexRgba(catColor,0.15)};color:${catColor}">${catIcon}</span>
-            <span class="hist-cat-name" style="color:${catColor}">${esc(catNombre)}</span>
-          </span>
-        </td>
-        <td class="hist-td-fecha">${fmtDate(r.fecha)}</td>
-        <td class="hist-td-acciones">
-          <button class="icon-btn edit-btn" onclick="editRec('${esc(r.id)}')" aria-label="Editar">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-            </svg>
-          </button>
-          <button class="icon-btn del-btn" onclick="delRec('${esc(r.id)}')" aria-label="Eliminar">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/>
-            </svg>
-          </button>
-        </td>
-      </tr>`;
+          <span class="hist-card-icon" style="background:${catColor}">${catIcon}</span>
+          <div class="hist-card-info">
+            <div class="hist-card-title">${esc(r.desc)}</div>
+            <div class="hist-card-sub">${esc(catNombre)} · ${esc(getMetodoNombre(r.metodo))}</div>
+          </div>
+          <div class="hist-card-right">
+            <div class="hist-card-monto ${r.tipo}">${signo}${fmtCOP(r.monto)}</div>
+            <div class="hist-card-actions">
+              <button class="icon-btn edit-btn" onclick="editRec('${esc(r.id)}')" aria-label="Editar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+              <button class="icon-btn del-btn" onclick="delRec('${esc(r.id)}')" aria-label="Eliminar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+
+      return `<div class="hist-day-group">
+        <div class="hist-day-header">
+          <span class="hist-day-dot"></span>
+          <span class="hist-day-label">${fmtDayHeader(fecha)}</span>
+          <span class="hist-day-spacer"></span>
+          <span class="hist-day-neto">Neto: <span class="val ${netoClase}">${netoSigno}${fmtCOP(Math.abs(netoDia))}</span></span>
+        </div>
+        <div class="hist-card-list">${tarjetas}</div>
+      </div>`;
     }).join('');
   }
 
@@ -3223,6 +3215,22 @@ function initApp() {
   function fmtDate(s) {
     const [y, m, d] = s.split('-').map(Number);
     return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${String(y).slice(2)}`;
+  }
+
+  /* Encabezado de grupo de día en Historial: "Hoy, 10 sept" / "Ayer, 9 sept" /
+     "mar, 8 sept 2026" (con año solo si no es el año en curso). */
+  function fmtDayHeader(s) {
+    const [y, m, d] = s.split('-').map(Number);
+    const fecha = new Date(y, m - 1, d);
+    const hoy = new Date();
+    const ayer = new Date(hoy); ayer.setDate(ayer.getDate() - 1);
+    const mismoDia = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    const mes = fecha.toLocaleDateString('es-CO', { month: 'short' }).replace('.', '');
+    if (mismoDia(fecha, hoy))  return `Hoy, ${d} ${mes}`;
+    if (mismoDia(fecha, ayer)) return `Ayer, ${d} ${mes}`;
+    const diaSemana = fecha.toLocaleDateString('es-CO', { weekday: 'short' }).replace('.', '');
+    const anioSuf = y !== hoy.getFullYear() ? ` ${y}` : '';
+    return `${diaSemana}, ${d} ${mes}${anioSuf}`;
   }
 
   const M_LABELS = {

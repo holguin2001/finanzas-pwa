@@ -1,11 +1,10 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v53: correcciones de ajuste fino en el header y en Historial movil -- (1) marca+titulo
-   y el toggle de tema+avatar vuelven a compartir el mismo renglon en pantallas angostas
-   (se habia roto al separar las stats del header en v52, quedaban en 2 filas); (2) las
-   4 tarjetas de totales de Historial (Ingresos/Gastos/Ahorros/Balance) pasan a una
-   cuadricula 2x2 mas compacta en movil en vez de apilarse en 1 columna ocupando media
-   pantalla. */
-const CACHE  = 'finanzas-v53';
+/* v55: ajuste sobre v54 -- las tarjetas de Historial pasan de una lista con divisores
+   dentro de un contenedor con borde, a tarjetas independientes con esquinas redondeadas
+   y separacion entre ellas (como el ejemplo visual del usuario), y el icono de categoria
+   pasa de tinte suave a circulo de color solido con icono blanco. Se conserva el check
+   de "revisado" sin quitarlo. */
+const CACHE  = 'finanzas-v55';
 const ASSETS = [
   './',
   './index.html',
