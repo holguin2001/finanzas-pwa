@@ -1,10 +1,15 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v55: ajuste sobre v54 -- las tarjetas de Historial pasan de una lista con divisores
-   dentro de un contenedor con borde, a tarjetas independientes con esquinas redondeadas
-   y separacion entre ellas (como el ejemplo visual del usuario), y el icono de categoria
-   pasa de tinte suave a circulo de color solido con icono blanco. Se conserva el check
-   de "revisado" sin quitarlo. */
-const CACHE  = 'finanzas-v55';
+/* v57: las categorias ahora dependen del tipo de movimiento (Gasto/Ingreso/Ahorro).
+   Nuevo campo `aplicaA` en cada categoria (metodos con tipo==='otro'); las categorias
+   creadas antes de este cambio no lo tienen y se asumen 'gasto' por compatibilidad
+   (getCategorias(tipoMov) filtra por eso). El dropdown de Categoria en el formulario
+   de Registro ahora se filtra por el tipo seleccionado y se reinicia la seleccion al
+   cambiar de tipo (selectTipo). El modal de "Editar categorias/metodos" agrega un
+   selector "Aplica a: Gasto/Ingreso/Ahorro" que solo aparece cuando el tipo elegido es
+   "Otro" (categoria). Se agrega ensureCategoriasIngreso() con 3 semillas para Ingreso
+   (Salario, Ventas, Otros Ingresos); Ahorro arranca sin semillas, se crean a mano. El
+   filtro de categoria en Historial sigue mostrando todas sin filtrar por tipo. */
+const CACHE  = 'finanzas-v57';
 const ASSETS = [
   './',
   './index.html',

@@ -1143,7 +1143,15 @@
       font-size: 14px; font-weight: 700; color: var(--t1);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .hist-card-sub { font-size: 12px; color: var(--t3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hist-card-sub { display: flex; align-items: center; gap: 6px; margin-top: 3px; min-width: 0; }
+    .hist-card-cat { font-size: 12px; color: var(--t3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .hist-card-metodo {
+      font-size: 10.5px; font-weight: 700;
+      padding: 1.5px 7px;
+      border-radius: 5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
     .hist-card-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .hist-card-monto {
       font-family: 'JetBrains Mono', monospace;
@@ -1163,7 +1171,8 @@
       .hist-card { padding: 11px 12px; gap: 10px; }
       .hist-card-icon { width: 36px; height: 36px; }
       .hist-card-title { font-size: 13.5px; }
-      .hist-card-sub { font-size: 11.5px; }
+      .hist-card-cat { font-size: 11.5px; }
+      .hist-card-metodo { font-size: 10px; padding: 1px 6px; }
       .hist-card-monto { font-size: 13.5px; }
       .hist-card-actions .icon-btn { width: 26px; height: 26px; }
     }
@@ -2054,6 +2063,30 @@
       background: var(--accent-lt);
     }
 
+    .aplica-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .aplica-btn {
+      padding: 10px 8px;
+      border: 1.5px solid var(--border);
+      background: var(--surf-tipo);
+      border-radius: var(--r-sm);
+      color: var(--t2);
+      font-family: 'Inter', 'Open Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .aplica-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-lt);
+    }
+
     /* ── Color palette ── */
     .color-palette {
       display: flex;
@@ -2567,6 +2600,14 @@
             <button class="tipo-btn" data-tipo="otro"     onclick="selectMTipo('otro')">📌 Otro</button>
           </div>
         </div>
+        <div class="field" id="wrap-aplicaa" style="margin-bottom:14px;display:none">
+          <label>Aplica a</label>
+          <div class="aplica-btns">
+            <button class="aplica-btn" data-aplica="gasto"   onclick="selectAplicaA('gasto')">Gasto</button>
+            <button class="aplica-btn" data-aplica="ingreso" onclick="selectAplicaA('ingreso')">Ingreso</button>
+            <button class="aplica-btn" data-aplica="ahorro"  onclick="selectAplicaA('ahorro')">Ahorro</button>
+          </div>
+        </div>
         <div class="field" style="margin-bottom:20px">
           <label>Color</label>
           <div class="color-palette" id="color-palette"></div>
@@ -2733,7 +2774,7 @@ function initApp() {
       switchView('form');
       setupListener(user.uid);
       setupMetodosListener(user.uid);
-      seedDefaultMetodos(user.uid).then(() => ensureCategoriasBase(user.uid));
+      seedDefaultMetodos(user.uid).then(() => Promise.all([ensureCategoriasBase(user.uid), ensureCategoriasIngreso(user.uid)]));
 
     } else {
       currentUser = null;
@@ -2965,7 +3006,12 @@ function initApp() {
     }
   }
 
-  function selectTipo(v)   { selTipo  = v; syncBtns(); }
+  function selectTipo(v) {
+    selTipo = v;
+    syncBtns();
+    selCategoria = null; /* las categorías dependen del tipo de movimiento; se reinicia al cambiar */
+    renderCategoriaDropdown();
+  }
   function selectMetodo(v) { selMetod = v; renderMetodoPagoDropdown(); document.getElementById('pago-dropdown')?.classList.remove('open'); }
 
 
@@ -3049,6 +3095,8 @@ function initApp() {
         const catNombre = catId ? getMetodoNombre(catId) : 'Sin categoría';
         const catIcon   = catId ? getMetodoIcon(catId, catNombre) : CAT_ICONS.tag;
         const signo = r.tipo === 'gasto' ? '- ' : (r.tipo === 'ingreso' ? '+ ' : '+ ');
+        const metColor  = getMetodoColor(r.metodo);
+        const metNombre = getMetodoNombre(r.metodo);
         return `<div class="hist-card${r.exportado ? ' checked' : ''}">
           <button class="check-btn hist-card-check${r.exportado ? ' checked' : ''}"
                   onclick="toggleCheck('${esc(r.id)}', ${!!r.exportado})"
@@ -3058,7 +3106,10 @@ function initApp() {
           <span class="hist-card-icon" style="background:${catColor}">${catIcon}</span>
           <div class="hist-card-info">
             <div class="hist-card-title">${esc(r.desc)}</div>
-            <div class="hist-card-sub">${esc(catNombre)} · ${esc(getMetodoNombre(r.metodo))}</div>
+            <div class="hist-card-sub">
+              <span class="hist-card-cat">${esc(catNombre)}</span>
+              <span class="hist-card-metodo" style="background:${hexRgba(metColor,0.18)};color:${metColor}">${esc(metNombre)}</span>
+            </div>
           </div>
           <div class="hist-card-right">
             <div class="hist-card-monto ${r.tipo}">${signo}${fmtCOP(r.monto)}</div>
@@ -3613,6 +3664,7 @@ function initApp() {
   let unsubMetodos = null;
   let metodoEditId = null;
   let selMTipo     = 'efectivo';
+  let selAplicaA   = 'gasto'; /* solo aplica cuando selMTipo === 'otro' (categorías): a qué tipo de movimiento pertenece */
   let selMColor    = '#FB923C';
 
   const PRESET_COLORS = [
@@ -3666,16 +3718,16 @@ function initApp() {
       const snap = await col.get();
       const existentes = new Set(snap.docs.map(d => d.id));
       const base = [
-        { id:'cat-alimentacion',    nombre:'Alimentación',                                      tipo:'otro', color:'#F59E0B' },
-        { id:'cat-transporte',      nombre:'Transporte y Gasolina',                              tipo:'otro', color:'#3B82F6' },
-        { id:'cat-arriendo',        nombre:'Arriendo y Servicios',                                tipo:'otro', color:'#8B5CF6' },
-        { id:'cat-internet',        nombre:'Internet y Plan de datos',                           tipo:'otro', color:'#0EA5E9' },
-        { id:'cat-entretenimiento', nombre:'Entretenimiento y Ocio',                             tipo:'otro', color:'#EC4899' },
-        { id:'cat-salud',           nombre:'Salud e Higiene',                                    tipo:'otro', color:'#EF4444' },
-        { id:'cat-educacion',       nombre:'Educación',                                          tipo:'otro', color:'#14B8A6' },
-        { id:'cat-ropa',            nombre:'Ropa y Compras',                                     tipo:'otro', color:'#D946EF' },
-        { id:'cat-tecnologia',      nombre:'Tecnología',                                          tipo:'otro', color:'#22D3EE' },
-        { id:'cat-otros',           nombre:'Otros Gastos',                                       tipo:'otro', color:'#94A3B8' },
+        { id:'cat-alimentacion',    nombre:'Alimentación',                                      tipo:'otro', color:'#F59E0B', aplicaA:'gasto' },
+        { id:'cat-transporte',      nombre:'Transporte y Gasolina',                              tipo:'otro', color:'#3B82F6', aplicaA:'gasto' },
+        { id:'cat-arriendo',        nombre:'Arriendo y Servicios',                                tipo:'otro', color:'#8B5CF6', aplicaA:'gasto' },
+        { id:'cat-internet',        nombre:'Internet y Plan de datos',                           tipo:'otro', color:'#0EA5E9', aplicaA:'gasto' },
+        { id:'cat-entretenimiento', nombre:'Entretenimiento y Ocio',                             tipo:'otro', color:'#EC4899', aplicaA:'gasto' },
+        { id:'cat-salud',           nombre:'Salud e Higiene',                                    tipo:'otro', color:'#EF4444', aplicaA:'gasto' },
+        { id:'cat-educacion',       nombre:'Educación',                                          tipo:'otro', color:'#14B8A6', aplicaA:'gasto' },
+        { id:'cat-ropa',            nombre:'Ropa y Compras',                                     tipo:'otro', color:'#D946EF', aplicaA:'gasto' },
+        { id:'cat-tecnologia',      nombre:'Tecnología',                                          tipo:'otro', color:'#22D3EE', aplicaA:'gasto' },
+        { id:'cat-otros',           nombre:'Otros Gastos',                                       tipo:'otro', color:'#94A3B8', aplicaA:'gasto' },
       ].filter(c => !existentes.has(c.id));
       if (!base.length) return;
       const batch = db.batch();
@@ -3684,14 +3736,42 @@ function initApp() {
     } catch(e) { console.warn('ensureCategoriasBase:', e); }
   }
 
+  /* Igual que ensureCategoriasBase pero para categorías de Ingreso -- se agregan a
+     CUALQUIER cuenta (nueva o existente) sin tocar ni borrar lo que la persona ya tenga,
+     solo rellena las que falten, por id fijo. Ahorro arranca sin semillas: el usuario
+     crea las suyas desde el formulario cuando registre un ahorro. */
+  async function ensureCategoriasIngreso(uid) {
+    try {
+      const col = db.collection('users').doc(uid).collection('metodos');
+      const snap = await col.get();
+      const existentes = new Set(snap.docs.map(d => d.id));
+      const base = [
+        { id:'cat-ing-salario', nombre:'Salario',        tipo:'otro', color:'#22C55E', aplicaA:'ingreso' },
+        { id:'cat-ing-ventas',  nombre:'Ventas',          tipo:'otro', color:'#0EA5E9', aplicaA:'ingreso' },
+        { id:'cat-ing-otros',   nombre:'Otros Ingresos',  tipo:'otro', color:'#94A3B8', aplicaA:'ingreso' },
+      ].filter(c => !existentes.has(c.id));
+      if (!base.length) return;
+      const batch = db.batch();
+      base.forEach(({ id, ...data }) => batch.set(col.doc(id), data));
+      await batch.commit();
+    } catch(e) { console.warn('ensureCategoriasIngreso:', e); }
+  }
+
   /* Helpers */
   function getMetodoNombre(id) {
     return metodos.find(m => m.id === id)?.nombre || id;
   }
   /* La misma colección "metodos" contiene dos cosas distintas, diferenciadas por tipo:
      tipo === 'otro' -> categoría (Alimentación, Transporte...)
-     cualquier otro tipo (efectivo/debito/credito) -> método de pago (Efectivo, Débito, TC...) */
-  function getCategorias()  { return metodos.filter(m => m.tipo === 'otro'); }
+     cualquier otro tipo (efectivo/debito/credito) -> método de pago (Efectivo, Débito, TC...)
+     Las categorías, a su vez, tienen un campo "aplicaA" (gasto/ingreso/ahorro) que dice a
+     qué tipo de movimiento pertenecen -- las categorías creadas antes de este campo no lo
+     tienen, así que se asumen "gasto" (eran las únicas que existían). */
+  function getCategorias(tipoMov) {
+    const cats = metodos.filter(m => m.tipo === 'otro');
+    if (!tipoMov) return cats;
+    return cats.filter(m => (m.aplicaA || 'gasto') === tipoMov);
+  }
   function getMediosPago()  { return metodos.filter(m => m.tipo !== 'otro'); }
 
   function getMetodoColor(id) {
@@ -3709,6 +3789,9 @@ function initApp() {
   }
   function tipoLabel(t) {
     return {'credito':'💳 Crédito','debito':'🏧 Débito','efectivo':'💵 Efectivo','otro':'📌 Otro'}[t] || t;
+  }
+  function aplicaALabel(a) {
+    return { gasto:'Gasto', ingreso:'Ingreso', ahorro:'Ahorro' }[a] || a;
   }
 
   /* Render pills en formulario */
@@ -3786,7 +3869,7 @@ function initApp() {
   function renderCategoriaDropdown() {
     const dd = document.getElementById('cat-dropdown');
     if (!dd) return;
-    const lista = getCategorias();
+    const lista = getCategorias(selTipo);
     dd.innerHTML = lista.map(m => {
       const active = selCategoria === m.id;
       return `<button type="button" class="cat-opt${active ? ' active' : ''}" onclick="selectCategoria('${esc(m.id)}')">
@@ -3795,7 +3878,7 @@ function initApp() {
       </button>`;
     }).join('') +
     `<div class="cat-dropdown-divider"></div>
-     <button type="button" class="cat-opt cat-opt-add" onclick="openMetodosModal();openAddMetodo()">
+     <button type="button" class="cat-opt cat-opt-add" onclick="openMetodosModal();openAddMetodo('${selTipo}')">
        <span class="cat-opt-icon cat-opt-icon-add">+</span>
        <span class="cat-opt-label">Agregar categoría</span>
      </button>
@@ -3965,7 +4048,7 @@ function initApp() {
         <div class="method-list-dot" style="background:${m.color}"></div>
         <div class="method-list-info">
           <span class="method-list-name">${esc(m.nombre)}</span>
-          <span class="method-list-tipo">${tipoLabel(m.tipo)}</span>
+          <span class="method-list-tipo">${tipoLabel(m.tipo)}${m.tipo === 'otro' ? ' · ' + aplicaALabel(m.aplicaA || 'gasto') : ''}</span>
         </div>
         <div class="method-list-actions">
           <button class="icon-btn edit-btn" onclick="openEditMetodo('${esc(m.id)}')">
@@ -3986,12 +4069,13 @@ function initApp() {
       </div>`).join('');
   }
 
-  function openAddMetodo() {
+  function openAddMetodo(presetAplicaA) {
     metodoEditId = null; selMTipo = 'efectivo'; selMColor = '#FB923C';
+    selAplicaA = presetAplicaA || 'gasto';
     document.getElementById('metodo-nombre').value = '';
     document.getElementById('metodos-modal-title').textContent = 'Nuevo método';
     document.getElementById('metodo-save-btn').textContent = 'Agregar';
-    syncMTipoBtns(); renderColorPalette();
+    syncMTipoBtns(); syncAplicaBtns(); toggleAplicaAField(); renderColorPalette();
     document.getElementById('metodos-list-view').style.display = 'none';
     document.getElementById('metodo-form-view').style.display  = 'block';
   }
@@ -4000,18 +4084,28 @@ function initApp() {
     const m = metodos.find(m => m.id === id);
     if (!m) return;
     metodoEditId = id; selMTipo = m.tipo || 'efectivo'; selMColor = m.color || '#FB923C';
+    selAplicaA = m.aplicaA || 'gasto';
     document.getElementById('metodo-nombre').value = m.nombre;
     document.getElementById('metodos-modal-title').textContent = 'Editar método';
     document.getElementById('metodo-save-btn').textContent = 'Actualizar';
-    syncMTipoBtns(); renderColorPalette();
+    syncMTipoBtns(); syncAplicaBtns(); toggleAplicaAField(); renderColorPalette();
     document.getElementById('metodos-list-view').style.display = 'none';
     document.getElementById('metodo-form-view').style.display  = 'block';
   }
 
-  function selectMTipo(t) { selMTipo = t; syncMTipoBtns(); }
+  function selectMTipo(t) { selMTipo = t; syncMTipoBtns(); toggleAplicaAField(); }
   function syncMTipoBtns() {
     document.querySelectorAll('.tipo-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.tipo === selMTipo));
+  }
+  function toggleAplicaAField() {
+    const wrap = document.getElementById('wrap-aplicaa');
+    if (wrap) wrap.style.display = selMTipo === 'otro' ? 'block' : 'none';
+  }
+  function selectAplicaA(a) { selAplicaA = a; syncAplicaBtns(); }
+  function syncAplicaBtns() {
+    document.querySelectorAll('.aplica-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.aplica === selAplicaA));
   }
 
   function renderColorPalette() {
@@ -4031,6 +4125,7 @@ function initApp() {
     const nombre = document.getElementById('metodo-nombre').value.trim();
     if (!nombre) { showErr('Escribe el nombre del método.'); return; }
     const data = { nombre, tipo: selMTipo, color: selMColor };
+    if (selMTipo === 'otro') data.aplicaA = selAplicaA;
     try {
       if (metodoEditId) {
         await db.collection('users').doc(currentUser.uid).collection('metodos').doc(metodoEditId).update(data);
@@ -4113,6 +4208,7 @@ function initApp() {
   window.openAddMetodo      = openAddMetodo;
   window.openEditMetodo     = openEditMetodo;
   window.selectMTipo        = selectMTipo;
+  window.selectAplicaA      = selectAplicaA;
   window.selectMColor       = selectMColor;
   window.saveMetodoForm     = saveMetodoForm;
   window.confirmDelMetodo   = confirmDelMetodo;
