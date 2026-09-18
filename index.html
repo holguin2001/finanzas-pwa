@@ -2013,16 +2013,33 @@
     .modal-body { padding: 16px 20px 24px; }
 
     /* ── Method list ── */
+    .ml-section + .ml-section { margin-top: 18px; }
+    .ml-section-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+      color: var(--t2);
+      padding: 0 0 8px 0;
+    }
+    .ml-section-count {
+      font-size: 11px; font-weight: 700;
+      color: var(--t3);
+      background: var(--surface-2);
+      border-radius: 100px;
+      padding: 1px 7px;
+    }
     .method-list-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid rgba(99,102,241,0.06);
     }
-    .method-list-dot {
-      width: 12px; height: 12px;
+    .method-list-item:last-child { border-bottom: none; }
+    .method-list-icon {
+      width: 34px; height: 34px;
       border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
       flex-shrink: 0;
     }
     .method-list-info { flex: 1; min-width: 0; }
@@ -2108,6 +2125,38 @@
       transform: scale(1.15);
     }
     .color-swatch:active { transform: scale(0.9); }
+
+    /* ── Icon palette ── */
+    .icon-palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .icon-swatch {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 0 0 2px transparent;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .icon-swatch.selected {
+      box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+      transform: scale(1.08);
+    }
+    .icon-swatch:active { transform: scale(0.9); }
+    .icon-swatch-auto {
+      background: var(--surface-2) !important;
+      color: var(--t2);
+      border: 1.5px dashed var(--border);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
     </style>
 </head>
 <body>
@@ -2564,7 +2613,7 @@
 
 <!-- Avatar dropdown (global) -->
 <div id="avatar-menu" class="avatar-menu">
-  <button onclick="openMetodosModal()">💳 Métodos de pago</button>
+  <button onclick="openMetodosModal()">💳 Métodos y categorías</button>
   <button onclick="doSignOut()">→ Cerrar sesión</button>
 </div>
 
@@ -2572,7 +2621,7 @@
 <div id="metodos-modal" class="modal-overlay" onclick="closeMetodosIfOutside(event)">
   <div class="modal-sheet">
     <div class="modal-header">
-      <span class="modal-title" id="metodos-modal-title">Métodos de pago</span>
+      <span class="modal-title" id="metodos-modal-title">Métodos y categorías</span>
       <button class="modal-close" onclick="closeMetodosModal()">✕</button>
     </div>
     <div class="modal-body">
@@ -2611,6 +2660,10 @@
         <div class="field" style="margin-bottom:20px">
           <label>Color</label>
           <div class="color-palette" id="color-palette"></div>
+        </div>
+        <div class="field" style="margin-bottom:20px">
+          <label>Ícono</label>
+          <div class="icon-palette" id="icon-palette"></div>
         </div>
         <button class="btn-primary" id="metodo-save-btn" onclick="saveMetodoForm()">Agregar</button>
         <button class="btn-ghost"   onclick="showMetodosList()" style="margin-top:8px">Cancelar</button>
@@ -3666,11 +3719,15 @@ function initApp() {
   let selMTipo     = 'efectivo';
   let selAplicaA   = 'gasto'; /* solo aplica cuando selMTipo === 'otro' (categorías): a qué tipo de movimiento pertenece */
   let selMColor    = '#FB923C';
+  let selMIcon     = null; /* null = automático según el nombre; si no, una key de CAT_ICONS */
 
   const PRESET_COLORS = [
-    '#FB923C','#F5C518','#57B259','#FCCA45',
-    '#A78BFA','#FA1E00','#F472B6','#34D399',
-    '#38BDF8','#FBBF24','#5AB887','#E879F9'
+    '#EF4444','#F43F5E','#EC4899','#D946EF',
+    '#A855F7','#8B5CF6','#6366F1','#3B82F6',
+    '#0EA5E9','#06B6D4','#14B8A6','#10B981',
+    '#22C55E','#84CC16','#EAB308','#F59E0B',
+    '#F97316','#FB923C','#B0A090','#92400E',
+    '#78716C','#64748B','#6B7280','#94A3B8'
   ];
 
   /* Listener de métodos en Firestore */
@@ -3790,9 +3847,6 @@ function initApp() {
   function tipoLabel(t) {
     return {'credito':'💳 Crédito','debito':'🏧 Débito','efectivo':'💵 Efectivo','otro':'📌 Otro'}[t] || t;
   }
-  function aplicaALabel(a) {
-    return { gasto:'Gasto', ingreso:'Ingreso', ahorro:'Ahorro' }[a] || a;
-  }
 
   /* Render pills en formulario */
   /* Iconos por categoría, detectados por palabra clave en el nombre (sin migrar datos) */
@@ -3810,9 +3864,19 @@ function initApp() {
     film:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="17" y2="20"/><line x1="2" y1="9" x2="7" y2="9"/><line x1="2" y1="15" x2="7" y2="15"/><line x1="17" y1="9" x2="22" y2="9"/><line x1="17" y1="15" x2="22" y2="15"/></svg>',
     grad:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>',
     bag:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1.5 14h-15z"/><path d="M9 7a3 3 0 016 0"/></svg>',
-    cpu:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>'
+    cpu:       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>',
+    gift:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>',
+    plane:     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
+    phone:     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
+    coffee:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
+    trending:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+    dollar:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',
+    book:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>',
+    piggy:     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2z"/><path d="M2 9v1c0 1.1.9 2 2 2h1"/><circle cx="16" cy="11" r=".6" fill="currentColor" stroke="none"/></svg>'
   };
   function getMetodoIcon(id, nombre) {
+    const m = metodos.find(x => x.id === id);
+    if (m && m.icono && CAT_ICONS[m.icono]) return CAT_ICONS[m.icono];
     const n = ((nombre || '') + ' ' + (id || '')).toLowerCase();
     if (/aliment|mercad|comida|restaurant/.test(n)) return CAT_ICONS.food;
     if (/vivienda|alquiler|arriendo|servicios b[aá]sic/.test(n)) return CAT_ICONS.house;
@@ -3996,12 +4060,12 @@ function initApp() {
     if (isGuest) {
       menu.innerHTML = `
         <div class="avatar-menu-label">Modo invitado · datos solo en este dispositivo</div>
-        <button onclick="openMetodosModal()">💳 Métodos de pago</button>
+        <button onclick="openMetodosModal()">💳 Métodos y categorías</button>
         <button class="am-highlight" onclick="linkGuestToGoogle()">🔗 Vincular cuenta de Google</button>
         <button onclick="doSignOut()">→ Salir y borrar datos locales</button>`;
     } else {
       menu.innerHTML = `
-        <button onclick="openMetodosModal()">💳 Métodos de pago</button>
+        <button onclick="openMetodosModal()">💳 Métodos y categorías</button>
         <button onclick="doSignOut()">→ Cerrar sesión</button>`;
     }
   }
@@ -4032,7 +4096,7 @@ function initApp() {
   function showMetodosList() {
     document.getElementById('metodos-list-view').style.display = 'block';
     document.getElementById('metodo-form-view').style.display  = 'none';
-    document.getElementById('metodos-modal-title').textContent = 'Métodos de pago';
+    document.getElementById('metodos-modal-title').textContent = 'Métodos y categorías';
     renderMetodosList();
   }
 
@@ -4043,12 +4107,13 @@ function initApp() {
       el.innerHTML = '<p style="color:var(--t2);font-size:13px;padding:8px 0">Sin métodos. Agrega el primero.</p>';
       return;
     }
-    el.innerHTML = metodos.map(m => `
+
+    const itemHtml = (m, mostrarTipo) => `
       <div class="method-list-item">
-        <div class="method-list-dot" style="background:${m.color}"></div>
+        <span class="method-list-icon" style="background:${m.color}">${getMetodoIcon(m.id, m.nombre)}</span>
         <div class="method-list-info">
           <span class="method-list-name">${esc(m.nombre)}</span>
-          <span class="method-list-tipo">${tipoLabel(m.tipo)}${m.tipo === 'otro' ? ' · ' + aplicaALabel(m.aplicaA || 'gasto') : ''}</span>
+          ${mostrarTipo ? `<span class="method-list-tipo">${tipoLabel(m.tipo)}</span>` : ''}
         </div>
         <div class="method-list-actions">
           <button class="icon-btn edit-btn" onclick="openEditMetodo('${esc(m.id)}')">
@@ -4066,16 +4131,35 @@ function initApp() {
             </svg>
           </button>
         </div>
-      </div>`).join('');
+      </div>`;
+
+    const seccion = (titulo, lista, mostrarTipo) => {
+      if (!lista.length) return '';
+      return `<div class="ml-section">
+        <div class="ml-section-title">${esc(titulo)}<span class="ml-section-count">${lista.length}</span></div>
+        ${lista.map(m => itemHtml(m, mostrarTipo)).join('')}
+      </div>`;
+    };
+
+    const pagos       = metodos.filter(m => m.tipo !== 'otro');
+    const catsGasto    = metodos.filter(m => m.tipo === 'otro' && (m.aplicaA || 'gasto') === 'gasto');
+    const catsIngreso  = metodos.filter(m => m.tipo === 'otro' && m.aplicaA === 'ingreso');
+    const catsAhorro   = metodos.filter(m => m.tipo === 'otro' && m.aplicaA === 'ahorro');
+
+    el.innerHTML =
+      seccion('💳 Métodos de pago',        pagos,      true)  +
+      seccion('🛒 Categorías · Gasto',      catsGasto,  false) +
+      seccion('💰 Categorías · Ingreso',    catsIngreso, false) +
+      seccion('🐷 Categorías · Ahorro',     catsAhorro,  false);
   }
 
   function openAddMetodo(presetAplicaA) {
-    metodoEditId = null; selMTipo = 'efectivo'; selMColor = '#FB923C';
+    metodoEditId = null; selMTipo = 'efectivo'; selMColor = '#FB923C'; selMIcon = null;
     selAplicaA = presetAplicaA || 'gasto';
     document.getElementById('metodo-nombre').value = '';
     document.getElementById('metodos-modal-title').textContent = 'Nuevo método';
     document.getElementById('metodo-save-btn').textContent = 'Agregar';
-    syncMTipoBtns(); syncAplicaBtns(); toggleAplicaAField(); renderColorPalette();
+    syncMTipoBtns(); syncAplicaBtns(); toggleAplicaAField(); renderColorPalette(); renderIconPalette();
     document.getElementById('metodos-list-view').style.display = 'none';
     document.getElementById('metodo-form-view').style.display  = 'block';
   }
@@ -4084,11 +4168,12 @@ function initApp() {
     const m = metodos.find(m => m.id === id);
     if (!m) return;
     metodoEditId = id; selMTipo = m.tipo || 'efectivo'; selMColor = m.color || '#FB923C';
+    selMIcon = m.icono || null;
     selAplicaA = m.aplicaA || 'gasto';
     document.getElementById('metodo-nombre').value = m.nombre;
     document.getElementById('metodos-modal-title').textContent = 'Editar método';
     document.getElementById('metodo-save-btn').textContent = 'Actualizar';
-    syncMTipoBtns(); syncAplicaBtns(); toggleAplicaAField(); renderColorPalette();
+    syncMTipoBtns(); syncAplicaBtns(); toggleAplicaAField(); renderColorPalette(); renderIconPalette();
     document.getElementById('metodos-list-view').style.display = 'none';
     document.getElementById('metodo-form-view').style.display  = 'block';
   }
@@ -4119,13 +4204,29 @@ function initApp() {
     ).join('');
   }
 
-  function selectMColor(c) { selMColor = c; renderColorPalette(); }
+  function selectMColor(c) { selMColor = c; renderColorPalette(); renderIconPalette(); }
+
+  function renderIconPalette() {
+    const el = document.getElementById('icon-palette');
+    if (!el) return;
+    const auto = `<button type="button" class="icon-swatch icon-swatch-auto${selMIcon===null?' selected':''}"
+            onclick="selectMIcon(null)" title="Automático según el nombre">AUTO</button>`;
+    const items = Object.keys(CAT_ICONS).map(key =>
+      `<button type="button" class="icon-swatch${selMIcon===key?' selected':''}" style="background:${selMColor}"
+              onclick="selectMIcon('${key}')" title="${key}">${CAT_ICONS[key]}</button>`
+    ).join('');
+    el.innerHTML = auto + items;
+  }
+
+  function selectMIcon(key) { selMIcon = key; renderIconPalette(); }
 
   async function saveMetodoForm() {
     const nombre = document.getElementById('metodo-nombre').value.trim();
     if (!nombre) { showErr('Escribe el nombre del método.'); return; }
     const data = { nombre, tipo: selMTipo, color: selMColor };
     if (selMTipo === 'otro') data.aplicaA = selAplicaA;
+    if (selMIcon) data.icono = selMIcon;
+    else if (metodoEditId) data.icono = firebase.firestore.FieldValue.delete();
     try {
       if (metodoEditId) {
         await db.collection('users').doc(currentUser.uid).collection('metodos').doc(metodoEditId).update(data);
@@ -4209,6 +4310,7 @@ function initApp() {
   window.openEditMetodo     = openEditMetodo;
   window.selectMTipo        = selectMTipo;
   window.selectAplicaA      = selectAplicaA;
+  window.selectMIcon        = selectMIcon;
   window.selectMColor       = selectMColor;
   window.saveMetodoForm     = saveMetodoForm;
   window.confirmDelMetodo   = confirmDelMetodo;

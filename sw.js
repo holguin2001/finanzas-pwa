@@ -1,15 +1,16 @@
 /* ─── Finanzas PWA – Service Worker ─── */
-/* v57: las categorias ahora dependen del tipo de movimiento (Gasto/Ingreso/Ahorro).
-   Nuevo campo `aplicaA` en cada categoria (metodos con tipo==='otro'); las categorias
-   creadas antes de este cambio no lo tienen y se asumen 'gasto' por compatibilidad
-   (getCategorias(tipoMov) filtra por eso). El dropdown de Categoria en el formulario
-   de Registro ahora se filtra por el tipo seleccionado y se reinicia la seleccion al
-   cambiar de tipo (selectTipo). El modal de "Editar categorias/metodos" agrega un
-   selector "Aplica a: Gasto/Ingreso/Ahorro" que solo aparece cuando el tipo elegido es
-   "Otro" (categoria). Se agrega ensureCategoriasIngreso() con 3 semillas para Ingreso
-   (Salario, Ventas, Otros Ingresos); Ahorro arranca sin semillas, se crean a mano. El
-   filtro de categoria en Historial sigue mostrando todas sin filtrar por tipo. */
-const CACHE  = 'finanzas-v57';
+/* v58: reorganiza el modal "Metodos y categorias" (antes "Metodos de pago" -- se
+   renombra el titulo y el boton del menu de avatar porque ya no es solo eso) en
+   secciones con separadores: Metodos de pago, Categorias-Gasto, Categorias-Ingreso,
+   Categorias-Ahorro; cada item ahora muestra un circulo de icono con su color en vez
+   de un simple punto. Se amplia PRESET_COLORS de 12 a 24 tonos con mejor cobertura de
+   matices. Se agrega selector manual de icono (nuevo campo `icono` en el documento,
+   opcional; "AUTO" borra el campo con FieldValue.delete() y vuelve a la deteccion por
+   palabra clave existente) con 8 iconos nuevos en CAT_ICONS (gift, plane, phone,
+   coffee, trending, dollar, book, piggy) ademas de los 13 que ya existian.
+   getMetodoIcon() ahora prioriza el icono guardado manualmente antes de la deteccion
+   automatica por nombre. */
+const CACHE  = 'finanzas-v58';
 const ASSETS = [
   './',
   './index.html',
